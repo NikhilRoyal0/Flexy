@@ -67,7 +67,7 @@ export const fetchMenuItems = () => (dispatch) => {
     {
       title: "Form",
       icon: DescriptionOutlinedIcon,
-      href: "form-layouts",
+      href: "/form-layouts",
     },
     {
       title: "Table",
