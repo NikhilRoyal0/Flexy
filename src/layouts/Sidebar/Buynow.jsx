@@ -3,7 +3,6 @@ import { Box, Button, Typography } from "@mui/material";
 import sidebarBuynow from "../../assets/images/backgrounds/sidebar-buynow.png";
 
 const Buynow = () => {
-  //const customizer = useSelector((state)=> state.CustomizerReducer);
 
   return (
     <Box pb={5} mt={5}>
@@ -38,12 +37,12 @@ const Buynow = () => {
           </Typography>
           <Button
             color="success"
-            href="https://www.wrappixel.com/templates/flexy-react-admin-template/"
+            href="https://github.com/NikhilRoyal0/Flexy"
             fullWidth
             disableElevation
             variant="contained"
           >
-            Check Pro Version
+            Check on Github
           </Button>
         </Box>
       </Box>
