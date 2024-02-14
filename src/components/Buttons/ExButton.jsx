@@ -2,7 +2,13 @@ import React from "react";
 
 import { Grid, Box } from "@mui/material";
 
-import { ColorButton } from"../../components/Buttons/ColorButton";
+import { ColorButton } from "../../components/Buttons/ColorButton";
+import { SizeButton } from "./SizeButton";
+import { OutlineButton } from "./OutlineButton";
+import { TextButton } from "./TextButton";
+import { IconButtons } from "./IconButtons";
+import { FloatButton } from "./FloatButton";
+import { ButtonsGroup } from "./ButtonsGroup";
 
 
 
@@ -34,6 +40,7 @@ const ExButton = () => {
             alignItems: "stretch",
           }}
         >
+          <SizeButton />
         </Grid>
 
         {/* ------------------------- row 2 ------------------------- */}
@@ -46,6 +53,7 @@ const ExButton = () => {
             alignItems: "stretch",
           }}
         >
+          <OutlineButton />
         </Grid>
 
         {/* ------------------------- row 2 ------------------------- */}
@@ -58,6 +66,7 @@ const ExButton = () => {
             alignItems: "stretch",
           }}
         >
+          <TextButton/>
         </Grid>
         {/* ------------------------- row 4 ------------------------- */}
         <Grid
@@ -69,6 +78,7 @@ const ExButton = () => {
             alignItems: "stretch",
           }}
         >
+          <IconButtons/>
         </Grid>
         {/* ------------------------- row 4 ------------------------- */}
         <Grid
@@ -80,6 +90,7 @@ const ExButton = () => {
             alignItems: "stretch",
           }}
         >
+          <FloatButton/>
         </Grid>
 
         {/* ------------------------- row 4 ------------------------- */}
@@ -92,6 +103,7 @@ const ExButton = () => {
             alignItems: "stretch",
           }}
         >
+          <ButtonsGroup/>
         </Grid>
       </Grid>
     </Box>
