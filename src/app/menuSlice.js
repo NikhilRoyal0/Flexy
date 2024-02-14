@@ -31,47 +31,47 @@ export const fetchMenuItems = () => (dispatch) => {
   const menuItems = [
     {
       title: "Dashboard",
-      icon: 'DashboardOutlinedIcon',
+      icon: DashboardOutlinedIcon,
       href: "/dashboard",
     },
     {
       title: "Autocomplete",
-      icon: 'AddToPhotosOutlinedIcon',
+      icon: AddToPhotosOutlinedIcon,
       href: "/autocomplete",
     },
     {
       title: "Buttons",
-      icon: 'AspectRatioOutlinedIcon',
+      icon: AspectRatioOutlinedIcon,
       href: "/button",
     },
     {
       title: "Checkbox",
-      icon: 'AssignmentTurnedInOutlinedIcon',
+      icon: AssignmentTurnedInOutlinedIcon,
       href: "/checkbox",
     },
     {
       title: "Radio",
-      icon: 'AlbumOutlinedIcon',
+      icon: AlbumOutlinedIcon,
       href: "/radio",
     },
     {
       title: "Slider",
-      icon: 'SwitchCameraOutlinedIcon',
+      icon: SwitchCameraOutlinedIcon,
       href: "/slider",
     },
     {
       title: "Switch",
-      icon: 'SwitchLeftOutlinedIcon',
+      icon: SwitchLeftOutlinedIcon,
       href: "/switch",
     },
     {
       title: "Form",
-      icon: 'DescriptionOutlinedIcon',
+      icon: DescriptionOutlinedIcon,
       href: "/form-layouts",
     },
     {
       title: "Table",
-      icon: 'AutoAwesomeMosaicOutlinedIcon',
+      icon: AutoAwesomeMosaicOutlinedIcon,
       href: "/basic-table",
     },
   ];
