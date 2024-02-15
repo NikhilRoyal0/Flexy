@@ -215,8 +215,6 @@ const Registermain = () => {
                                     variant="contained"
                                     tabIndex={-1}
                                     startIcon={<CloudUploadIcon />}
-                                    sx={{ height: "78%" }}
-
                                 >
                                     Upload Resume
                                     <VisuallyHiddenInput
