@@ -12,7 +12,6 @@ import {
     MenuItem,
     InputLabel,
     Select,
-    TextareaAutosize,
 } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
@@ -67,7 +66,7 @@ const Registermain = () => {
     });
 
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.value });
+        setState({ ...state, gender: event.target.value });
     };
 
     const [number, setNumber] = React.useState("");
@@ -85,7 +84,6 @@ const Registermain = () => {
                 variant="outlined"
                 sx={{
                     p: 0,
-
                 }}
             >
                 <Box
@@ -215,7 +213,6 @@ const Registermain = () => {
                                     component="label"
                                     role={undefined}
                                     variant="contained"
-                                    fullWidth
                                     tabIndex={-1}
                                     startIcon={<CloudUploadIcon />}
                                     sx={{ height: "78%" }}
