@@ -9,6 +9,7 @@ import SwitchCameraOutlinedIcon from '@mui/icons-material/SwitchCameraOutlined';
 import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 const initialState = {
   menuItems: [],
@@ -30,53 +31,67 @@ export const fetchMenuItems = () => (dispatch) => {
 
   const menuItems = [
     {
+      id: 1,
       title: "Dashboard",
       icon: DashboardOutlinedIcon,
       href: "/dashboard",
     },
     {
+      id: 2,
       title: "Autocomplete",
       icon: AddToPhotosOutlinedIcon,
       href: "/autocomplete",
     },
     {
+      id: 3,
       title: "Buttons",
       icon: AspectRatioOutlinedIcon,
       href: "/button",
     },
     {
+      id: 4,
       title: "Checkbox",
       icon: AssignmentTurnedInOutlinedIcon,
       href: "/checkbox",
     },
     {
+      id: 5,
       title: "Radio",
       icon: AlbumOutlinedIcon,
       href: "/radio",
     },
     {
+      id: 6,
       title: "Slider",
       icon: SwitchCameraOutlinedIcon,
       href: "/slider",
     },
     {
+      id: 7,
       title: "Switch",
       icon: SwitchLeftOutlinedIcon,
       href: "/switch",
     },
     {
+      id: 8,
       title: "Form",
       icon: DescriptionOutlinedIcon,
       href: "/form-layouts",
     },
     {
+      id: 9,
       title: "Table",
       icon: AutoAwesomeMosaicOutlinedIcon,
       href: "/basic-table",
     },
+    {
+      id: 10,
+      title: "Register",
+      icon: AppRegistrationIcon,
+      href: "/register",
+    },
   ];
   
-
   dispatch(setMenuItems(menuItems));
 };
 

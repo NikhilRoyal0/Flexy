@@ -10,6 +10,7 @@ import Slidermain from '../components/Slider/Slidermain';
 import Switchmain from '../components/Switch/Switchmain';
 import Formmain from '../components/Form/Formmain';
 import Tablemain from '../components/Table/Tablemain';
+import Registermain from '../components/Register/Registermain';
 
 
     const routes = createBrowserRouter(
@@ -25,6 +26,7 @@ import Tablemain from '../components/Table/Tablemain';
         <Route path='/switch' element={<Switchmain/>}/>
         <Route path='/form-layouts' element={<Formmain/>}/>
         <Route path='/basic-table' element={<Tablemain/>}/>
+        <Route path='/register' element={<Registermain/>}/>
           
         </Route>
         
