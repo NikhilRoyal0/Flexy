@@ -73,6 +73,7 @@ const Sidebar = (props) => {
                       `${theme.palette.primary.main}!important`,
                   }),
                 }}
+                disabled={item.disabled}
               >
                 <ListItemIcon
                   sx={{

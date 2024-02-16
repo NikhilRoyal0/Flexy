@@ -4,6 +4,7 @@ import {
   useMediaQuery,
   Container,
   Box,
+  CssBaseline,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Header from '../Header/Header'
@@ -21,7 +22,6 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
   flex: "1 1 auto",
   overflow: "hidden",
-
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.up("lg")]: {
     paddingTop: TopbarHeight,
@@ -32,12 +32,13 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
 }));
 
 const FullLayout = () => {
-  //
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+
   return (
     <MainWrapper>
+      <CssBaseline />
       <Header
         sx={{
           paddingLeft: isSidebarOpen && lgUp ? "265px" : "",
@@ -57,11 +58,12 @@ const FullLayout = () => {
         <Container
           maxWidth={false}
           sx={{
-            paddingLeft: isSidebarOpen && lgUp ? "250px!important" : "",
+            paddingLeft: isSidebarOpen && lgUp ? "260px!important" : "",
+            overflow: "hidden",
           }}
         >
           <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
-            <Outlet/>
+            <Outlet />
           </Box>
           <Footer />
         </Container>

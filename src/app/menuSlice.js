@@ -10,6 +10,20 @@ import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import Person4Icon from '@mui/icons-material/Person4';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import RecentActorsIcon from '@mui/icons-material/RecentActors';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import SettingsIcon from '@mui/icons-material/Settings';
+import BallotIcon from '@mui/icons-material/Ballot';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import TaskIcon from '@mui/icons-material/Task';
+import SplitscreenIcon from '@mui/icons-material/Splitscreen';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const initialState = {
   menuItems: [],
@@ -28,6 +42,8 @@ export const menuSlice = createSlice({
 export const { setMenuItems } = menuSlice.actions;
 
 export const fetchMenuItems = () => (dispatch) => {
+
+  const isVisible = true;
 
   const menuItems = [
     {
@@ -110,9 +126,102 @@ export const fetchMenuItems = () => (dispatch) => {
       icon: AppRegistrationIcon,
       href: "/register",
     },
+    {
+      title: "Dashboard",
+      icon: DashboardOutlinedIcon,
+      href: "/dashboard",
+      visible: isVisible,
+    },
+    {
+      title: "User",
+      icon: Person4Icon,
+      href: '#',
+      visible: isVisible,
+      subItems: [
+        {
+          id: 31,
+          title: "User List",
+          icon: RecentActorsIcon,
+          href: "/user/user-list",
+        },
+        {
+          id: 32,
+          title: "Add User",
+          icon: PersonAddAltIcon,
+          href: "/user/add-user",
+        },
+      ],
+    },
+    {
+      title: "Plans",
+      icon: LightbulbIcon,
+      href: "/plans",
+      visible: isVisible,
+    },
+    {
+      title: "News",
+      icon: NewspaperIcon,
+      href: "/news",
+      visible: isVisible,
+    },
+    {
+      title: "Setting",
+      icon: ManageAccountsIcon,
+      href: '#',
+      visible: isVisible,
+      subItems: [
+        {
+          title: "App Setting",
+          icon: SettingsApplicationsIcon,
+          href: "/setting/app-setting",
+        },
+        {
+          title: "Basic Setting",
+          icon: SettingsIcon,
+          href: "/setting/basic-setting",
+        },
+        {
+          title: "Dialogs List",
+          icon: BallotIcon,
+          href: "/setting/dialogs-list",
+        },
+        {
+          title: "Banners List",
+          icon: ViewCarouselIcon,
+          href: "/setting/banners-list",
+        },
+      ],
+    },
+    {
+      title: "Tasks",
+      icon: TaskIcon,
+      href: '#',
+      visible: isVisible,
+      subItems: [
+        {
+          title: "Task Category",
+          icon: SplitscreenIcon,
+          href: "/tasks/task-category",
+        },
+        {
+          title: "Task List",
+          icon: FormatListBulletedIcon,
+          href: "/tasks/task-list",
+        },
+      ],
+    },
+    {
+      title: "Logout",
+      icon: LogoutIcon,
+      href: "/logout",
+      visible: isVisible,
+    },
+
   ];
-  
-  dispatch(setMenuItems(menuItems));
+
+  const filteredMenuItems = menuItems.filter((item) => item.visible);
+
+  dispatch(setMenuItems(filteredMenuItems));
 };
 
 export default menuSlice.reducer;

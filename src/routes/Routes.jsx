@@ -11,7 +11,17 @@ import Switchmain from '../components/Switch/Switchmain';
 import Formmain from '../components/Form/Formmain';
 import Tablemain from '../components/Table/Tablemain';
 import Registermain from '../components/Register/Registermain';
-
+import AddUser from '../components/User/AddUser';
+import UserList from '../components/User/UserList';
+import PlansPage from '../components/Plans/PlansPage';
+import NewsPage from '../components/News/NewsPage';
+import AppSetting from '../components/Setting/AppSetting';
+import BasicSetting from '../components/Setting/BasicSetting';
+import DialogsList from '../components/Setting/DialogsList';
+import BannersList from '../components/Setting/BannersList';
+import TaskCategory from '../components/Tasks/TaskCategory';
+import TaskList from '../components/Tasks/TaskList';
+import Login from '../components/LoginLogout/Login';
 
     const routes = createBrowserRouter(
         createRoutesFromElements(
@@ -27,6 +37,17 @@ import Registermain from '../components/Register/Registermain';
         <Route path='/form-layouts' element={<Formmain/>}/>
         <Route path='/basic-table' element={<Tablemain/>}/>
         <Route path='/register' element={<Registermain/>}/>
+        <Route path='/plans' element={<PlansPage/>}/>
+        <Route path='/news' element={<NewsPage/>}/>
+        <Route path='/user/add-user' element={<AddUser/>}/>
+        <Route path='/user/user-list' element={<UserList/>}/>
+        <Route path='/setting/app-setting' element={<AppSetting/>}/>
+        <Route path='/setting/basic-setting' element={<BasicSetting/>}/>
+        <Route path='/setting/dialogs-list' element={<DialogsList/>}/>
+        <Route path='/setting/banners-list' element={<BannersList/>}/>
+        <Route path='/tasks/task-category' element={<TaskCategory/>}/>
+        <Route path='/tasks/task-list' element={<TaskList/>}/>
+        <Route path='/login' element={<Login/>}/>
           
         </Route>
         
