@@ -47,6 +47,26 @@ export const fetchMenuItems = () => (dispatch) => {
       title: "Buttons",
       icon: AspectRatioOutlinedIcon,
       href: "/button",
+      subItems: [
+        {
+          id: 31,
+          title: "Button1",
+          icon: AspectRatioOutlinedIcon,
+          href: "/button/button1",
+        },
+        {
+          id: 32,
+          title: "Button2",
+          icon: AspectRatioOutlinedIcon,
+          href: "/button/button2",
+        },
+        {
+          id: 33,
+          title: "Button3",
+          icon: AspectRatioOutlinedIcon,
+          href: "/button/button3",
+        },
+      ],
     },
     {
       id: 4,
