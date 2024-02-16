@@ -16,7 +16,7 @@ const MainWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
   minHeight: "100vh",
   overflow: "hidden",
-  width: "101%",
+  width: "100%",
 }));
 const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
