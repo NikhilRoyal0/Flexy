@@ -3,7 +3,9 @@ import menuReducer from './menuSlice';
 import tableReducer from './tableSlice';
 import movieReducer from './movieSlice';
 import UserReducer from './UserSlice';
-import TaskReducer from './TaskSlice'
+import TaskReducer from './TaskSlice';
+import DialogReducer from './DialogSlice';
+
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,7 @@ const store = configureStore({
     movie: movieReducer,
     Person: UserReducer,
     task: TaskReducer,
+    dialogData: DialogReducer
   },
 });
 
