@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import { SidebarWidth } from "../../assets/global/Theme-variable";
 import LogoIcon from "../Logo/LogoIcon";
-import Buynow from "./Buynow";
 
 import { fetchMenuItems } from "../../app/menuSlice";
 
@@ -132,7 +131,6 @@ const Sidebar = (props) => {
         ))}
       </List>
       </Box>
-      <Buynow />
     </Box>
   );
   if (lgUp) {
