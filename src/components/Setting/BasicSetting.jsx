@@ -1,55 +1,52 @@
 import React from 'react';
-import { Container, Paper, Typography, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SecurityIcon from '@mui/icons-material/Security';
-import LanguageIcon from '@mui/icons-material/Language';
+import {
+  Container,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+} from '@mui/material';
+
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const BasicSetting = () => {
   return (
     <Container maxWidth="sm" style={{ marginTop: '20px' }}>
       <Paper elevation={3} style={{ padding: '20px', borderRadius: '10px' }}>
         <Typography variant="h5" gutterBottom>
-          Basic Settings
+          Profile Settings
         </Typography>
 
         <Divider style={{ margin: '10px 0' }} />
 
         <List>
+
           <ListItem button>
             <ListItemIcon>
-              <SettingsIcon />
+              <PersonIcon />
             </ListItemIcon>
-            <ListItemText primary="General Settings" />
+            <ListItemText primary="Manage Profile" />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
-              <NotificationsIcon />
+              <LockIcon />
             </ListItemIcon>
-            <ListItemText primary="Notifications" />
+            <ListItemText primary="Change Password" />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
-              <SecurityIcon />
+              <ManageAccountsIcon />
             </ListItemIcon>
-            <ListItemText primary="Security" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemIcon>
-              <LanguageIcon />
-            </ListItemIcon>
-            <ListItemText primary="Language" />
+            <ListItemText primary="Manage Accounts" />
           </ListItem>
         </List>
-
-        <Divider style={{ margin: '10px 0' }} />
-
-        <IconButton color="primary" aria-label="Save">
-          Save
-        </IconButton>
       </Paper>
     </Container>
   );

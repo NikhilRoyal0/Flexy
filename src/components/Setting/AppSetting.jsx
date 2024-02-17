@@ -1,9 +1,23 @@
 import React from 'react';
-import { Container, Paper, Typography, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
+import {
+  Container,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  IconButton,
+} from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import LanguageIcon from '@mui/icons-material/Language';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SecurityIcon from '@mui/icons-material/Security';
+import ContrastIcon from '@mui/icons-material/Contrast';
+
 
 const AppSetting = () => {
   return (
@@ -36,6 +50,27 @@ const AppSetting = () => {
             </ListItemIcon>
             <ListItemText primary="Language" />
           </ListItem>
+
+          <ListItem button>
+            <ListItemIcon>
+              <ContrastIcon />
+            </ListItemIcon>
+            <ListItemText primary="Appearance" />
+          </ListItem>
+
+          <ListItem button>
+            <ListItemIcon>
+              <NotificationsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Notifications" />
+          </ListItem>
+
+          <ListItem button>
+            <ListItemIcon>
+              <SecurityIcon />
+            </ListItemIcon>
+            <ListItemText primary="Security" />
+          </ListItem>
         </List>
 
         <Divider style={{ margin: '10px 0' }} />
@@ -48,13 +83,7 @@ const AppSetting = () => {
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
-
-        <Divider style={{ margin: '10px 0' }} />
-
-        <IconButton color="primary" aria-label="Save">
-          Save
-        </IconButton>
-      </Paper>
+              </Paper>
     </Container>
   );
 };

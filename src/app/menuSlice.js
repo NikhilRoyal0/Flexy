@@ -176,7 +176,7 @@ export const fetchMenuItems = () => (dispatch) => {
           href: "/setting/app-setting",
         },
         {
-          title: "Basic Setting",
+          title: "Profile Setting",
           icon: SettingsIcon,
           href: "/setting/basic-setting",
         },

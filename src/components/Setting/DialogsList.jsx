@@ -1,6 +1,18 @@
 import React from 'react';
-import { List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, Button, ListItemIcon } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  ListItemIcon,
+  Card,
+  CardContent,
+  Typography,
+} from '@mui/material'; import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const dialogData = [
   { id: 1, title: 'Bhagat Singh', content: 'Inquilab Zindabad! Bhagat Singh, the fearless freedom fighter, who sacrificed his life for the nation.' },
@@ -30,30 +42,37 @@ const DialogsList = () => {
   };
 
   return (
-    <div>
-      <List>
-        {dialogData.map((dialog) => (
-          <ListItem key={dialog.id} button onClick={() => handleOpenDialog(dialog.id)}>
-            <ListItemIcon>
-              <FiberManualRecordIcon />
-            </ListItemIcon>
-            <ListItemText primary={dialog.title} />
-          </ListItem>
-        ))}
-      </List>
+    <Card>
+      <CardContent>
+        <List>
+          {dialogData.map((dialog) => (
+            <ListItem key={dialog.id} button onClick={() => handleOpenDialog(dialog.id)}>
+              <ListItemIcon>
+                <FiberManualRecordIcon />
+              </ListItemIcon>
+              <ListItemText primary={dialog.title} />
+            </ListItem>
+          ))}
+        </List>
 
-      {dialogData.map((dialog) => (
-        <Dialog key={dialog.id} open={openDialog === dialog.id} onClose={handleCloseDialog}>
-          <DialogTitle>{dialog.title}</DialogTitle>
-          <DialogContent>
-            <p>{dialog.content}</p>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Close</Button>
-          </DialogActions>
-        </Dialog>
-      ))}
-    </div>
+        {dialogData.map((dialog) => (
+          <Dialog key={dialog.id}
+            open={openDialog === dialog.id}
+            onClose={handleCloseDialog}
+            sx={{ width: '100%' }}
+          >
+
+            <DialogTitle>{dialog.title}</DialogTitle>
+            <DialogContent>
+              <Typography>{dialog.content}</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Close</Button>
+            </DialogActions>
+          </Dialog>
+        ))}
+      </CardContent>
+    </Card>
   );
 };
 
