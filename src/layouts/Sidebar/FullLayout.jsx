@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import {
-  experimentalStyled,
-  useMediaQuery,
-  Container,
-  Box,
-  CssBaseline,
-} from "@mui/material";
-import { Outlet } from "react-router-dom";
-import Header from '../Header/Header'
+import { experimentalStyled, useMediaQuery, Container, Box, CssBaseline } from "@mui/material";
+import { Outlet, useLocation } from "react-router-dom";
+import Header from '../Header/Header';
 import Sidebar from "../Sidebar/Sidebar";
-import Footer from "../Footer/Footer"
+import Footer from "../Footer/Footer";
 import { TopbarHeight } from "../../assets/global/Theme-variable";
 
 const MainWrapper = experimentalStyled("div")(({ theme }) => ({
@@ -18,6 +12,7 @@ const MainWrapper = experimentalStyled("div")(({ theme }) => ({
   overflow: "hidden",
   width: "100%",
 }));
+
 const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
   flex: "1 1 auto",
@@ -32,40 +27,48 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
 }));
 
 const FullLayout = () => {
+  const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
+  const excludedPaths = ["/logout", "/login", "/register-now"];
+  const shouldRenderHeaderFooterSidebar = !excludedPaths.includes(location.pathname);
+
   return (
     <MainWrapper>
       <CssBaseline />
-      <Header
-        sx={{
-          paddingLeft: isSidebarOpen && lgUp ? "265px" : "",
-          backgroundColor: "#ffffff",
-        }}
-        toggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
-        toggleMobileSidebar={() => setMobileSidebarOpen(true)}
-      />
+      {shouldRenderHeaderFooterSidebar && (
+        <Header
+          sx={{
+            paddingLeft: isSidebarOpen && lgUp ? "265px" : "",
+            backgroundColor: "#ffffff",
+          }}
+          toggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
+          toggleMobileSidebar={() => setMobileSidebarOpen(true)}
+        />
+      )}
 
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        isMobileSidebarOpen={isMobileSidebarOpen}
-        onSidebarClose={() => setMobileSidebarOpen(false)}
-      />
+      {shouldRenderHeaderFooterSidebar && (
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onSidebarClose={() => setMobileSidebarOpen(false)}
+        />
+      )}
 
       <PageWrapper>
         <Container
           maxWidth={false}
           sx={{
-            paddingLeft: isSidebarOpen && lgUp ? "260px!important" : "",
+            paddingLeft: shouldRenderHeaderFooterSidebar && lgUp ? "260px!important" : "",
             overflow: "hidden",
           }}
         >
           <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
             <Outlet />
           </Box>
-          <Footer />
+          {shouldRenderHeaderFooterSidebar && <Footer />}
         </Container>
       </PageWrapper>
     </MainWrapper>

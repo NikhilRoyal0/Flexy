@@ -1,5 +1,5 @@
 import React from "react";
-//import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
@@ -25,6 +25,8 @@ import userimg from "../../assets/images/users/user.jpg";
 
 const Header = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const navigate = useNavigate()
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,6 +56,10 @@ const Header = (props) => {
 
   const handleClose5 = () => {
     setAnchorEl5(null);
+  };
+  
+  const handleLogout =() =>{
+    navigate("/logout")
   };
 
   return (
@@ -259,7 +265,7 @@ const Header = (props) => {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem onClick={handleClose4}>
+          <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <LogoutOutlinedIcon fontSize="small" />
             </ListItemIcon>

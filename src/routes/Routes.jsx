@@ -21,7 +21,11 @@ import DialogsList from '../components/Setting/DialogsList';
 import BannersList from '../components/Setting/BannersList';
 import TaskCategory from '../components/Tasks/TaskCategory';
 import TaskList from '../components/Tasks/TaskList';
+import Logout from '../components/LoginLogout/Logout';
 import Login from '../components/LoginLogout/Login';
+import Register from '../components/LoginLogout/Register'
+import Notfound from '../components/NotFound/Notfound';
+
 
     const routes = createBrowserRouter(
         createRoutesFromElements(
@@ -47,7 +51,10 @@ import Login from '../components/LoginLogout/Login';
         <Route path='/setting/banners-list' element={<BannersList/>}/>
         <Route path='/tasks/task-category' element={<TaskCategory/>}/>
         <Route path='/tasks/task-list' element={<TaskList/>}/>
+        <Route path='/logout' element={<Logout/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path='/register-now' element={<Register/>}/>
+        <Route path='*' element={<Notfound/>}/>
           
         </Route>
         
