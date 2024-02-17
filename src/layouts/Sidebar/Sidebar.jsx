@@ -73,7 +73,6 @@ const Sidebar = (props) => {
                       `${theme.palette.primary.main}!important`,
                   }),
                 }}
-                disabled={item.disabled}
               >
                 <ListItemIcon
                   sx={{
@@ -87,10 +86,6 @@ const Sidebar = (props) => {
                   {item.subItems && (
                     <IconButton
                       sx={{ ml: 1, color: "inherit", p: 0 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleClick(index);
-                      }}
                     >
                       {open === index ? (
                         <KeyboardArrowUpIcon />

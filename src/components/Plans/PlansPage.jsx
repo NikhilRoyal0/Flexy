@@ -1,49 +1,14 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import user1 from "../../assets/images/backgrounds/u2.jpg";
-import user2 from "../../assets/images/backgrounds/u3.jpg";
-import user3 from "../../assets/images/backgrounds/u4.jpg";
+import { selectUserData } from "../../app/UserSlice";
+import { useSelector } from "react-redux";
 
-const data = [
-  {
-    img: user1,
-    title: "Super awesome, Angular 12 is coming soon!",
-    subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "error",
-  },
-  {
-    img: user2,
-    title: "Super awesome, Angular 12 is coming soon!",
-    subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "warning",
-  },
-  {
-    img: user3,
-    title: "Super awesome, Angular 12 is coming soon!",
-    subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "primary",
-  },
-  {
-    img: user3,
-    title: "Super awesome, Angular 12 is coming soon!",
-    subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "primary",
-  },
-  {
-    img: user3,
-    title: "Super awesome, Angular 12 is coming soon!",
-    subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "primary",
-  },
-];
 
 const PlansPage = () => {
+
+  const userData = useSelector(selectUserData)
+
   return (
     <div style={{ position: "relative" }}>
       <Button
@@ -63,7 +28,7 @@ const PlansPage = () => {
       <Card>
         <CardContent>
           <Grid container>
-            {data.map((data, index) => (
+            {userData.map((Person, index) => (
               <Grid
                 key={index}
                 item
@@ -82,7 +47,7 @@ const PlansPage = () => {
                     width: "100%",
                   }}
                 >
-                  <img src={data.img} alt="img" width="100%" />
+                  <img src={Person.img} alt="img" width="100%" />
                   <CardContent
                     sx={{
                       paddingLeft: "30px",
@@ -95,7 +60,7 @@ const PlansPage = () => {
                         fontWeight: "500",
                       }}
                     >
-                      {data.title}
+                      {Person.title}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -105,7 +70,7 @@ const PlansPage = () => {
                         mt: 1,
                       }}
                     >
-                      {data.subtitle}
+                      {Person.subtitle}
                     </Typography>
                   </CardContent>
                 </Card>
