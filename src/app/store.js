@@ -3,6 +3,7 @@ import menuReducer from './menuSlice';
 import tableReducer from './tableSlice';
 import movieReducer from './movieSlice';
 import UserReducer from './UserSlice';
+import TaskReducer from './TaskSlice'
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     table: tableReducer,
     movie: movieReducer,
     Person: UserReducer,
+    task: TaskReducer,
   },
 });
 
