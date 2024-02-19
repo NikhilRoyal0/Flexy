@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, TableHead, TableCell, TableRow, TableBody, Typography, Box, Chip, Button } from "@mui/material";
 import { fetchUsersData, selectUsersData, selectUsersLoading, selectUsersError } from "../../app/UsersSlice";
@@ -13,10 +13,9 @@ const Lists = ({ searchText, setSearchText }) => {
 
   const navigate = useNavigate();
 
-  const editClick =(v)=>{
-    navigate("edit-user")
-  }
-
+  const editClick = (user) => {
+    navigate(`edit-user/${user}`);
+  };
 
   useEffect(() => {
     dispatch(fetchUsersData());
@@ -161,7 +160,7 @@ const Lists = ({ searchText, setSearchText }) => {
                   <Typography variant="h6">${user.walletAmount}k</Typography>
                 </TableCell>
                 <TableCell>
-                <Button variant="outlined" color="primary" onClick={() => editClick(user.uId)}>
+                <Button variant="outlined" color="primary" onClick={() => editClick(user)}>
                     Edit
                   </Button>
                 </TableCell>

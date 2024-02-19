@@ -50,7 +50,7 @@ const Sidebar = (props) => {
       </Link>
 
       <Box>
-      <List
+      <List 
         sx={{
           mt: 4,
         }}
