@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Typography, Box, TextField, Button, Card, CardContent, Grid, Divider } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
 import { useSelector } from "react-redux";
 import { selectUsersData } from "../../app/UsersSlice";
 
@@ -11,11 +12,11 @@ const EditUser = () => {
   const [editableUserData, setEditableUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 1;
 
   useEffect(() => {
     const user = usersData.find((user) => user && user.uId === (userId, user.uId));
-    console.log("User:", user);
-    console.log("UserId Type:", typeof userId);
 
     if (!user) {
       setUserData(null);
@@ -27,8 +28,6 @@ const EditUser = () => {
 
     setIsLoading(false);
   }, [userId, usersData]);
-
-
 
   const handleEnableEditing = () => {
     setIsEditing(!isEditing);
@@ -46,6 +45,10 @@ const EditUser = () => {
     }));
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -59,8 +62,8 @@ const EditUser = () => {
         <br />
         <Divider />
         <br />
-        <form >
-          <Grid container spacing={2}>
+        <form>
+        <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Name"
@@ -110,6 +113,15 @@ const EditUser = () => {
             Save Changes
           </Button>
         </form>
+        <br />
+        <Divider />
+        <br />
+        <Pagination
+          count={Math.ceil(usersData.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
       </CardContent>
     </Card>
   );
