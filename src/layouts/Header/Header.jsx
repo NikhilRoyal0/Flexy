@@ -133,7 +133,7 @@ const Header = (props) => {
                 ml: 2,
               }}
             >
-              New account
+              New Plans
             </Box>
           </MenuItem>
           <Divider />
@@ -149,7 +149,7 @@ const Header = (props) => {
                 ml: 2,
               }}
             >
-              New Page
+              New Task
             </Box>
           </MenuItem>
           <MenuItem onClick={handleClose5}>
@@ -164,7 +164,7 @@ const Header = (props) => {
                 ml: 2,
               }}
             >
-              New Component
+              New User
             </Box>
           </MenuItem>        </Menu>
         <Box flexGrow={1} />
