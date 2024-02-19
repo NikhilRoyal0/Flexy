@@ -18,7 +18,7 @@ const EditUser = () => {
   const usersData = useSelector(selectUsersData);
   const [userData, setUserData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [editMode, setEditMode] = useState(false); // Track edit mode
+  const [editMode, setEditMode] = useState(false); 
   const itemsPerPage = 1;
 
   useEffect(() => {
@@ -41,7 +41,6 @@ const EditUser = () => {
   };
 
   const handleSave = () => {
-    // Add logic here to save changes (e.g., dispatch an action to update the Redux state)
     setEditMode(false); // Exit edit mode after saving
   };
 
@@ -106,7 +105,7 @@ const EditUser = () => {
                 disabled={!editMode}
               />
             </Grid>
-            {/* Add other form fields as needed */}
+            
           </Grid>
           <br />
           <Divider />
