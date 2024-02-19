@@ -14,7 +14,7 @@ const Lists = ({ searchText, setSearchText }) => {
   const navigate = useNavigate();
 
   const editClick = (user) => {
-    navigate(`edit-user/${user}`);
+    navigate(`edit-user/${user.uId}`);
   };
 
   useEffect(() => {

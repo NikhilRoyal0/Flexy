@@ -50,86 +50,87 @@ const Sidebar = (props) => {
       </Link>
 
       <Box>
-      <List 
-        sx={{
-          mt: 4,
-        }}
-      >
-        {menuItems.map((item, index) => (
-          <React.Fragment key={item.id}>
-            <List component="li" disablePadding>
-              <ListItem
-                onClick={() => handleClick(index)}
-                button
-                component={NavLink}
-                to={item.href}
-                selected={pathDirect === item.href}
-                sx={{
-                  mb: 1,
-                  ...(pathDirect === item.href && {
-                    color: "white",
-                    backgroundColor: (theme) =>
-                      `${theme.palette.primary.main}!important`,
-                  }),
-                }}
-              >
-                <ListItemIcon
+        <List
+          sx={{
+            mt: 4,
+          }}
+        >
+          {menuItems.map((item, index) => (
+            <React.Fragment key={item.id}>
+              <List component="li" disablePadding>
+                <ListItem
+                  key={item.id}
+                  onClick={() => handleClick(index)}
+                  button
+                  component={NavLink}
+                  to={item.href}
+                  selected={pathDirect === item.href}
                   sx={{
-                    ...(pathDirect === item.href && { color: "white" }),
+                    mb: 1,
+                    ...(pathDirect === item.href && {
+                      color: "white",
+                      backgroundColor: (theme) =>
+                        `${theme.palette.primary.main}!important`,
+                    }),
                   }}
                 >
-                  <item.icon width="20" height="20" />
-                </ListItemIcon>
-                <ListItemText>
-                  {item.title}
-                  {item.subItems && (
-                    <IconButton
-                      sx={{ ml: 1, color: "inherit", p: 0 }}
-                    >
-                      {open === index ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )}
-                    </IconButton>
-                  )}
-                </ListItemText>
-              </ListItem>
-            </List>
-
-            {item.subItems && open === index && (
-              <List component="ul" disablePadding sx={{ paddingLeft: 2 }}>
-                {item.subItems.map((subItem) => (
-                  <ListItem
-                    key={subItem.id}
-                    button
-                    component={NavLink}
-                    to={subItem.href}
-                    selected={pathDirect === subItem.href}
+                  <ListItemIcon
                     sx={{
-                      mb: 1,
-                      ...(pathDirect === subItem.href && {
-                        color: "white",
-                        backgroundColor: (theme) =>
-                          `${theme.palette.primary.main}!important`,
-                      }),
+                      ...(pathDirect === item.href && { color: "white" }),
                     }}
                   >
-                    <ListItemIcon
+                    <item.icon width="20" height="20" />
+                  </ListItemIcon>
+                  <ListItemText>
+                    {item.title}
+                    {item.subItems && (
+                      <IconButton
+                        sx={{ ml: 1, color: "inherit", p: 0 }}
+                      >
+                        {open === index ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </IconButton>
+                    )}
+                  </ListItemText>
+                </ListItem>
+              </List>
+
+              {item.subItems && open === index && (
+                <List component="ul" disablePadding sx={{ paddingLeft: 2 }}>
+                  {item.subItems.map((subItem) => (
+                    <ListItem
+                      key={subItem.id}
+                      button
+                      component={NavLink}
+                      to={subItem.href}
+                      selected={pathDirect === subItem.href}
                       sx={{
-                        ...(pathDirect === subItem.href && { color: "white" }),
+                        mb: 1,
+                        ...(pathDirect === subItem.href && {
+                          color: "white",
+                          backgroundColor: (theme) =>
+                            `${theme.palette.primary.main}!important`,
+                        }),
                       }}
                     >
-                      <subItem.icon width="20" height="20" />
-                    </ListItemIcon>
-                    <ListItemText>{subItem.title}</ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-            )}
-          </React.Fragment>
-        ))}
-      </List>
+                      <ListItemIcon
+                        sx={{
+                          ...(pathDirect === subItem.href && { color: "white" }),
+                        }}
+                      >
+                        <subItem.icon width="20" height="20" />
+                      </ListItemIcon>
+                      <ListItemText>{subItem.title}</ListItemText>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </React.Fragment>
+          ))}
+        </List>
       </Box>
     </Box>
   );
