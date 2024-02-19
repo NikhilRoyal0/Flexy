@@ -25,6 +25,7 @@ import Logout from '../components/LoginLogout/Logout';
 import Login from '../components/LoginLogout/Login';
 import Register from '../components/LoginLogout/Register'
 import Notfound from '../components/NotFound/Notfound';
+import EditUser from '../components/User/EditUser';
 
 
     const routes = createBrowserRouter(
@@ -54,6 +55,7 @@ import Notfound from '../components/NotFound/Notfound';
         <Route path='/logout' element={<Logout/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register-now' element={<Register/>}/>
+        <Route path='/user/user-list/edit-user' element={<EditUser/>}/>
         <Route path='*' element={<Notfound/>}/>
           
         </Route>

@@ -1,20 +1,38 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
-
-
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { selectUserData } from "../../app/UserSlice";
-import { useSelector } from "react-redux";
+
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNewsData, selectNewsData, selectNewsLoading, selectNewsError } from "../../app/NewsSlice";
+
 
 
 
 const NewsPage = () => {
 
-const userData = useSelector(selectUserData)
+  const dispatch = useDispatch();
+  const newsData = useSelector(selectNewsData);
+  const isLoading = useSelector(selectNewsLoading);
+  const error = useSelector(selectNewsError);
+
+  useEffect(() => {
+    dispatch(fetchNewsData());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+
 
   return (
     <Grid container>
-      {userData.map((Person, index) => (
+      {newsData.map((News, index) => (
         <Grid
           key={index}
           item
@@ -34,7 +52,7 @@ const userData = useSelector(selectUserData)
               width: "100%",
             }}
           >
-            <img src={Person.img} alt="img" width="100%" />
+            <img src={News.mediaPath} alt="img" width="100%" />
             <CardContent
               sx={{
                 paddingLeft: "30px",
@@ -47,7 +65,15 @@ const userData = useSelector(selectUserData)
                   fontWeight: "500",
                 }}
               >
-                {Person.title}
+                Date: {News.newsDate}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "h4.fontSize",
+                  fontWeight: "500",
+                }}
+              >
+                {News.newsInfo}
               </Typography>
               <Typography
                 color="textSecondary"
@@ -57,14 +83,14 @@ const userData = useSelector(selectUserData)
                   mt: 1,
                 }}
               >
-                {Person.subtitle}
+                {News.newsTitle}
               </Typography>
               <Button
                 variant="contained"
                 sx={{
                   mt: "15px",
                 }}
-                color={Person.btncolor}
+                color={News.btncolor}
               >
                 Full Article
                 <ArrowForwardIosIcon />

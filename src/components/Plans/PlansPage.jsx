@@ -1,13 +1,30 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { selectUserData } from "../../app/UserSlice";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPlansData, selectPlansData, selectPlansLoading, selectPlansError } from "../../app/PlansSlice";
+
 
 
 const PlansPage = () => {
+  const dispatch = useDispatch();
+  const plansData = useSelector(selectPlansData);
+  const isLoading = useSelector(selectPlansLoading);
+  const error = useSelector(selectPlansError);
 
-  const userData = useSelector(selectUserData)
+  useEffect(() => {
+    dispatch(fetchPlansData());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
 
   return (
     <div style={{ position: "relative" }}>
@@ -16,7 +33,7 @@ const PlansPage = () => {
           position: "absolute",
           top: "5px",
           right: "30px",
-          mt: "5px", 
+          mt: "5px",
           zIndex: 1,
         }}
         color="primary"
@@ -28,7 +45,7 @@ const PlansPage = () => {
       <Card>
         <CardContent>
           <Grid container>
-            {userData.map((Person, index) => (
+            {plansData.map((Plan, index) => (
               <Grid
                 key={index}
                 item
@@ -37,7 +54,7 @@ const PlansPage = () => {
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
-                  mt: "8px", 
+                  mt: "8px",
                 }}
               >
                 <Card
@@ -47,7 +64,7 @@ const PlansPage = () => {
                     width: "100%",
                   }}
                 >
-                  <img src={Person.img} alt="img" width="100%" />
+                  <img src={Plan.planImages} alt="img" width="100%" />
                   <CardContent
                     sx={{
                       paddingLeft: "30px",
@@ -60,7 +77,7 @@ const PlansPage = () => {
                         fontWeight: "500",
                       }}
                     >
-                      {Person.title}
+                      {Plan.planTitle}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -70,7 +87,17 @@ const PlansPage = () => {
                         mt: 1,
                       }}
                     >
-                      {Person.subtitle}
+                      {Plan.planInfo}
+                    </Typography>
+                    <Typography
+                      color="textSecondary"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        mt: 1,
+                      }}
+                    >
+                      {Plan.planExtraDetails}
                     </Typography>
                   </CardContent>
                 </Card>
