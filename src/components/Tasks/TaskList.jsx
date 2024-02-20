@@ -74,12 +74,12 @@ const TasksList = () => {
                       <TableCell>{task.taskTitle}</TableCell>
                       <TableCell>{task.taskInfo}</TableCell>
                       <TableCell>
-                        {task.isDailyTask === 0 && <Chip label="0" color="default" />}
-                        {task.isDailyTask === 1 && <Chip label="1" color="primary" />}
+                        {task.isDailyTask === 0 && <Chip label="No" color="default" />}
+                        {task.isDailyTask === 1 && <Chip label="Yes" color="primary" />}
                       </TableCell>
                       <TableCell>
-                        {task.status === 0 && <Chip label="0" color="default" />}
-                        {task.status === 1 && <Chip label="1" color="primary" />}
+                        {task.status === 0 && <Chip label="Active" color="default" />}
+                        {task.status === 1 && <Chip label="InActive" color="primary" />}
                       </TableCell>
                       <TableCell>
                         <Button variant="outlined" color="primary" onClick={() => editClick(task)}>
