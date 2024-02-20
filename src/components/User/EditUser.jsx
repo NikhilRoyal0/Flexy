@@ -19,9 +19,7 @@ import { selectUsersData } from "../../app/UsersSlice";
     const usersData = useSelector(selectUsersData);
   
     const fetchUserData = async () => {
-      try {
-        console.log('Processed data:', usersData);
-  
+      try {  
         const userId = parseInt(userIdParam);
         const selectedUser = usersData.find((ur) => ur.uId === userId);
         setUserData(selectedUser);
