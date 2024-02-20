@@ -41,7 +41,7 @@ const EditUser = () => {
   };
 
   const handleSave = () => {
-    setEditMode(false); // Exit edit mode after saving
+    setEditMode(false); 
   };
 
   const userIndex = (currentPage - 1) * itemsPerPage;
@@ -105,17 +105,17 @@ const EditUser = () => {
                 disabled={!editMode}
               />
             </Grid>
-            
+
           </Grid>
           <br />
           <Divider />
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="primary" onClick={handleSave}>
+              <Button variant="contained" color="success" onClick={handleSave}>
                 Save
               </Button>
-              <Button variant="contained" color="secondary" onClick={toggleEditMode}>
+              <Button variant="contained" color="error" onClick={toggleEditMode}>
                 Cancel
               </Button>
             </>
