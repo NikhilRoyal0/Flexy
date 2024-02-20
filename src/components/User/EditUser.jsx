@@ -9,52 +9,44 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
 import { useSelector } from "react-redux";
 import { selectUsersData } from "../../app/UsersSlice";
 
-const EditUser = () => {
-  const { userId: userIdParam } = useParams();
-  const usersData = useSelector(selectUsersData);
-  const [userData, setUserData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [editMode, setEditMode] = useState(false); 
-  const itemsPerPage = 1;
-
-  useEffect(() => {
-    const userId = parseInt(userIdParam);
-    const user = usersData.find((user) => user && user.uId === userId);
-
-    if (user) {
-      setUserData(user);
-    } else {
-      setUserData(null);
-    }
-  }, [userIdParam, usersData]);
-
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-  };
-
-  const toggleEditMode = () => {
-    setEditMode(!editMode);
-  };
-
-  const handleSave = () => {
-    setEditMode(false); 
-  };
-
-  const userIndex = (currentPage - 1) * itemsPerPage;
-  const currentUser = usersData[userIndex];
-
-  if (!currentUser) {
-    return <div>User not found for userId: {userIdParam}</div>;
-  }
+  const EditUser = () => {
+    const { userId: userIdParam } = useParams();
+    const [editMode, setEditMode] = useState(false);
+    const [user, setUserData] = useState(null);
+    const usersData = useSelector(selectUsersData);
+  
+    const fetchUserData = async () => {
+      try {
+        console.log('Processed data:', usersData);
+  
+        const userId = parseInt(userIdParam);
+        const selectedUser = usersData.find((ur) => ur.uId === userId);
+        setUserData(selectedUser);
+      } catch (error) {
+        console.error('Error processing data:', error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchUserData();
+    }, [userIdParam, usersData]); 
+  
+    const toggleEditMode = () => {
+      setEditMode(!editMode);
+    };
+  
+    const handleSave = () => {
+      setEditMode(false);
+    };
+  
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit User - {currentUser.uId}</Typography>
+        <Typography variant="h4">Edit User - {user && user.uId}</Typography>
         <br />
         <Divider />
         <br />
@@ -65,7 +57,7 @@ const EditUser = () => {
                 label="Name"
                 variant="outlined"
                 fullWidth
-                value={currentUser.userName}
+                value={user && user.userName}
                 disabled={!editMode}
               />
             </Grid>
@@ -74,7 +66,7 @@ const EditUser = () => {
                 label="Assigned To"
                 variant="outlined"
                 fullWidth
-                value={currentUser.email}
+                value={user && user.email}
                 disabled={!editMode}
               />
             </Grid>
@@ -83,7 +75,7 @@ const EditUser = () => {
                 label="Mobile No"
                 variant="outlined"
                 fullWidth
-                value={currentUser.phone}
+                value={user && user.phone}
                 disabled={!editMode}
               />
             </Grid>
@@ -92,7 +84,7 @@ const EditUser = () => {
                 label="Wallet"
                 variant="outlined"
                 fullWidth
-                value={`${currentUser.walletAmount}k`}
+                value={`${user && user.walletAmount}k`}
                 disabled={!editMode}
               />
             </Grid>
@@ -101,7 +93,7 @@ const EditUser = () => {
                 label="Status"
                 variant="outlined"
                 fullWidth
-                value={currentUser.status === 1 ? "Active" : "Inactive"}
+                value={user && user.status === 1 ? "Active" : "Inactive"}
                 disabled={!editMode}
               />
             </Grid>
@@ -125,13 +117,7 @@ const EditUser = () => {
             </Button>
           )}
         </form>
-        <br />
-        <Pagination
-          count={Math.ceil(usersData.length / itemsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
+       
       </CardContent>
     </Card>
   );
