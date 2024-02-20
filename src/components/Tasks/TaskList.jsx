@@ -1,18 +1,44 @@
-import React, { useState } from 'react';
-import { Card, Typography, CardContent, Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Chip, Avatar, Button, Grid } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Card, Typography, CardContent, Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Chip, Button, Grid } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useSelector } from 'react-redux';
-import { selectTaskData } from '../../app/TaskSlice';
 import AddIcon from '@mui/icons-material/Add';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError } from "../../app/TaskSlice";
+import { useNavigate } from 'react-router-dom';
 
-export default function TaskList() {
+
+const TasksList = () => {
+  const dispatch = useDispatch();
+  const tasksData = useSelector(selectTasksData);
+  console.log("Tasks Data:", tasksData);
+
+  const isLoading = useSelector(selectTasksLoading);
+  const error = useSelector(selectTasksError);
   const [isTableVisible, setTableVisible] = useState(true);
-  const taskData = useSelector(selectTaskData);
+
+  const navigate = useNavigate();
+  console.log(tasksData)
+
+  const editClick = (task) => {
+    navigate(`edit-task/${task.taskId}`);
+  };
+
+  useEffect(() => {
+    dispatch(fetchTasksData());
+  }, [dispatch]);
 
   const toggleTableVisibility = () => {
     setTableVisible(!isTableVisible);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <Card>
@@ -27,40 +53,38 @@ export default function TaskList() {
                       {isTableVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </Button>
                   </TableCell>
-                  <TableCell>Tasks List</TableCell>
-                  <TableCell>Action Required</TableCell>
-                  <TableCell>Schedule</TableCell>
-                  <TableCell>Priority</TableCell>
+                  <TableCell>Id</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell>Info</TableCell>
+                  <TableCell>Daily Tasks</TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell>Edit</TableCell>
                 </TableRow>
               </TableHead>
               {isTableVisible && (
                 <TableBody>
-                  {taskData.map((task) => (
-                    <TableRow key={task.id}>
+                  {tasksData.map((task) => (
+                    <TableRow key={task.taskId}>
                       <TableCell>
                         <Checkbox />
                       </TableCell>
                       <TableCell>
-                        {task.title}
+                        {task.taskId}
+                      </TableCell>
+                      <TableCell>{task.taskTitle}</TableCell>
+                      <TableCell>{task.taskInfo}</TableCell>
+                      <TableCell>
+                        {task.isDailyTask === 0 && <Chip label="0" color="default" />}
+                        {task.isDailyTask === 1 && <Chip label="1" color="primary" />}
                       </TableCell>
                       <TableCell>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <Avatar src={task.avatar} alt={task.name} sx={{ marginRight: 1 }} />
-                          {task.name}
-                        </div>
-                      </TableCell>
-                      <TableCell>{task.date}</TableCell>
-                      <TableCell>
-                        {task.priority === 'Low' && <Chip label="Low" color="default" />}
-                        {task.priority === 'Medium' && <Chip label="Medium" color="primary" />}
-                        {task.priority === 'High' && <Chip label="High" color="secondary" />}
-                        {task.priority === 'Critical' && <Chip label="Critical" color="error" />}
+                        {task.status === 0 && <Chip label="0" color="default" />}
+                        {task.status === 1 && <Chip label="1" color="primary" />}
                       </TableCell>
                       <TableCell>
-                        {task.status === 'Not Started' && <Chip label="Not Started" color="default" />}
-                        {task.status === 'In Progress' && <Chip label="In Progress" color="info" />}
-                        {task.status === 'Completed' && <Chip label="Completed" color="success" />}
+                        <Button variant="outlined" color="primary" onClick={() => editClick(task)}>
+                          Edit
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -77,7 +101,7 @@ export default function TaskList() {
               color="primary"
             >
               <AddIcon />
-              <Typography sx={{ ml: 1 }}>New Task</Typography>
+              <Typography sx={{ ml: 1 }}>New Tasks</Typography>
             </Button>
           </Grid>
         </Grid>
@@ -85,3 +109,5 @@ export default function TaskList() {
     </Card>
   );
 }
+
+export default TasksList;

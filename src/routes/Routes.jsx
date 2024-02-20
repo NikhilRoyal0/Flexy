@@ -20,14 +20,13 @@ import BasicSetting from '../components/Setting/BasicSetting';
 import DialogsList from '../components/Setting/DialogsList';
 import BannersList from '../components/Setting/BannersList';
 import TaskCategory from '../components/Tasks/TaskCategory';
-import TaskList from '../components/Tasks/TaskList';
+import TasksList from '../components/Tasks/TaskList';
 import Logout from '../components/LoginLogout/Logout';
 import Login from '../components/LoginLogout/Login';
 import Register from '../components/LoginLogout/Register';
 import Notfound from '../components/NotFound/Notfound';
 import EditUser from '../components/User/EditUser';
-
-
+import EditTask from '../components/Tasks/EditTask'
 
 
 const routes = createBrowserRouter(
@@ -53,11 +52,12 @@ const routes = createBrowserRouter(
       <Route path="/setting/dialogs-list" element={<DialogsList />} />
       <Route path="/setting/banners-list" element={<BannersList />} />
       <Route path="/tasks/task-category" element={<TaskCategory />} />
-      <Route path="/tasks/task-list" element={<TaskList />} />
+      <Route path="/tasks/task-list" element={<TasksList />} />
       <Route path="/logout" element={<Logout />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register-now" element={<Register />} />
       <Route path="/user/user-list/edit-user/:userId" element={<EditUser />} />
+      <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
       <Route path="*" element={<Notfound />} />
     </Route>
   )
