@@ -26,7 +26,11 @@ import Login from '../components/LoginLogout/Login';
 import Register from '../components/LoginLogout/Register';
 import Notfound from '../components/NotFound/Notfound';
 import EditUser from '../components/User/EditUser';
-import EditTask from '../components/Tasks/EditTask'
+import EditTask from '../components/Tasks/EditTask';
+import EditPlan from '../components/Plans/EditPlans';
+import EditNews from '../components/News/EditNews';
+import EditDialog from '../components/Setting/EditDialog';
+import EditBanners from '../components/Setting/EditBanner';
 
 
 const routes = createBrowserRouter(
@@ -58,6 +62,10 @@ const routes = createBrowserRouter(
       <Route path="/register-now" element={<Register />} />
       <Route path="/user/user-list/edit-user/:userId" element={<EditUser />} />
       <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
+      <Route path="/plans/edit-plan/:planId" element={<EditPlan />} />
+      <Route path="/news/edit-news/:newsId" element={<EditNews />} />
+      <Route path="setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
+      <Route path="setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
       <Route path="*" element={<Notfound />} />
     </Route>
   )

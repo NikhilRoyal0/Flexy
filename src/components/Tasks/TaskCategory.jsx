@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Grid } from "@mui/material";
-
+import errorimage from '../../assets/images/errorimage.jpg'
 
 
 const TaskCategory = () => {
@@ -32,7 +32,7 @@ const TaskCategory = () => {
       image: 'https://pitch-publish-user-assets.imgix.net/templates/posters/team-meeting-v2.jpg'
     }
   ];
-  
+
   return (
     <Grid container>
       {CategoryData.map((Person, index) => (
@@ -55,7 +55,15 @@ const TaskCategory = () => {
               width: "100%",
             }}
           >
-            <img src={Person.image} alt="img" width="100%" />
+            <img
+              src={Person.image}
+              alt={Person.image}
+              onError={(e) => {
+                e.target.src = errorimage;
+                e.target.alt = "Error Image";
+              }}
+              width="100%"
+            />
             <CardContent
               sx={{
                 paddingLeft: "30px",

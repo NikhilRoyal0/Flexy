@@ -4,10 +4,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlansData, selectPlansData, selectPlansLoading, selectPlansError } from "../../app/PlansSlice";
+import { useNavigate } from "react-router-dom";
+import errorimage from '../../assets/images/errorimage.jpg'
 
 
 
 const PlansPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const plansData = useSelector(selectPlansData);
   const isLoading = useSelector(selectPlansLoading);
@@ -24,6 +27,10 @@ const PlansPage = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const editClick = (Plan) => {
+    navigate(`edit-plan/${Plan.planId}`);
+  };
 
 
   return (
@@ -64,7 +71,16 @@ const PlansPage = () => {
                     width: "100%",
                   }}
                 >
-                  <img src={Plan.planImages} alt="img" width="100%" />
+                  <img
+                    src={Plan.planImages}
+                    alt={Plan.planImages}
+                    onError={(e) => {
+                      e.target.src = errorimage;
+                      e.target.alt = "Error Image";
+                    }}
+                    width="100%"
+                  />
+
                   <CardContent
                     sx={{
                       paddingLeft: "30px",
@@ -98,6 +114,12 @@ const PlansPage = () => {
                       }}
                     >
                       {Plan.planExtraDetails}
+                    </Typography>
+                    <br />
+                    <Typography>
+                      <Button variant="outlined" color="primary" onClick={() => editClick(Plan)}>
+                        Edit
+                      </Button>
                     </Typography>
                   </CardContent>
                 </Card>

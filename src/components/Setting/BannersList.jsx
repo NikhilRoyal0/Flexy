@@ -1,12 +1,14 @@
 import React from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBannerData, selectBannerData, selectBannerLoading, selectBannerError } from "../../app/BannerSlice";
+import { useNavigate } from "react-router-dom";
+import errorimage from '../../assets/images/errorimage.jpg'
 
 
 const BannersList = () => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const bannerData = useSelector(selectBannerData);
   const isLoading = useSelector(selectBannerLoading);
@@ -23,6 +25,10 @@ const BannersList = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const editClick = (Banner) => {
+    navigate(`edit-banner/${Banner.bannerId}`);
+  };
 
 
 
@@ -48,7 +54,15 @@ const BannersList = () => {
               width: "100%",
             }}
           >
-            <img src={Banner.mediaPath} alt="img" width="100%" />
+            <img
+              src={Banner.mediaPath}
+              alt={Banner.mediaPath}
+              onError={(e) => {
+                e.target.src = errorimage;
+                e.target.alt = "Error Image";
+              }}
+              width="100%"
+            />
             <CardContent
               sx={{
                 paddingLeft: "30px",
@@ -70,6 +84,11 @@ const BannersList = () => {
                 }}
               >
                 {Banner.endDateTime}
+              </Typography>
+              <Typography>
+                <Button variant="outlined" color="primary" onClick={() => editClick(Banner)}>
+                  Edit
+                </Button>
               </Typography>
             </CardContent>
           </Card>
