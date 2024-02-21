@@ -9,42 +9,61 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectTasksData } from "../../app/TaskSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { selectTasksData, fetchTasksData } from "../../app/TaskSlice";
 
-  const EditTask = () => {
-    const { taskId: taskIdParam } = useParams();
-    const [editMode, setEditMode] = useState(false);
-    const [task, setTaskData] = useState(null);
-    const taskData = useSelector(selectTasksData);
+const EditTasks = () => {
+  const dispatch = useDispatch();
+  const { taskId: tasksIdParam } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [task, setTaskData] = useState({
+    taskId: "",
+    taskTitle: "",
+    taskInfo: "",
+    isDailyTask: "",
+    status: "",
+  });
   
-    const fetchTaskData = async () => {
-      try {  
-        const taskId = parseInt(taskIdParam);
-        const selectedTask = taskData.find((ur) => ur.taskId === taskId);
-        setTaskData(selectedTask);
-      } catch (error) {
-        console.error('Error processing data:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchTaskData();
-    }, [taskIdParam, taskData]); 
-  
-    const toggleEditMode = () => {
-      setEditMode(!editMode);
-    };
-  
-    const handleSave = () => {
-      setEditMode(false);
-    };
-  
+  const [loading, setLoading] = useState(true);
+
+  const taskData = useSelector(selectTasksData);
+
+  const fettasksdata = async () => {
+    try {
+      const taskId = parseInt(tasksIdParam);
+      const selectedtask = taskData.find((ur) => ur.taskId === taskId);
+      setTaskData(selectedtask);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error processing data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (taskData.length === 0) {
+      dispatch(fetchTasksData());
+    } else {
+      fettasksdata();
+    }
+  }, [tasksIdParam, dispatch, taskData]);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleSave = () => {
+    setEditMode(false);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit Task - {task && task.taskId}</Typography>
+        <Typography variant="h4">Edit Tasks - {task && task.taskId}</Typography>
         <br />
         <Divider />
         <br />
@@ -79,7 +98,7 @@ import { selectTasksData } from "../../app/TaskSlice"
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Priority"
+                label="Daily Task"
                 variant="outlined"
                 fullWidth
                 value={task && task.isDailyTask}
@@ -121,4 +140,4 @@ import { selectTasksData } from "../../app/TaskSlice"
   );
 };
 
-export default EditTask;
+export default EditTasks;

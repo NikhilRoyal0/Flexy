@@ -9,37 +9,57 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectPlansData } from "../../app/PlansSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { selectPlansData, fetchPlansData } from "../../app/PlansSlice";
 
-  const EditPlan = () => {
-    const { planId: planIdParam } = useParams();
-    const [editMode, setEditMode] = useState(false);
-    const [plan, setPlansData] = useState(null);
-    const planData = useSelector(selectPlansData);
+const EditPlan = () => {
+  const dispatch = useDispatch();
+  const { planId: planIdParam } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [plan, setPlansData] = useState({
+    planId: "",
+    planTitle: "",
+    planInfo: "",
+    planExtraDetails: "",
+    planImages: "",
+    planStatus: "",
+  });
   
-    const fetchPlansData = async () => {
-      try {  
-        const planId = parseInt(planIdParam);
-        const selectedPlan = planData.find((ur) => ur.planId === planId);
-        setPlansData(selectedPlan);
-      } catch (error) {
-        console.error('Error processing data:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchPlansData();
-    }, [planIdParam, planData]); 
-  
-    const toggleEditMode = () => {
-      setEditMode(!editMode);
-    };
-  
-    const handleSave = () => {
-      setEditMode(false);
-    };
-  
+  const [loading, setLoading] = useState(true);
+
+  const planData = useSelector(selectPlansData);
+
+  const fetplandata = async () => {
+    try {
+      const planId = parseInt(planIdParam);
+      const selectedPlan = planData.find((ur) => ur.planId === planId);
+      setPlansData(selectedPlan);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error processing data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (planData.length === 0) {
+      dispatch(fetchPlansData());
+    } else {
+      fetplandata();
+    }
+  }, [planIdParam, dispatch, planData]);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleSave = () => {
+    setEditMode(false);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <Card>

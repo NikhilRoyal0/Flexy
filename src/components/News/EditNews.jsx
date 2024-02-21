@@ -9,36 +9,57 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectNewsData } from "../../app/NewsSlice"
-  const EditNews = () => {
-    const { newsId: newsIdParam } = useParams();
-    const [editMode, setEditMode] = useState(false);
-    const [news, setNewsData] = useState(null);
-    const newsData = useSelector(selectNewsData);
+import { useSelector, useDispatch } from "react-redux";
+import { selectNewsData, fetchNewsData } from "../../app/NewsSlice";
+
+const EditNews = () => {
+  const dispatch = useDispatch();
+  const { newsId: newsIdParam } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [news, setNewsData] = useState({
+    newsId: "",
+    newsTitle: "",
+    newsInfo: "",
+    newsData: "",
+    mediaPath: "",
+    isPublished: "",
+  });
   
-    const fetchNewsData = async () => {
-      try {  
-        const newsId = parseInt(newsIdParam);
-        const selectedNews = newsData.find((ur) => ur.newsId === newsId);
-        setNewsData(selectedNews);
-      } catch (error) {
-        console.error('Error processing data:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchNewsData();
-    }, [newsIdParam, newsData]); 
-  
-    const toggleEditMode = () => {
-      setEditMode(!editMode);
-    };
-  
-    const handleSave = () => {
-      setEditMode(false);
-    };
-  
+  const [loading, setLoading] = useState(true);
+
+  const newsData = useSelector(selectNewsData);
+
+  const fetnewsdata = async () => {
+    try {
+      const newsId = parseInt(newsIdParam);
+      const selectednews = newsData.find((ur) => ur.newsId === newsId);
+      setNewsData(selectednews);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error processing data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (newsData.length === 0) {
+      dispatch(fetchNewsData());
+    } else {
+      fetnewsdata();
+    }
+  }, [newsIdParam, dispatch, newsData]);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleSave = () => {
+    setEditMode(false);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <Card>
@@ -78,6 +99,15 @@ import { selectNewsData } from "../../app/NewsSlice"
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                label="news Details"
+                variant="outlined"
+                fullWidth
+                value={news && news.newsData}
+                disabled={!editMode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
                 label="URL"
                 variant="outlined"
                 fullWidth
@@ -87,10 +117,10 @@ import { selectNewsData } from "../../app/NewsSlice"
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Date"
+                label="Status"
                 variant="outlined"
                 fullWidth
-                value={news && news.newsDate}
+                value={news && news.isPublished}
                 disabled={!editMode}
               />
             </Grid>

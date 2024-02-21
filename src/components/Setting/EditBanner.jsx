@@ -9,42 +9,62 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectBannerData } from "../../app/BannerSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { selectBannerData, fetchBannerData } from "../../app/BannerSlice";
 
-  const EditBanners = () => {
-    const { bannerId: bannerIdParam } = useParams();
-    const [editMode, setEditMode] = useState(false);
-    const [banner, setBannersData] = useState(null);
-    const bannerData = useSelector(selectBannerData);
+const EditBanners = () => {
+  const dispatch = useDispatch();
+  const { bannerId: bannersIdParam } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [banner, setBannerData] = useState({
+    bannerId: "",
+    bannerTitle: "",
+    bannerendDateTime: "",
+    bannerType: "",
+    mediaPath: "",
+    bannerStatus: "",
+  });
   
-    const fetchBannersData = async () => {
-      try {  
-        const bannerId = parseInt(bannerIdParam);
-        const selectedBanner = bannerData.find((ur) => ur.bannerId === bannerId);
-        setBannersData(selectedBanner);
-      } catch (error) {
-        console.error('Error processing data:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchBannersData();
-    }, [bannerIdParam, bannerData]); 
-  
-    const toggleEditMode = () => {
-      setEditMode(!editMode);
-    };
-  
-    const handleSave = () => {
-      setEditMode(false);
-    };
-  
+  const [loading, setLoading] = useState(true);
+
+  const bannerData = useSelector(selectBannerData);
+
+  const fetbannersdata = async () => {
+    try {
+      const bannerId = parseInt(bannersIdParam);
+      const selectedbanner = bannerData.find((ur) => ur.bannerId === bannerId);
+      setBannerData(selectedbanner);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error processing data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (bannerData.length === 0) {
+      dispatch(fetchBannerData());
+    } else {
+      fetbannersdata();
+    }
+  }, [bannersIdParam, dispatch, bannerData]);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleSave = () => {
+    setEditMode(false);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit Banner - {banner && banner.bannerId}</Typography>
+        <Typography variant="h4">Edit Banners - {banner && banner.bannerId}</Typography>
         <br />
         <Divider />
         <br />
@@ -73,13 +93,13 @@ import { selectBannerData } from "../../app/BannerSlice"
                 label="Info"
                 variant="outlined"
                 fullWidth
-                value={banner && banner.endDateTime}
+                value={banner && banner.bannerendDateTime}
                 disabled={!editMode}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="banner Details"
+                label="Banners Details"
                 variant="outlined"
                 fullWidth
                 value={banner && banner.bannerType}

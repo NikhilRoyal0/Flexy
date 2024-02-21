@@ -9,47 +9,76 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectUsersData } from "../../app/UsersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUsersData, fetchUsersData } from "../../app/UsersSlice";
 
-  const EditUser = () => {
-    const { userId: userIdParam } = useParams();
-    const [editMode, setEditMode] = useState(false);
-    const [user, setUserData] = useState(null);
-    const usersData = useSelector(selectUsersData);
+const EditUsers = () => {
+  const dispatch = useDispatch();
+  const { userId: usersIdParam } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [user, setUserData] = useState({
+    uId: "",
+    userName: "",
+    email: "",
+    phone: "",
+    walletAmount: "",
+    status: "",
+  });
   
-    const fetchUserData = async () => {
-      try {  
-        const userId = parseInt(userIdParam);
-        const selectedUser = usersData.find((ur) => ur.uId === userId);
-        setUserData(selectedUser);
-      } catch (error) {
-        console.error('Error processing data:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchUserData();
-    }, [userIdParam, usersData]); 
-  
-    const toggleEditMode = () => {
-      setEditMode(!editMode);
-    };
-  
-    const handleSave = () => {
-      setEditMode(false);
-    };
-  
+  const [loading, setLoading] = useState(true);
+
+  const userData = useSelector(selectUsersData);
+
+  const fetusersdata = async () => {
+    try {
+      const uId = parseInt(usersIdParam);
+      const selecteduser = userData.find((ur) => ur.uId === uId);
+      setUserData(selecteduser);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error processing data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (userData.length === 0) {
+      dispatch(fetchUsersData());
+    } else {
+      fetusersdata();
+    }
+  }, [usersIdParam, dispatch, userData]);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleSave = () => {
+    setEditMode(false);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit User - {user && user.uId}</Typography>
+        <Typography variant="h4">Edit users - {user && user.uId}</Typography>
         <br />
         <Divider />
         <br />
         <form>
           <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="User Id"
+                variant="outlined"
+                fullWidth
+                value={user && user.uId}
+                disabled={!editMode}
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Name"
@@ -61,7 +90,7 @@ import { selectUsersData } from "../../app/UsersSlice";
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Assigned To"
+                label="Info"
                 variant="outlined"
                 fullWidth
                 value={user && user.email}
@@ -70,7 +99,7 @@ import { selectUsersData } from "../../app/UsersSlice";
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Mobile No"
+                label="Phone Number"
                 variant="outlined"
                 fullWidth
                 value={user && user.phone}
@@ -79,10 +108,10 @@ import { selectUsersData } from "../../app/UsersSlice";
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Wallet"
+                label="Wallet Amount"
                 variant="outlined"
                 fullWidth
-                value={`${user && user.walletAmount}k`}
+                value={user && `${user.walletAmount}k`}
                 disabled={!editMode}
               />
             </Grid>
@@ -91,7 +120,7 @@ import { selectUsersData } from "../../app/UsersSlice";
                 label="Status"
                 variant="outlined"
                 fullWidth
-                value={user && user.status === 1 ? "Active" : "Inactive"}
+                value={user && user.status}
                 disabled={!editMode}
               />
             </Grid>
@@ -121,4 +150,4 @@ import { selectUsersData } from "../../app/UsersSlice";
   );
 };
 
-export default EditUser;
+export default EditUsers;
