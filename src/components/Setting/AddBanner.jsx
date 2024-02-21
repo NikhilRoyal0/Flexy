@@ -8,15 +8,31 @@ import {
     TextField,
     Button,
     Grid,
+    Popover,
 } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const AddBanner = () => {
     const [selectedFile, setSelectedFile] = React.useState(null);
+    const [popoverAnchor, setPopoverAnchor] = React.useState(null);
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
         setSelectedFile(file);
+    };
+
+    const handleRemoveClick = () => {
+        setSelectedFile(null);
+        setPopoverAnchor(null);
+    };
+
+    const handleImageClick = (event) => {
+        setPopoverAnchor(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setPopoverAnchor(null);
     };
 
     return (
@@ -89,26 +105,75 @@ const AddBanner = () => {
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Button
-                                    component="label"
-                                    role={undefined}
-                                    variant="contained"
-                                    tabIndex={-1}
-                                    startIcon={<CloudUploadIcon />}
-                                >
-                                    Upload Image
-                                    <input
-                                        type="file"
-                                        onChange={handleFileSelect}
-                                        style={{ display: 'none' }}
-                                    />
-                                </Button>
-                                {selectedFile && (
-                                    <Typography sx={{ mt: 1 }}>
-                                        Selected File: {selectedFile.name}
-                                    </Typography>
+                            <Grid item xs={12} md={12}>
+                                {selectedFile ? (
+                                    <Card variant="outlined"
+                                        sx={{
+                                            height: "230px",
+                                            width: "290px",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <img
+                                            src={URL.createObjectURL(selectedFile)}
+                                            alt="Preview"
+                                            style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
+                                            onClick={handleImageClick}
+                                        />
+                                        <Popover
+                                            open={Boolean(popoverAnchor)}
+                                            anchorEl={popoverAnchor}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                        >
+                                            <Box p={2}>
+                                                <Button
+                                                    color="secondary"
+                                                    variant="contained"
+                                                    onClick={handleRemoveClick}
+                                                    startIcon={<CancelIcon />}
+                                                >
+                                                    Remove
+                                                </Button>
+                                            </Box>
+                                        </Popover>
+                                        <Typography sx={{ mt: 2 }}>
+                                            Selected File: {selectedFile.name}
+                                        </Typography>
+                                    </Card>
+                                ) : (
+                                    <label htmlFor="file-input">
+                                        <input
+                                            id="file-input"
+                                            type="file"
+                                            onChange={handleFileSelect}
+                                            style={{ display: 'none' }}
+                                        />
+                                        <Card variant="outlined"
+                                            sx={{ height: "230px", width: "290px", display: "flex", alignItems: "center", justifyContent: "center" }}
+                                        >
+                                            <CardContent>
+                                                <Button
+                                                    component="span"
+                                                    role={undefined}
+                                                    variant="contained"
+                                                    tabIndex={-1}
+                                                    startIcon={<CloudUploadIcon />}
+                                                >
+                                                    Upload Image
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </label>
                                 )}
+
                             </Grid>
                         </Grid>
                         <div>
