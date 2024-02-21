@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import errorimage from '../../assets/images/errorimage.jpg'
 
 
-
 const PlansPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,6 +31,10 @@ const PlansPage = () => {
     navigate(`edit-plan/${Plan.planId}`);
   };
 
+  const handleClick = () => {
+    navigate('/plans/add-plan')
+  }
+
 
   return (
     <div style={{ position: "relative" }}>
@@ -44,6 +47,7 @@ const PlansPage = () => {
           zIndex: 1,
         }}
         color="primary"
+        onClick={handleClick}
       >
         <AddIcon />
         <Typography sx={{ ml: 1 }}>Add Plan</Typography>

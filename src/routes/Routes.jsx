@@ -31,6 +31,10 @@ import EditPlan from '../components/Plans/EditPlans';
 import EditNews from '../components/News/EditNews';
 import EditDialog from '../components/Setting/EditDialog';
 import EditBanners from '../components/Setting/EditBanner';
+import AddTask from '../components/Tasks/AddTask';
+import AddPlan from '../components/Plans/AddPlan';
+import AddNews from '../components/News/AddNews';
+import AddBanner from '../components/Setting/AddBanner';
 
 
 const routes = createBrowserRouter(
@@ -66,6 +70,10 @@ const routes = createBrowserRouter(
       <Route path="/news/edit-news/:newsId" element={<EditNews />} />
       <Route path="setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
       <Route path="setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
+      <Route path='/tasks/task-list/add-task' element={<AddTask/>}/>
+      <Route path='/plans/add-plan' element={<AddPlan/>}/>
+      <Route path='/news/add-news' element={<AddNews/>}/>
+      <Route path='/setting/banners-list/add-banner' element={<AddBanner/>}/>
       <Route path="*" element={<Notfound />} />
     </Route>
   )

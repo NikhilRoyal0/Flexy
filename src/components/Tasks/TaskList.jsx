@@ -32,6 +32,10 @@ const TasksList = () => {
     setTableVisible(!isTableVisible);
   };
 
+  const handleClick = () =>{
+    navigate('/tasks/task-list/add-task')
+  }
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -96,9 +100,10 @@ const TasksList = () => {
           <Grid item xs={12} sx={{ textAlign: 'left' }}>
             <Button
               sx={{
-                mt: "20px",
+                mt: "10px",
               }}
               color="primary"
+              onClick={handleClick}
             >
               <AddIcon />
               <Typography sx={{ ml: 1 }}>New Tasks</Typography>
