@@ -37,6 +37,23 @@ export const fetchTasksData = () => async (dispatch) => {
   }
 };
 
+export const AddTaskData = (form) => async (dispatch) => {
+  try {
+      const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertDailyTask', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+
+        }
+      });
+      console.log('Response:', response.data);  //! Response for Success
+
+    } catch (error) {
+      console.error('Error:', error);  
+
+    }
+
+}
+
 export const selectTasksData = (state) => state.Tasks.data;
 export const selectTasksLoading = (state) => state.Tasks.isLoading;
 export const selectTasksError = (state) => state.Tasks.error;

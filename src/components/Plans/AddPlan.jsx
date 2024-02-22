@@ -14,12 +14,45 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
-import { fetchPlansData } from "../../app/PlansSlice";
+import { AddPlanData } from "../../app/PlansSlice";
+
 
 const AddPlan = () => {
     const dispatch = useDispatch()
     const [selectedFiles, setSelectedFiles] = React.useState([]);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+
+    const [formData, setFormData] = React.useState({
+        'planId': '',
+        'planTitle': '',
+        'planInfo': '',
+        'planExtraDetails': '',
+        'planPrice': 0,
+    });
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const form = new FormData()
+        form.append('planId', formData.planId)
+        form.append('planTitle', formData.planTitle)
+        form.append('planInfo', formData.planInfo)
+        form.append('planExtraDetails', formData.planExtraDetails)
+        form.append('planPrice', formData.planPrice)
+
+        dispatch(AddPlanData(form));
+
+        console.log(formData);
+    }
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target
+        setFormData({
+            ...formData, 
+            [name]: value
+        })
+    }
+
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
@@ -41,11 +74,7 @@ const AddPlan = () => {
         setPopoverAnchor(null);
     };
 
-    const handleSubmit = () =>{
-        
-    }
-    
-    
+
     return (
         <div>
             <Card
@@ -90,7 +119,7 @@ const AddPlan = () => {
                                             marginLeft: "10px",
                                             overflowY: "auto",
                                             "&::-webkit-scrollbar": {
-                                                width: 0, 
+                                                width: 0,
                                             },
                                             scrollbarWidth: "none",
                                         }}
@@ -135,6 +164,7 @@ const AddPlan = () => {
                                         <input
                                             id="file-input"
                                             type="file"
+                                            name="planImages"
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
                                             required
@@ -168,7 +198,9 @@ const AddPlan = () => {
                                 <TextField
                                     id="plan-id"
                                     label="Plan ID"
+                                    name = "planId"
                                     variant="outlined"
+                                    onChange={handleInputChange}
                                     fullWidth
                                     required
                                     sx={{
@@ -180,7 +212,9 @@ const AddPlan = () => {
                                 <TextField
                                     id="plan-title"
                                     label="Plan Title"
+                                    name = "planTitle"
                                     variant="outlined"
+                                    onChange={handleInputChange}
                                     fullWidth
                                     required
                                     sx={{
@@ -192,6 +226,8 @@ const AddPlan = () => {
                                 <TextField
                                     id="Plan-info"
                                     label="Plan Info"
+                                    name="planInfo"
+                                    onChange={handleInputChange}
                                     required
                                     fullWidth
                                     multiline
@@ -206,6 +242,8 @@ const AddPlan = () => {
                                 <TextField
                                     id="plan extra-details"
                                     label="Plan Extra-Details"
+                                    name="planExtraDetails"
+                                    onChange={handleInputChange}
                                     fullWidth
                                     multiline
                                     required

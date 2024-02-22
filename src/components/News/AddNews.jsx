@@ -13,10 +13,50 @@ import {
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import {useDispatch} from 'react-redux'
+import { AddData } from "../../app/NewsSlice";
+
 
 const AddNews = () => {
+    const dispatch = useDispatch()
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+
+    const [formData, setFormData] = React.useState({
+        'newsTitle': '',
+        'newsInfo': '',
+        'newsDate': 0,
+        'isPublished': 0,
+        'createdBy': 0,
+        'image': selectedFile
+    });
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const form = new FormData()
+        form.append('image', selectedFile)
+        form.append('newsTitle', formData.newsTitle)
+        form.append('newsInfo', formData.newsInfo)
+        form.append('newsDate', formData.newsDate)
+        form.append('isPublished', formData.isPublished)
+        form.append('createdBy', formData.createdBy)
+
+        dispatch(AddData(form));
+
+        console.log(formData);
+    }
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target
+        setFormData({
+            ...formData, 
+            [name]: value
+        })
+    }
+
+
+
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
@@ -68,9 +108,9 @@ const AddNews = () => {
                         padding: "30px",
                     }}
                 >
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
+                            <Grid item xs={12} md={12}>
                                 {selectedFile ? (
                                     <Card variant="outlined"
                                         sx={{
@@ -82,6 +122,7 @@ const AddNews = () => {
                                         <img
                                             src={URL.createObjectURL(selectedFile)}
                                             alt="Preview"
+                                            id="image"
                                             style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
                                             onClick={handleImageClick}
                                         />
@@ -118,11 +159,12 @@ const AddNews = () => {
                                         <input
                                             id="file-input"
                                             type="file"
+                                            name = "mediaPath"
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
                                         />
-                                        <Card sx={{ maxWidth: 190, height: 150 ,textAlign: "center", display: "flex" }}>
-                                        <CardActionArea onClick={() => document.getElementById("file-input").click()}>
+                                        <Card sx={{ maxWidth: 190, height: 150, textAlign: "center", display: "flex" }}>
+                                            <CardActionArea onClick={() => document.getElementById("file-input").click()}>
                                                 <CardContent>
                                                     <AddIcon
                                                         sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
@@ -137,25 +179,16 @@ const AddNews = () => {
                                     </label>
                                 )}
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="news-id"
-                                    label="News ID"
-                                    variant="outlined"
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
-                            </Grid>
+
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     id="news-title"
                                     label="News Title"
+                                    name = "newsTitle"
                                     variant="outlined"
                                     fullWidth
                                     required
+                                    onChange={handleInputChange}
                                     sx={{
                                         mb: 2,
                                     }}
@@ -166,8 +199,10 @@ const AddNews = () => {
                                     id="news-date"
                                     label="News Date"
                                     variant="outlined"
+                                    name = "newsDate"
                                     fullWidth
                                     required
+                                    onChange={handleInputChange}
                                     sx={{
                                         mb: 2,
                                     }}
@@ -177,7 +212,9 @@ const AddNews = () => {
                                 <TextField
                                     id="news-info"
                                     label="News Info"
+                                    name ="newsInfo"
                                     required
+                                    onChange={handleInputChange}
                                     fullWidth
                                     multiline
                                     minRows={4}
@@ -186,7 +223,7 @@ const AddNews = () => {
                                     }}
                                 />
                             </Grid>
-                          
+
                         </Grid>
                         <div>
                             <br />

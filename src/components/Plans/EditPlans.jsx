@@ -24,7 +24,7 @@ const EditPlan = () => {
     planImages: "",
     planStatus: "",
   });
-  
+
   const [loading, setLoading] = useState(true);
 
   const planData = useSelector(selectPlansData);
@@ -144,7 +144,7 @@ const EditPlan = () => {
             </Button>
           )}
         </form>
-       
+
       </CardContent>
     </Card>
   );

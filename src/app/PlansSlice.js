@@ -22,37 +22,39 @@ const PlansSlice = createSlice({
         setPlansError: (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
-        },
-        setApiData: (state, action) => {
-            state.apiData = action.payload;
-        },
+        }
     }
 });
 
-export const { setPlansData, setPlansLoading, setPlansError, setApiData } = PlansSlice.actions;
+export const { setPlansData, setPlansLoading, setPlansError } = PlansSlice.actions;
 
 export const fetchPlansData = () => async (dispatch) => {
     try {
         dispatch(setPlansLoading());
         const response = await axios.get(import.meta.env.VITE_BASE_URL + "feature/plans");
         dispatch(setPlansData(response.data));
-        const apiResponse = await axios.post(import.meta.env.VITE_BASE_URL + "feature/insertPlan", {
-            planId: "", 
-            planTitle: "",
-            planInfo: "",
-            planPrice: "",
-            planExtraDetails: "",
-            planImages: [],
-            planMaxPayOut: "",
-            planStatus: "",
-            createdBy: "",
-        });
-        dispatch(setApiData(apiResponse.data));
     } catch (error) {
         dispatch(setPlansError(error.message));
         dispatch(apiData(error.message));
     }
 };
+
+export const AddPlanData = (form) => async (dispatch) => {
+    try {
+        const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertPlan', 
+        form, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+
+          }
+        });
+        console.log('Response:', response.data);  //! Response for Success
+
+      } catch (error) {
+        console.error('Error:', error);  
+
+      }
+}
 
 export const selectPlansData = (state) => state.Plans.data;
 export const selectPlansLoading = (state) => state.Plans.isLoading;

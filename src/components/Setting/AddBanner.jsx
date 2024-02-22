@@ -13,10 +13,43 @@ import {
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useDispatch } from "react-redux";
+import { AddBannerData } from "../../app/BannerSlice";
+
 
 const AddBanner = () => {
+    const dispatch = useDispatch();
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+
+    const [formData, setFormData] = React.useState({
+        'bannerTitle': '',
+        'endDateTime': '',
+        'image': selectedFile
+    });
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const form = new FormData()
+        form.append('bannerTitle', formData.bannerTitle)
+        form.append('endDateTime', formData.endDateTime)
+        form.append('image', selectedFile)
+
+        dispatch(AddBannerData(form));
+
+        console.log(formData);
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData({
+            ...formData,
+            [name]: value
+        })
+    }
+
+
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
@@ -68,9 +101,9 @@ const AddBanner = () => {
                         padding: "30px",
                     }}
                 >
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
+                            <Grid item xs={12} md={12}>
                                 {selectedFile ? (
                                     <Card variant="outlined"
                                         sx={{
@@ -118,11 +151,12 @@ const AddBanner = () => {
                                         <input
                                             id="file-input"
                                             type="file"
+                                            name='mediaPath'
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
                                         />
-                                        <Card sx={{ maxWidth: 190, height: 150 ,textAlign: "center", display: "flex" }}>
-                                        <CardActionArea onClick={() => document.getElementById("file-input").click()}>
+                                        <Card sx={{ maxWidth: 190, height: 150, textAlign: "center", display: "flex" }}>
+                                            <CardActionArea onClick={() => document.getElementById("file-input").click()}>
                                                 <CardContent>
                                                     <AddIcon
                                                         sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
@@ -137,23 +171,14 @@ const AddBanner = () => {
                                     </label>
                                 )}
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="banner-id"
-                                    label="Banner ID"
-                                    variant="outlined"
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
-                            </Grid>
+
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     id="banner-title"
                                     label="Banner Title"
+                                    name='bannerTitle'
                                     variant="outlined"
+                                    onChange={handleInputChange}
                                     fullWidth
                                     required
                                     sx={{
@@ -165,7 +190,9 @@ const AddBanner = () => {
                                 <TextField
                                     id="banner-date"
                                     label="Banner Date/Time"
+                                    name='endDateTime'
                                     variant="outlined"
+                                    onChange={handleInputChange}
                                     fullWidth
                                     required
                                     sx={{
@@ -173,7 +200,7 @@ const AddBanner = () => {
                                     }}
                                 />
                             </Grid>
-                           
+
                         </Grid>
                         <div>
                             <br />

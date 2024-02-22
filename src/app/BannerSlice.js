@@ -37,6 +37,23 @@ export const fetchBannerData = () => async (dispatch) => {
     }
 };
 
+export const AddBannerData = (form) => async (dispatch) => {
+    try {
+        const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertBanner', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+
+          }
+        });
+        console.log('Response:', response.data);  
+
+      } catch (error) {
+        console.error('Error:', error);  
+
+      }
+
+}
+
 export const selectBannerData = (state) => state.Banner.data;
 export const selectBannerLoading = (state) => state.Banner.isLoading;
 export const selectBannerError = (state) => state.Banner.error;
