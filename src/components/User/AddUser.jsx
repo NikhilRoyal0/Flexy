@@ -2,6 +2,7 @@ import React from "react";
 import {
     Card,
     CardContent,
+    CardActionArea,
     Divider,
     Box,
     Typography,
@@ -14,7 +15,7 @@ import {
     Select,
     Popover,
 } from "@mui/material";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -288,24 +289,21 @@ const AddUser = () => {
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
                                         />
-                                        <Card variant="outlined"
-                                            sx={{ height: "230px", width: "290px", display: "flex", alignItems: "center", justifyContent: "center" }}
-                                        >
-                                            <CardContent>
-                                                <Button
-                                                    component="span"
-                                                    role={undefined}
-                                                    variant="contained"
-                                                    tabIndex={-1}
-                                                    startIcon={<CloudUploadIcon />}
-                                                >
-                                                    Upload Image
-                                                </Button>
-                                            </CardContent>
+                                        <Card sx={{ maxWidth: 290, height: 230 ,textAlign: "center", display: "flex" }}>
+                                        <CardActionArea onClick={() => document.getElementById("file-input").click()}>
+                                                <CardContent>
+                                                    <AddIcon
+                                                        sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
+                                                    />
+                                                    <br />
+                                                    <Typography variant="caption" sx={{ color: '#000' }}>
+                                                        Upload Image
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
                                         </Card>
                                     </label>
                                 )}
-
                             </Grid>
                         </Grid>
                         <div>
