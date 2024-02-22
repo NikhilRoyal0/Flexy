@@ -76,6 +76,74 @@ const AddTask = () => {
                 >
                     <form>
                         <Grid container spacing={2}>
+
+                        <Grid item xs={12} md={12}>
+                                {selectedFile ? (
+                                    <Card variant="outlined"
+                                        sx={{
+                                            height: "150px",
+                                            width: "190px",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <img
+                                            src={URL.createObjectURL(selectedFile)}
+                                            alt="Preview"
+                                            style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
+                                            onClick={handleImageClick}
+                                        />
+                                        <Popover
+                                            open={Boolean(popoverAnchor)}
+                                            anchorEl={popoverAnchor}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                        >
+                                            <Box p={2}>
+                                                <Button
+                                                    color="secondary"
+                                                    variant="contained"
+                                                    onClick={handleRemoveClick}
+                                                    startIcon={<CancelIcon />}
+                                                >
+                                                    Remove
+                                                </Button>
+                                            </Box>
+                                        </Popover>
+                                        <Typography sx={{ mt: 1, fontSize: 9 }}>
+                                            Selected File: {selectedFile.name}
+                                        </Typography>
+                                    </Card>
+                                ) : (
+                                    <label htmlFor="file-input">
+                                        <input
+                                            id="file-input"
+                                            type="file"
+                                            onChange={handleFileSelect}
+                                            style={{ display: 'none' }}
+                                        />
+                                        <Card sx={{ maxWidth: 190, height: 150 ,textAlign: "center", display: "flex" }}>
+                                        <CardActionArea onClick={() => document.getElementById("file-input").click()}>
+                                                <CardContent>
+                                                    <AddIcon
+                                                        sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
+                                                    />
+                                                    <br />
+                                                    <Typography variant="caption" sx={{ color: '#000' }}>
+                                                        Upload Image
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </label>
+                                )}
+                            </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     id="task-id"
@@ -142,74 +210,6 @@ const AddTask = () => {
                                         mb: 2,
                                     }}
                                 />
-                            </Grid>
-
-                            <Grid item xs={12} md={6}>
-                                {selectedFile ? (
-                                    <Card variant="outlined"
-                                        sx={{
-                                            height: "230px",
-                                            width: "290px",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        <img
-                                            src={URL.createObjectURL(selectedFile)}
-                                            alt="Preview"
-                                            style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
-                                            onClick={handleImageClick}
-                                        />
-                                        <Popover
-                                            open={Boolean(popoverAnchor)}
-                                            anchorEl={popoverAnchor}
-                                            onClose={handlePopoverClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'center',
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                            }}
-                                        >
-                                            <Box p={2}>
-                                                <Button
-                                                    color="secondary"
-                                                    variant="contained"
-                                                    onClick={handleRemoveClick}
-                                                    startIcon={<CancelIcon />}
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </Box>
-                                        </Popover>
-                                        <Typography sx={{ mt: 2 }}>
-                                            Selected File: {selectedFile.name}
-                                        </Typography>
-                                    </Card>
-                                ) : (
-                                    <label htmlFor="file-input">
-                                        <input
-                                            id="file-input"
-                                            type="file"
-                                            onChange={handleFileSelect}
-                                            style={{ display: 'none' }}
-                                        />
-                                        <Card sx={{ maxWidth: 290, height: 230 ,textAlign: "center", display: "flex" }}>
-                                        <CardActionArea onClick={() => document.getElementById("file-input").click()}>
-                                                <CardContent>
-                                                    <AddIcon
-                                                        sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
-                                                    />
-                                                    <br />
-                                                    <Typography variant="caption" sx={{ color: '#000' }}>
-                                                        Upload Image
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
-                                    </label>
-                                )}
                             </Grid>
                         </Grid>
                         <div>

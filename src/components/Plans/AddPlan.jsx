@@ -13,19 +13,23 @@ import {
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
-
+import { useDispatch } from "react-redux";
+import { fetchPlansData } from "../../app/PlansSlice";
 
 const AddPlan = () => {
-    const [selectedFile, setSelectedFile] = React.useState(null);
+    const dispatch = useDispatch()
+    const [selectedFiles, setSelectedFiles] = React.useState([]);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
-        setSelectedFile(file);
+        setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
     };
 
-    const handleRemoveClick = () => {
-        setSelectedFile(null);
+    const handleRemoveClick = (index) => {
+        setSelectedFiles((prevSelectedFiles) =>
+            prevSelectedFiles.filter((file, i) => i !== index)
+        );
         setPopoverAnchor(null);
     };
 
@@ -36,6 +40,12 @@ const AddPlan = () => {
     const handlePopoverClose = () => {
         setPopoverAnchor(null);
     };
+
+    const handleSubmit = () => {
+
+    }
+
+
     return (
         <div>
             <Card
@@ -68,8 +78,91 @@ const AddPlan = () => {
                         padding: "30px",
                     }}
                 >
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
+                            <Grid item xs={12} md={12} sx={{ display: "flex", flexWrap: "wrap" }}>
+                                {selectedFiles.map((file, index) => (
+                                    <Card key={index} variant="outlined"
+                                        sx={{
+                                            height: "150px",
+                                            width: "190px",
+                                            textAlign: "center",
+                                            marginLeft: "10px",
+                                            overflowY: "auto",
+                                            "&::-webkit-scrollbar": {
+                                                width: 0,
+                                            },
+                                            scrollbarWidth: "none",
+                                        }}
+                                    >
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt="Preview"
+                                            style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
+                                            onClick={handleImageClick}
+                                        />
+                                        <Popover
+                                            open={Boolean(popoverAnchor)}
+                                            anchorEl={popoverAnchor}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                        >
+                                            <Box p={2}>
+                                                <Button
+                                                    color="secondary"
+                                                    variant="contained"
+                                                    onClick={() => handleRemoveClick(index)}
+                                                    startIcon={<CancelIcon />}
+                                                >
+                                                    Remove
+                                                </Button>
+                                            </Box>
+                                        </Popover>
+                                        <Typography sx={{ mt: 1, fontSize: 9 }}>
+                                            Selected File: {file.name}
+                                        </Typography>
+                                    </Card>
+                                ))}
+                                {selectedFiles.length < 4 && (
+                                    <label htmlFor="file-input">
+                                        <input
+                                            id="file-input"
+                                            type="file"
+                                            onChange={handleFileSelect}
+                                            style={{ display: 'none' }}
+                                        />
+                                        <Card sx={{
+                                            width: 190,
+                                            height: 150,
+                                            textAlign: "center",
+                                            display: "flex",
+                                            marginLeft: "10px"
+                                        }}>
+                                            <CardActionArea onClick={() => document.getElementById("file-input").click()}>
+                                                <Grid direction="row">
+                                                    <CardContent>
+                                                        <AddIcon
+                                                            sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
+                                                        />
+                                                        <br />
+                                                        <Typography variant="caption" sx={{ color: '#000' }}>
+                                                            Upload Image
+                                                        </Typography>
+                                                    </CardContent>
+                                                </Grid>
+                                            </CardActionArea>
+                                        </Card>
+                                    </label>
+                                )}
+                            </Grid>
+
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     id="plan-id"
@@ -122,73 +215,6 @@ const AddPlan = () => {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
-                                {selectedFile ? (
-                                    <Card variant="outlined"
-                                        sx={{
-                                            height: "230px",
-                                            width: "290px",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        <img
-                                            src={URL.createObjectURL(selectedFile)}
-                                            alt="Preview"
-                                            style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
-                                            onClick={handleImageClick}
-                                        />
-                                        <Popover
-                                            open={Boolean(popoverAnchor)}
-                                            anchorEl={popoverAnchor}
-                                            onClose={handlePopoverClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'center',
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                            }}
-                                        >
-                                            <Box p={2}>
-                                                <Button
-                                                    color="secondary"
-                                                    variant="contained"
-                                                    onClick={handleRemoveClick}
-                                                    startIcon={<CancelIcon />}
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </Box>
-                                        </Popover>
-                                        <Typography sx={{ mt: 2 }}>
-                                            Selected File: {selectedFile.name}
-                                        </Typography>
-                                    </Card>
-                                ) : (
-                                    <label htmlFor="file-input">
-                                        <input
-                                            id="file-input"
-                                            type="file"
-                                            onChange={handleFileSelect}
-                                            style={{ display: 'none' }}
-                                        />
-                                        <Card sx={{ maxWidth: 290, height: 230 ,textAlign: "center", display: "flex" }}>
-                                        <CardActionArea onClick={() => document.getElementById("file-input").click()}>
-                                                <CardContent>
-                                                    <AddIcon
-                                                        sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
-                                                    />
-                                                    <br />
-                                                    <Typography variant="caption" sx={{ color: '#000' }}>
-                                                        Upload Image
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
-                                    </label>
-                                )}
-                            </Grid>
                         </Grid>
                         <div>
                             <br />
