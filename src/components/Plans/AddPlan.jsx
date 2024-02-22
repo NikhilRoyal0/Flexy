@@ -41,11 +41,11 @@ const AddPlan = () => {
         setPopoverAnchor(null);
     };
 
-    const handleSubmit = () => {
-
+    const handleSubmit = () =>{
+        
     }
-
-
+    
+    
     return (
         <div>
             <Card
@@ -90,7 +90,7 @@ const AddPlan = () => {
                                             marginLeft: "10px",
                                             overflowY: "auto",
                                             "&::-webkit-scrollbar": {
-                                                width: 0,
+                                                width: 0, 
                                             },
                                             scrollbarWidth: "none",
                                         }}
@@ -137,6 +137,7 @@ const AddPlan = () => {
                                             type="file"
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
+                                            required
                                         />
                                         <Card sx={{
                                             width: 190,
@@ -153,7 +154,7 @@ const AddPlan = () => {
                                                         />
                                                         <br />
                                                         <Typography variant="caption" sx={{ color: '#000' }}>
-                                                            Upload Image
+                                                            Upload Image*
                                                         </Typography>
                                                     </CardContent>
                                                 </Grid>
@@ -207,6 +208,7 @@ const AddPlan = () => {
                                     label="Plan Extra-Details"
                                     fullWidth
                                     multiline
+                                    required
                                     minRows={4}
                                     maxRows={2}
                                     sx={{
