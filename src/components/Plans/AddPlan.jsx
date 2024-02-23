@@ -28,6 +28,7 @@ const AddPlan = () => {
         'planInfo': '',
         'planExtraDetails': '',
         'planPrice': 0,
+        "image":"planImages"
     });
 
 
@@ -39,6 +40,7 @@ const AddPlan = () => {
         form.append('planInfo', formData.planInfo)
         form.append('planExtraDetails', formData.planExtraDetails)
         form.append('planPrice', formData.planPrice)
+        form.append('image', formData.planImages)
 
         dispatch(AddPlanData(form));
 
@@ -194,20 +196,6 @@ const AddPlan = () => {
                                 )}
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="plan-id"
-                                    label="Plan ID"
-                                    name = "planId"
-                                    variant="outlined"
-                                    onChange={handleInputChange}
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
-                            </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     id="plan-title"

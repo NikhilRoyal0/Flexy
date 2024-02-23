@@ -25,7 +25,7 @@ const EditPlan = () => {
     planTitle: "",
     planInfo: "",
     planExtraDetails: "",
-    planImages: "[]",
+    image: "",
     createdBy: "",
   });
 

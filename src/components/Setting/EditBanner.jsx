@@ -141,7 +141,7 @@ const EditBanner = () => {
                 >
                     <input
                       type="file"
-                      id="mediaPath"
+                      id="image"
                       name="mediaPath"
                       onChange={handleInputChange}
                       style={{ display: "none" }}

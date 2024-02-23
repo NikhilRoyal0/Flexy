@@ -24,10 +24,10 @@ const AddTask = () => {
 
         const [formData, setFormData] = React.useState({
             'taskTitle': '',
-            'status': 0,
-            'isDailyTask': 0,
+            'status': '',
+            'isDailyTask': '',
             'taskInfo': '',
-            'mediaPath': selectedFile
+            'image': selectedFile
         });
 
 
@@ -155,7 +155,7 @@ const AddTask = () => {
                                             <input
                                                 id="file-input"
                                                 type="file"
-                                                mediaPath
+                                                name="taskMedia"
                                                 onChange={handleFileSelect}
                                                 style={{ display: 'none' }}
                                             />

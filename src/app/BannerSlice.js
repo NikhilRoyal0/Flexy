@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BannerSlice = createSlice({
-    name: "Banner",
+    name: "Banners",
     initialState: {
         data: [],
         isLoading: false,
@@ -51,7 +51,6 @@ export const AddBannerData = (form) => async (dispatch) => {
             }
         });
         console.log('Response:', response.data);
-        dispatch(setBannerData(response.data));
     } catch (error) {
         console.error('Error adding Banner Data:', error);
     }
@@ -69,11 +68,11 @@ export const updateBannerData = (bannerId, data) => async (dispatch) => {
             }
         );
 
-        console.log('Full response from updateBannerData:', response);
 
         const updatedBannerData = response.data;
 
         dispatch(updateBanner(updatedBannerData));
+        
     } catch (error) {
         console.error('Error in updateBannerData:', error);
     }

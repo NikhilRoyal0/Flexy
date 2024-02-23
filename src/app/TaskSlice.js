@@ -47,10 +47,9 @@ export const AddTaskData = (form) => async (dispatch) => {
       const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertDailyTask', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
-
         }
       });
-      console.log('Response:', response.data);  //! Response for Success
+      console.log('Response:', response.data); 
 
     } catch (error) {
       console.error('Error:', error);  
