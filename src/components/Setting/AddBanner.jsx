@@ -23,17 +23,20 @@ const AddBanner = () => {
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
 
     const [formData, setFormData] = React.useState({
-        'bannerTitle': '',
-        'endDateTime': '',
+        'title': '',
+        'endDate': '',
+        'bannerType': '',
         'image': selectedFile
     });
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         const form = new FormData()
-        form.append('bannerTitle', formData.bannerTitle)
-        form.append('endDateTime', formData.endDateTime)
+        form.append('title', formData.title)
+        form.append('endDate', formData.endDate)
+        form.append('bannerType', formData.bannerType)
         form.append('image', selectedFile)
 
         dispatch(AddBannerData(form));
@@ -151,7 +154,7 @@ const AddBanner = () => {
                                         <input
                                             id="file-input"
                                             type="file"
-                                            name='mediaPath'
+                                            name='image'
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
                                         />
@@ -174,9 +177,9 @@ const AddBanner = () => {
 
                             <Grid item xs={12} md={6}>
                                 <TextField
-                                    id="banner-title"
-                                    label="Banner Title"
-                                    name='bannerTitle'
+                                    id="title"
+                                    label="Title"
+                                    name = "title"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth
@@ -188,9 +191,23 @@ const AddBanner = () => {
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
-                                    id="banner-date"
-                                    label="Banner Date/Time"
-                                    name='endDateTime'
+                                    id="endDate"
+                                    label="endDateTime"
+                                    name = "endDate"
+                                    variant="outlined"
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                    required
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="bannerType"
+                                    label="Banner-type"
+                                    name= "bannerType"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth

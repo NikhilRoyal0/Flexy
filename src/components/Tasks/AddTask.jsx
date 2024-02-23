@@ -27,7 +27,7 @@ const AddTask = () => {
             'status': 0,
             'isDailyTask': 0,
             'taskInfo': '',
-            'image': selectedFile
+            'mediaPath': selectedFile
         });
 
 

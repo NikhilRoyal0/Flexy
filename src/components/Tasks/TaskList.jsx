@@ -11,14 +11,12 @@ import { useNavigate } from 'react-router-dom';
 const TasksList = () => {
   const dispatch = useDispatch();
   const tasksData = useSelector(selectTasksData);
-  console.log("Tasks Data:", tasksData);
 
   const isLoading = useSelector(selectTasksLoading);
   const error = useSelector(selectTasksError);
   const [isTableVisible, setTableVisible] = useState(true);
 
   const navigate = useNavigate();
-  console.log(tasksData)
 
   const editClick = (task) => {
     navigate(`edit-task/${task.taskId}`);

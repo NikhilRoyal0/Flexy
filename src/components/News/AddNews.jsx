@@ -15,9 +15,11 @@ import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useDispatch} from 'react-redux'
 import { AddData } from "../../app/NewsSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const AddNews = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch()
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
@@ -43,8 +45,8 @@ const AddNews = () => {
         form.append('createdBy', formData.createdBy)
 
         dispatch(AddData(form));
-
         console.log(formData);
+        navigate('/news')
     }
 
     const handleInputChange = (e) => {
@@ -54,7 +56,6 @@ const AddNews = () => {
             [name]: value
         })
     }
-
 
 
 
