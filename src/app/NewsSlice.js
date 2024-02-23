@@ -24,9 +24,8 @@ const NewsSlice = createSlice({
     },
     updateNews: (state, action) => {
       const updatedNews = action.payload;
-      console.log(action.payload);
       state.data.map((news) => news.newsId === updatedNews.newsId);
-      
+
     },
   },
 });

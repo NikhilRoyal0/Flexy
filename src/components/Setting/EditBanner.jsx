@@ -8,110 +8,187 @@ import {
   Divider,
   TextField,
   Button,
+  Popover,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { selectBannerData, fetchBannerData } from "../../app/BannerSlice";
+import AddIcon from "@mui/icons-material/Add";
+import { selectBannerData, fetchBannerData, updateBanner, updateBannerData } from "../../app/BannerSlice";
 
-const EditBanners = () => {
+const EditBanner = () => {
   const dispatch = useDispatch();
-  const { bannerId: bannersIdParam } = useParams();
+  const { bannerId: bannerIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
-  const [banner, setBannerData] = useState({
+  const [popoverAnchor, setPopoverAnchor] = useState(null);
+
+  const [data, setData] = useState({
     bannerId: "",
     bannerTitle: "",
-    bannerendDateTime: "",
     bannerType: "",
+    endDateTime: "",
     mediaPath: "",
     bannerStatus: "",
   });
-  
-  const [loading, setLoading] = useState(true);
 
+
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+    
+      const response = dispatch(updateBannerData(data.bannerId, data));
+    
+      const updatedBannerData = response.data;
+      
+      dispatch(updateBanner(updatedBannerData));
+    
+    };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const [loading, setLoading] = useState(true);
   const bannerData = useSelector(selectBannerData);
 
-  const fetbannersdata = async () => {
-    try {
-      const bannerId = parseInt(bannersIdParam);
-      const selectedbanner = bannerData.find((ur) => ur.bannerId === bannerId);
-      setBannerData(selectedbanner);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error processing data:", error);
-    }
+  const fetchBannerDataById = () => {
+    const bannerId = parseInt(bannerIdParam);
+    const selectedBanner = bannerData.find((banner) => banner.bannerId === bannerId);
+    setData({ ...selectedBanner });
+    setLoading(false);
   };
 
   useEffect(() => {
     if (bannerData.length === 0) {
       dispatch(fetchBannerData());
     } else {
-      fetbannersdata();
+      fetchBannerDataById();
     }
-  }, [bannersIdParam, dispatch, bannerData]);
+  }, [bannerIdParam, dispatch, bannerData]);
 
-  const toggleEditMode = () => {
-    setEditMode(!editMode);
-  };
-
-  const handleSave = () => {
-    setEditMode(false);
-  };
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
+  const handleImageClick = (event) => {
+    setPopoverAnchor(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverAnchor(null);
+  };
+
+  const handleImageChange = () => {
+    const fileInput = document.getElementById("mediaPath");
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
+  };
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit Banners - {banner && banner.bannerId}</Typography>
+        <Typography variant="h4">Edit Banner - {data && data.bannerId}</Typography>
         <br />
         <Divider />
         <br />
-        <form>
+        <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Banner Id"
+          <Grid item xs={12} md={12}>
+              <Card
                 variant="outlined"
-                fullWidth
-                value={banner && banner.bannerId}
-                disabled={!editMode}
-              />
+                sx={{
+                  height: "150px",
+                  width: "190px",
+                  textAlign: "center",
+                }}
+              >
+                <img
+                  src={data && data.mediaPath} 
+                  alt="Preview"
+                  id="image"
+                  name="mediaPath"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "130px",
+                    marginRight: "10px",
+                    marginTop: "auto",
+                  }}
+                  onClick={handleImageClick}
+                  />
+                  {editMode && (
+                <Popover
+                  open={Boolean(popoverAnchor)}
+                  anchorEl={popoverAnchor}
+                  onClose={handlePopoverClose}
+                  disabled={!editMode}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                    <input
+                      type="file"
+                      id="mediaPath"
+                      name="mediaPath"
+                      onChange={handleInputChange}
+                      style={{ display: "none" }}
+                    />
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={handleImageChange}
+                      startIcon={<AddIcon />}
+                    >
+                      Change
+                    </Button>
+                </Popover>
+              )}
+              </Card>
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Title"
                 variant="outlined"
+                name='bannerTitle'
+                onChange={handleInputChange}
                 fullWidth
-                value={banner && banner.bannerTitle}
+                value={data && data.bannerTitle}
                 disabled={!editMode}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Info"
+                label="Banner Type"
                 variant="outlined"
+                name='bannerType'
+                onChange={handleInputChange}
                 fullWidth
-                value={banner && banner.bannerendDateTime}
+                value={data && data.bannerType}
                 disabled={!editMode}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Banners Details"
+                label="endDateTime"
                 variant="outlined"
+                name='endDateTime'
+                onChange={handleInputChange}
                 fullWidth
-                value={banner && banner.bannerType}
-                disabled={!editMode}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="URL"
-                variant="outlined"
-                fullWidth
-                value={banner && banner.mediaPath}
+                value={data && data.endDateTime}
                 disabled={!editMode}
               />
             </Grid>
@@ -119,8 +196,10 @@ const EditBanners = () => {
               <TextField
                 label="Status"
                 variant="outlined"
+                name='bannerStatus'
+                onChange={handleInputChange}
                 fullWidth
-                value={banner && banner.bannerStatus}
+                value={data && data.bannerStatus}
                 disabled={!editMode}
               />
             </Grid>
@@ -131,7 +210,7 @@ const EditBanners = () => {
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success" onClick={handleSave}>
+              <Button variant="contained" color="success"  type="submit">
                 Save
               </Button>
               <Button variant="contained" color="error" onClick={toggleEditMode}>
@@ -144,10 +223,10 @@ const EditBanners = () => {
             </Button>
           )}
         </form>
-       
+
       </CardContent>
     </Card>
   );
 };
 
-export default EditBanners;
+export default EditBanner;

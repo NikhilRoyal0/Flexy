@@ -8,82 +8,165 @@ import {
   Divider,
   TextField,
   Button,
+  Popover,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { selectTasksData, fetchTasksData } from "../../app/TaskSlice";
+import AddIcon from "@mui/icons-material/Add";
+import { selectTasksData, fetchTasksData, updateTask, updateTaskData } from "../../app/TaskSlice";
 
-const EditTasks = () => {
+const EditTask = () => {
   const dispatch = useDispatch();
-  const { taskId: tasksIdParam } = useParams();
+  const { taskId: taskIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
-  const [task, setTaskData] = useState({
+  const [popoverAnchor, setPopoverAnchor] = useState(null);
+
+  const [data, setData] = useState({
     taskId: "",
     taskTitle: "",
     taskInfo: "",
+    taskType: "",
     isDailyTask: "",
-    status: "",
+    taskMedia: "",
+    createdBy: "",
   });
-  
-  const [loading, setLoading] = useState(true);
 
+
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+    
+      const response = dispatch(updateTaskData(data.taskId, data));
+    
+      const updatedTaskData = response.data;
+      
+      dispatch(updateTask(updatedTaskData));
+    
+    };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const [loading, setLoading] = useState(true);
   const taskData = useSelector(selectTasksData);
 
-  const fettasksdata = async () => {
-    try {
-      const taskId = parseInt(tasksIdParam);
-      const selectedtask = taskData.find((ur) => ur.taskId === taskId);
-      setTaskData(selectedtask);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error processing data:", error);
-    }
+  const fetchTaskDataById = () => {
+    const taskId = parseInt(taskIdParam);
+    const selectedTask = taskData.find((task) => task.taskId === taskId);
+    setData({ ...selectedTask });
+    setLoading(false);
   };
 
   useEffect(() => {
     if (taskData.length === 0) {
       dispatch(fetchTasksData());
     } else {
-      fettasksdata();
+      fetchTaskDataById();
     }
-  }, [tasksIdParam, dispatch, taskData]);
+  }, [taskIdParam, dispatch, taskData]);
 
-  const toggleEditMode = () => {
-    setEditMode(!editMode);
-  };
-
-  const handleSave = () => {
-    setEditMode(false);
-  };
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
+  const handleImageClick = (event) => {
+    setPopoverAnchor(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverAnchor(null);
+  };
+
+  const handleImageChange = () => {
+    const fileInput = document.getElementById("taskMedia");
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
+  };
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit Tasks - {task && task.taskId}</Typography>
+        <Typography variant="h4">Edit Task - {data && data.taskId}</Typography>
         <br />
         <Divider />
         <br />
-        <form>
+        <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Task Id"
+          <Grid item xs={12} md={12}>
+              <Card
                 variant="outlined"
-                fullWidth
-                value={task && task.taskId}
-                disabled={!editMode}
-              />
+                sx={{
+                  height: "150px",
+                  width: "190px",
+                  textAlign: "center",
+                }}
+              >
+                <img
+                  src={data && data.taskMedia} 
+                  alt="Preview"
+                  id="image"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "130px",
+                    marginRight: "10px",
+                    marginTop: "auto",
+                  }}
+                  onClick={handleImageClick}
+                  />
+                  {editMode && (
+                <Popover
+                  open={Boolean(popoverAnchor)}
+                  anchorEl={popoverAnchor}
+                  onClose={handlePopoverClose}
+                  disabled={!editMode}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                    <input
+                      type="file"
+                      id="image"
+                      name="taskMedia"
+                      onChange={handleInputChange}
+                      style={{ display: "none" }}
+                    />
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={handleImageChange}
+                      startIcon={<AddIcon />}
+                    >
+                      Change
+                    </Button>
+                </Popover>
+              )}
+              </Card>
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Title"
                 variant="outlined"
+                name='taskTitle'
+                onChange={handleInputChange}
                 fullWidth
-                value={task && task.taskTitle}
+                value={data && data.taskTitle}
                 disabled={!editMode}
               />
             </Grid>
@@ -91,17 +174,21 @@ const EditTasks = () => {
               <TextField
                 label="Info"
                 variant="outlined"
+                name='taskInfo'
+                onChange={handleInputChange}
                 fullWidth
-                value={task && task.taskInfo}
+                value={data && data.taskInfo}
                 disabled={!editMode}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Daily Task"
+                label="task Type"
                 variant="outlined"
+                name='taskType'
+                onChange={handleInputChange}
                 fullWidth
-                value={task && task.isDailyTask}
+                value={data && data.taskType}
                 disabled={!editMode}
               />
             </Grid>
@@ -109,8 +196,32 @@ const EditTasks = () => {
               <TextField
                 label="Status"
                 variant="outlined"
+                name='isPublished'
+                onChange={handleInputChange}
                 fullWidth
-                value={task && task.status}
+                value={data && data.isPublished}
+                disabled={!editMode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="isDailyTask"
+                variant="outlined"
+                name='isDailyTask'
+                onChange={handleInputChange}
+                fullWidth
+                value={data && data.isDailyTask}
+                disabled={!editMode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="createdBy"
+                variant="outlined"
+                name='createdBy'
+                onChange={handleInputChange}
+                fullWidth
+                value={data && data.createdBy}
                 disabled={!editMode}
               />
             </Grid>
@@ -121,7 +232,7 @@ const EditTasks = () => {
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success" onClick={handleSave}>
+              <Button variant="contained" color="success"  type="submit" >
                 Save
               </Button>
               <Button variant="contained" color="error" onClick={toggleEditMode}>
@@ -134,10 +245,10 @@ const EditTasks = () => {
             </Button>
           )}
         </form>
-       
+
       </CardContent>
     </Card>
   );
 };
 
-export default EditTasks;
+export default EditTask;

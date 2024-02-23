@@ -22,10 +22,15 @@ const TasksSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    updateTask: (state, action) => {
+      const updatedTask = action.payload;
+      state.data.map((task) => task.taskId === updatedTask.taskId);
+
+    },
   },
 });
 
-export const { setTasksData, setTasksLoading, setTasksError } = TasksSlice.actions;
+export const { setTasksData, setTasksLoading, setTasksError, updateTask, } = TasksSlice.actions;
 
 export const fetchTasksData = () => async (dispatch) => {
   try {
@@ -52,7 +57,30 @@ export const AddTaskData = (form) => async (dispatch) => {
 
     }
 
-}
+};
+
+
+export const updateTaskData = (taskId, data) => async (dispatch) => {
+  try {
+
+    const response = await axios.put(
+      import.meta.env.VITE_BASE_URL + `feature/updateDailyTask/${taskId}`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    const updatedTaskData = response.data;
+
+    dispatch(updateTask(updatedTaskData));
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
 export const selectTasksData = (state) => state.Tasks.data;
 export const selectTasksLoading = (state) => state.Tasks.isLoading;
