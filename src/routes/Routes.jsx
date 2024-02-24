@@ -68,8 +68,8 @@ const routes = createBrowserRouter(
       <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
       <Route path="/plans/edit-plan/:planId" element={<EditPlan />} />
       <Route path="/news/edit-news/:newsId" element={<EditNews />} />
-      <Route path="setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
-      <Route path="setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
+      <Route path="/setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
+      <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
       <Route path='/tasks/task-list/add-task' element={<AddTask/>}/>
       <Route path='/plans/add-plan' element={<AddPlan/>}/>
       <Route path='/news/add-news' element={<AddNews/>}/>

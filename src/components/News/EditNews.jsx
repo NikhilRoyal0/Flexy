@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Typography,
   Card,
@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { selectNewsData, fetchNewsData, updateNewsData } from "../../app/NewsSlice";
 
 const EditNews = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { newsId: newsIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
@@ -34,8 +35,10 @@ const EditNews = () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
     
-      dispatch(updateNewsData(data.newsId, data));
-    
+      dispatch(updateNewsData(data.newsId, data)).then(() => {
+        navigate('/news');
+
+      });    
       toggleEditMode()
       
     };

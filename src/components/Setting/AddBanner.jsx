@@ -15,10 +15,12 @@ import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
 import { AddBannerData } from "../../app/BannerSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const AddBanner = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
 
@@ -39,7 +41,9 @@ const AddBanner = () => {
         form.append('bannerType', formData.bannerType)
         form.append('image', selectedFile)
 
-        dispatch(AddBannerData(form));
+        dispatch(AddBannerData(form)).then(()=>{
+            navigate("/setting/banners-list")
+        })
 
         console.log(formData);
     }

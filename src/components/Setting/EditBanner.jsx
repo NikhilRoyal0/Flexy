@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Typography,
   Card,
@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { selectBannerData, fetchBannerData, updateBannerData } from "../../app/BannerSlice";
 
 const EditBanner = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { bannerId: bannerIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
@@ -33,7 +34,9 @@ const EditBanner = () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
     
-      dispatch(updateBannerData(data.bannerId, data));
+      dispatch(updateBannerData(data.bannerId, data)).then(()=>{
+        navigate("/setting/banners-list")
+      })
     
       toggleEditMode();
     };

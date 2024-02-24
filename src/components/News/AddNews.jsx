@@ -44,9 +44,10 @@ const AddNews = () => {
         form.append('isPublished', formData.isPublished)
         form.append('createdBy', formData.createdBy)
 
-        dispatch(AddData(form));
-        console.log(formData);
-        navigate('/news')
+        dispatch(AddData(form)).then(() => {
+            console.log(formData);
+            navigate('/news');
+        });
     }
 
     const handleInputChange = (e) => {

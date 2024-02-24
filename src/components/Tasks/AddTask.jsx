@@ -15,9 +15,11 @@ import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
 import { AddTaskData } from "../../app/TaskSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const AddTask = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
@@ -39,8 +41,11 @@ const AddTask = () => {
             form.append('isDailyTask', formData.isDailyTask)
             form.append('taskInfo', formData.taskInfo)
             form.append('image', selectedFile)
+            
 
-            dispatch(AddTaskData(form));
+            dispatch(AddTaskData(form)).then(()=>{
+                navigate("tasks/task-list")
+            })
 
             console.log(formData);
         }

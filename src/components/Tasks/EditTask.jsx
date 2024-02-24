@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Typography,
   Card,
@@ -16,6 +16,7 @@ import { selectTasksData, fetchTasksData, updateTaskData } from "../../app/TaskS
 
 const EditTask = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { taskId: taskIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
@@ -34,7 +35,9 @@ const EditTask = () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
     
-      dispatch(updateTaskData(data.taskId, data));
+      dispatch(updateTaskData(data.taskId, data)).then(()=>{
+        navigate("tasks/task-list")
+      })
 
       toggleEditMode()
 

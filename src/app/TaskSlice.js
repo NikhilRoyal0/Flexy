@@ -44,7 +44,8 @@ export const fetchTasksData = () => async (dispatch) => {
 
 export const AddTaskData = (form) => async () => {
   try {
-      const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertDailyTask', form, {
+    console.log("form",form)
+      const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertdailyTask', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
