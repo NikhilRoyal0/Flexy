@@ -50,7 +50,6 @@ export const AddTaskData = (form) => async () => {
         }
       });
       console.log('Response:', response.data); 
-      const TaskAdd = response.data
 
     } catch (error) {
       console.error('Error:', error);  

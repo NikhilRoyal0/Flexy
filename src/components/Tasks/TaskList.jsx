@@ -1,38 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Typography, CardContent, Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Chip, Button, Grid } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import React from "react";
+import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
+
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError } from "../../app/TaskSlice";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import errorimage from '../../assets/images/errorimage.jpg'
 
 
-const TasksList = () => {
+
+
+const TaskList = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const tasksData = useSelector(selectTasksData);
-
+  const taskData = useSelector(selectTasksData);
   const isLoading = useSelector(selectTasksLoading);
   const error = useSelector(selectTasksError);
-  const [isTableVisible, setTableVisible] = useState(true);
-
-  const navigate = useNavigate();
-
-  const editClick = (task) => {
-    navigate(`edit-task/${task.taskId}`);
-  };
 
   useEffect(() => {
     dispatch(fetchTasksData());
   }, [dispatch]);
-
-  const toggleTableVisibility = () => {
-    setTableVisible(!isTableVisible);
-  };
-
-  const handleClick = () =>{
-    navigate('/tasks/task-list/add-task')
-  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,71 +31,119 @@ const TasksList = () => {
     return <div>Error: {error}</div>;
   }
 
+  const editClick = (Task) => {
+    navigate(`edit-task/${Task.taskId}`);
+  };
+
+  const handleClick = () => {
+    navigate('/tasks/task-list/add-task');
+  }
+
+
   return (
-    <Card>
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Table style={{ border: '2px solid #ddd' }}>
-              <TableHead style={{ backgroundColor: '#ADD8E6' }}>
-                <TableRow>
-                  <TableCell>
-                    <Button onClick={toggleTableVisibility} sx={{ marginLeft: -1 }}>
-                      {isTableVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+    <div style={{ position: "relative" }}>
+      <Button
+         sx={{
+          position: "absolute",
+          top: "10px",
+          right: "30px",
+          mt: "5px",
+          zIndex: 1,
+        }}
+        color="primary"
+        onClick={handleClick}
+      >
+        <AddIcon />
+        <Typography sx={{ ml: 1 }}>Add Task</Typography>
+      </Button>
+      <Card>
+        <CardContent>
+        <Grid container sx={{ marginTop: "25px" }}>
+            {taskData.map((Task, index) => (
+              <Grid
+                key={index}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                sx={{
+                  display: "flex",
+                  alignItems: "stretch",
+                }}
+              >
+                <Card
+                  variant="outlined"
+                  sx={{
+                    p: 0,
+                    width: "100%",
+                    mt: "8px"
+                  }}
+                >
+                  <img
+                    src={Task.taskMedia}
+                    alt={Task.taskMedia}
+                    onError={(e) => {
+                      e.target.src = errorimage;
+                      e.target.alt = "Error Image";
+                    }}
+                    width="100%"
+                  />
+                  <CardContent
+                    sx={{
+                      paddingLeft: "30px",
+                      paddingRight: "30px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "h4.fontSize",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {Task.taskTitle}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "h4.fontSize",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {Task.taskType}
+                    </Typography>
+                    <Typography
+                      color="textSecondary"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        mt: 1,
+                      }}
+                    >
+                      {Task.taskInfo}
+                  </Typography>
+                  <Typography
+                      color="textSecondary"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        mt: 1,
+                      }}
+                    >
+                      {Task.createdBy}
+                  </Typography>
+                    <br />
+                    <Button variant="outlined" color="primary" onClick={() => editClick(Task)}>
+                      Edit
                     </Button>
-                  </TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Info</TableCell>
-                  <TableCell>Daily Tasks</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Edit</TableCell>
-                </TableRow>
-              </TableHead>
-              {isTableVisible && (
-                <TableBody>
-                  {tasksData.map((task) => (
-                    <TableRow key={task.taskId}>
-                      <TableCell>
-                        <Checkbox />
-                      </TableCell>
-                      <TableCell>{task.taskTitle}</TableCell>
-                      <TableCell>{task.taskInfo}</TableCell>
-                      <TableCell>
-                        {task.isDailyTask === 0 && <Chip label="No" color="default" />}
-                        {task.isDailyTask === 1 && <Chip label="Yes" color="primary" />}
-                      </TableCell>
-                      <TableCell>
-                        {task.status === 0 && <Chip label="Active" color="default" />}
-                        {task.status === 1 && <Chip label="InActive" color="primary" />}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="outlined" color="primary" onClick={() => editClick(task)}>
-                          Edit
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-
-          <Grid item xs={12} sx={{ textAlign: 'left' }}>
-            <Button
-              sx={{
-                mt: "10px",
-              }}
-              color="primary"
-              onClick={handleClick}
-            >
-              <AddIcon />
-              <Typography sx={{ ml: 1 }}>New Tasks</Typography>
-            </Button>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
-}
+};
 
-export default TasksList;
+export default TaskList;

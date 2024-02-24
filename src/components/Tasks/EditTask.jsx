@@ -24,10 +24,9 @@ const EditTask = () => {
     taskId: "",
     taskTitle: "",
     taskInfo: "",
-    taskType: "",
-    isDailyTask: "",
-    taskMedia: "",
     createdBy: "",
+    taskMedia: "",
+    status: "",
   });
 
 
@@ -181,37 +180,16 @@ const EditTask = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="task Type"
+                label="status"
                 variant="outlined"
-                name='taskType'
+                name='status'
                 onChange={handleInputChange}
                 fullWidth
-                value={data && data.taskType}
+                value={data && data.status}
                 disabled={!editMode}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Status"
-                variant="outlined"
-                name='isPublished'
-                onChange={handleInputChange}
-                fullWidth
-                value={data && data.isPublished}
-                disabled={!editMode}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="isDailyTask"
-                variant="outlined"
-                name='isDailyTask'
-                onChange={handleInputChange}
-                fullWidth
-                value={data && data.isDailyTask}
-                disabled={!editMode}
-              />
-            </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 label="createdBy"
