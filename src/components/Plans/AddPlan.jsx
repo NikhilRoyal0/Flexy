@@ -28,7 +28,7 @@ const AddPlan = () => {
         'planInfo': '',
         'planExtraDetails': '',
         'planPrice': 0,
-        "image":"planImages"
+        "image": selectedFiles
     });
 
 
@@ -40,7 +40,7 @@ const AddPlan = () => {
         form.append('planInfo', formData.planInfo)
         form.append('planExtraDetails', formData.planExtraDetails)
         form.append('planPrice', formData.planPrice)
-        form.append('image', formData.planImages)
+        form.append('image', formData.selectedFiles)
 
         dispatch(AddPlanData(form));
 

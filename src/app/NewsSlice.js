@@ -47,7 +47,7 @@ export const fetchNewsData = () => async (dispatch) => {
   }
 };
 
-export const AddData = (form) => async (dispatch) => {
+export const AddData = (form) => async () => {
   try {
     const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertNews', form, {
       headers: {

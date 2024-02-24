@@ -55,7 +55,6 @@ const TasksList = () => {
                       {isTableVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </Button>
                   </TableCell>
-                  <TableCell>Id</TableCell>
                   <TableCell>Title</TableCell>
                   <TableCell>Info</TableCell>
                   <TableCell>Daily Tasks</TableCell>
@@ -69,9 +68,6 @@ const TasksList = () => {
                     <TableRow key={task.taskId}>
                       <TableCell>
                         <Checkbox />
-                      </TableCell>
-                      <TableCell>
-                        {task.taskId}
                       </TableCell>
                       <TableCell>{task.taskTitle}</TableCell>
                       <TableCell>{task.taskInfo}</TableCell>

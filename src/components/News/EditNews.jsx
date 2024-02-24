@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import { selectNewsData, fetchNewsData, updateNews } from "../../app/NewsSlice";
-import { updateNewsData } from "../../app/NewsSlice";
+import { selectNewsData, fetchNewsData, updateNewsData } from "../../app/NewsSlice";
 
 const EditNews = () => {
   const dispatch = useDispatch();
@@ -35,12 +34,10 @@ const EditNews = () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
     
-      const response = dispatch(updateNewsData(data.newsId, data));
+      dispatch(updateNewsData(data.newsId, data));
     
-      const updatedNewsData = response.data;
+      toggleEditMode()
       
-      dispatch(updateNews(updatedNewsData));
-    
     };
 
   const handleInputChange = (e) => {

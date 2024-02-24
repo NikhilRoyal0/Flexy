@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import { selectTasksData, fetchTasksData, updateTask, updateTaskData } from "../../app/TaskSlice";
+import { selectTasksData, fetchTasksData, updateTaskData } from "../../app/TaskSlice";
 
 const EditTask = () => {
   const dispatch = useDispatch();
@@ -35,12 +35,10 @@ const EditTask = () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
     
-      const response = dispatch(updateTaskData(data.taskId, data));
-    
-      const updatedTaskData = response.data;
-      
-      dispatch(updateTask(updatedTaskData));
-    
+      dispatch(updateTaskData(data.taskId, data));
+
+      toggleEditMode()
+
     };
 
   const handleInputChange = (e) => {

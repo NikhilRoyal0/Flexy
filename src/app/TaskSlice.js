@@ -42,7 +42,7 @@ export const fetchTasksData = () => async (dispatch) => {
   }
 };
 
-export const AddTaskData = (form) => async (dispatch) => {
+export const AddTaskData = (form) => async () => {
   try {
       const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertDailyTask', form, {
         headers: {
@@ -50,6 +50,7 @@ export const AddTaskData = (form) => async (dispatch) => {
         }
       });
       console.log('Response:', response.data); 
+      const TaskAdd = response.data
 
     } catch (error) {
       console.error('Error:', error);  
@@ -71,10 +72,10 @@ export const updateTaskData = (taskId, data) => async (dispatch) => {
         },
       }
     );
-
     const updatedTaskData = response.data;
 
     dispatch(updateTask(updatedTaskData));
+
 
   } catch (error) {
     console.error('Error:', error);

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import { selectBannerData, fetchBannerData, updateBanner, updateBannerData } from "../../app/BannerSlice";
+import { selectBannerData, fetchBannerData, updateBannerData } from "../../app/BannerSlice";
 
 const EditBanner = () => {
   const dispatch = useDispatch();
@@ -30,16 +30,12 @@ const EditBanner = () => {
   });
 
 
-
     const handleSubmit = async (event) => {
       event.preventDefault();
     
-      const response = dispatch(updateBannerData(data.bannerId, data));
+      dispatch(updateBannerData(data.bannerId, data));
     
-      const updatedBannerData = response.data;
-      
-      dispatch(updateBanner(updatedBannerData));
-    
+      toggleEditMode();
     };
 
   const handleInputChange = (e) => {
