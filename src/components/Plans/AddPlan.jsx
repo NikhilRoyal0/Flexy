@@ -15,34 +15,34 @@ import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
 import { AddPlanData } from "../../app/PlansSlice";
+import {useNavigate} from 'react-router-dom';
 
 
 const AddPlan = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [selectedFiles, setSelectedFiles] = React.useState([]);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
 
     const [formData, setFormData] = React.useState({
-        'planId': '',
         'planTitle': '',
         'planInfo': '',
         'planExtraDetails': '',
-        'planPrice': 0,
-        "image": selectedFiles
+        'image': selectedFiles
     });
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = new FormData()
-        form.append('planId', formData.planId)
         form.append('planTitle', formData.planTitle)
         form.append('planInfo', formData.planInfo)
         form.append('planExtraDetails', formData.planExtraDetails)
-        form.append('planPrice', formData.planPrice)
         form.append('image', formData.selectedFiles)
 
-        dispatch(AddPlanData(form));
+        dispatch(AddPlanData(form)).then(()=>{
+            navigate("/plans")
+        })
 
         console.log(formData);
     }

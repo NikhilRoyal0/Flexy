@@ -61,7 +61,10 @@ const PlansPage = () => {
                 key={index}
                 item
                 xs={12}
+                s={7}
+                md={5}
                 lg={4}
+                xl={2.4}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Typography,
   Card,
@@ -16,6 +16,7 @@ import { selectPlansData, fetchPlansData, updatePlans, updatePlansData } from ".
 
 const EditPlan = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { planId: planIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
@@ -38,7 +39,9 @@ const EditPlan = () => {
     
       const updatedPlansData = response.data;
       
-      dispatch(updatePlans(updatedPlansData));
+      dispatch(updatePlans(updatedPlansData)).then(()=>{
+        navigate("/plans")
+      })
       console.log(updatePlans)
     
     };

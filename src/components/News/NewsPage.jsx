@@ -64,9 +64,10 @@ const NewsPage = () => {
                 key={index}
                 item
                 xs={12}
-                sm={6}
-                md={4}
-                lg={3}
+                s={7}
+                md={5}
+                lg={4}
+                xl={2.4}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
