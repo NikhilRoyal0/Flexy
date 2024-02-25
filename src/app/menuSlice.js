@@ -127,12 +127,14 @@ export const fetchMenuItems = () => (dispatch) => {
       href: "/register",
     },
     {
+      id: 11,
       title: "Dashboard",
       icon: DashboardOutlinedIcon,
       href: "/dashboard",
       visible: isVisible,
     },
     {
+      id: 12,
       title: "User",
       icon: Person4Icon,
       href: '#',
@@ -153,39 +155,46 @@ export const fetchMenuItems = () => (dispatch) => {
       ],
     },
     {
+      id: 13,
       title: "Plans",
       icon: LightbulbIcon,
       href: "/plans",
       visible: isVisible,
     },
     {
+      id: 14,
       title: "News",
       icon: NewspaperIcon,
       href: "/news",
       visible: isVisible,
     },
     {
+      id: 15,
       title: "Setting",
       icon: ManageAccountsIcon,
       href: '#',
       visible: isVisible,
       subItems: [
         {
+          id: 33,
           title: "App Setting",
           icon: SettingsApplicationsIcon,
           href: "/setting/app-setting",
         },
         {
+          id: 34,
           title: "Profile Setting",
           icon: SettingsIcon,
           href: "/setting/basic-setting",
         },
         {
+          id: 35,
           title: "Dialogs List",
           icon: BallotIcon,
           href: "/setting/dialogs-list",
         },
         {
+          id: 35,
           title: "Banners List",
           icon: ViewCarouselIcon,
           href: "/setting/banners-list",
@@ -193,17 +202,20 @@ export const fetchMenuItems = () => (dispatch) => {
       ],
     },
     {
+      id: 16,
       title: "Tasks",
       icon: TaskIcon,
       href: '#',
       visible: isVisible,
       subItems: [
         {
+          id: 36,
           title: "Task Category",
           icon: SplitscreenIcon,
           href: "/tasks/task-category",
         },
         {
+          id: 37,
           title: "Task List",
           icon: FormatListBulletedIcon,
           href: "/tasks/task-list",
@@ -211,6 +223,7 @@ export const fetchMenuItems = () => (dispatch) => {
       ],
     },
     {
+      id: 17,
       title: "Logout",
       icon: LogoutIcon,
       href: "/logout",
