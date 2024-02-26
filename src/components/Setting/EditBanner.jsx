@@ -9,10 +9,13 @@ import {
   TextField,
   Button,
   Popover,
+  IconButton,
+  Snackbar
 } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
+import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
+import { useSelector, useDispatch } from "react-redux";
 import { selectBannerData, fetchBannerData, updateBannerData } from "../../app/BannerSlice";
 
 const EditBanner = () => {
@@ -21,6 +24,8 @@ const EditBanner = () => {
   const { bannerId: bannerIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
   const [data, setData] = useState({
     bannerId: "",
@@ -32,15 +37,25 @@ const EditBanner = () => {
   });
 
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-    
-      dispatch(updateBannerData(data.bannerId, data)).then(()=>{
-        navigate("/setting/banners-list")
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    dispatch(updateBannerData(data.bannerId, data))
+      .then(() => {
+        toggleEditMode();
+
+        showSnackbar('Banner updated successfully!');
+
+        setTimeout(() => {
+          navigate("../setting/banners-list");
+        }, 1000);
       })
-    
-      toggleEditMode();
-    };
+
+      .catch((error) => {
+        showSnackbar('Error in updating banner. Please try again.');
+        console.error('Error in updating banner:', error);
+      });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +85,7 @@ const EditBanner = () => {
   }, [bannerIdParam, dispatch, bannerData]);
 
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div
         style={{
@@ -84,6 +99,18 @@ const EditBanner = () => {
       </div>
     );
   }
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarOpen(true);
+  };
+
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
   };
@@ -112,7 +139,7 @@ const EditBanner = () => {
         <br />
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
+            <Grid item xs={12} md={12}>
               <Card
                 variant="outlined"
                 sx={{
@@ -122,7 +149,7 @@ const EditBanner = () => {
                 }}
               >
                 <img
-                  src={data && data.mediaPath} 
+                  src={data && data.mediaPath}
                   alt="Preview"
                   id="image"
                   name="mediaPath"
@@ -133,22 +160,22 @@ const EditBanner = () => {
                     marginTop: "auto",
                   }}
                   onClick={handleImageClick}
-                  />
-                  {editMode && (
-                <Popover
-                  open={Boolean(popoverAnchor)}
-                  anchorEl={popoverAnchor}
-                  onClose={handlePopoverClose}
-                  disabled={!editMode}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                >
+                />
+                {editMode && (
+                  <Popover
+                    open={Boolean(popoverAnchor)}
+                    anchorEl={popoverAnchor}
+                    onClose={handlePopoverClose}
+                    disabled={!editMode}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
                     <input
                       type="file"
                       id="image"
@@ -164,8 +191,8 @@ const EditBanner = () => {
                     >
                       Change
                     </Button>
-                </Popover>
-              )}
+                  </Popover>
+                )}
               </Card>
             </Grid>
 
@@ -220,7 +247,7 @@ const EditBanner = () => {
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success"  type="submit">
+              <Button variant="contained" color="success" type="submit">
                 Save
               </Button>
               <Button variant="contained" color="error" onClick={toggleEditMode}>
@@ -233,6 +260,29 @@ const EditBanner = () => {
             </Button>
           )}
         </form>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={snackbarOpen}
+          autoHideDuration={5000}
+          onClose={handleSnackbarClose}
+          message="Banner updated successfully!"
+          action={
+            <React.Fragment>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleSnackbarClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+        />
 
       </CardContent>
     </Card>

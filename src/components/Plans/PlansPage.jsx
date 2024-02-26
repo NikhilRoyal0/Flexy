@@ -1,13 +1,22 @@
-import React from "react";
-import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@mui/material";
+import errorimage from '../../assets/images/errorimage.jpg';
 import AddIcon from '@mui/icons-material/Add';
-import { useEffect, useState } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlansData, selectPlansData, selectPlansLoading, selectPlansError, deletePlanData } from "../../app/PlansSlice";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import errorimage from '../../assets/images/errorimage.jpg';
-import CircularProgress from '@mui/material/CircularProgress';
 
 
 
@@ -97,10 +106,10 @@ const PlansPage = () => {
                 key={index}
                 item
                 xs={12}
-                s={7}
-                md={5}
-                lg={4}
-                xl={2.4}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
@@ -164,12 +173,12 @@ const PlansPage = () => {
                         Edit
                       </Button>
                       <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => deleteClick(Plan)}
-                    >
-                      Delete
-                    </Button>
+                        variant="outlined"
+                        color="error"
+                        onClick={() => deleteClick(Plan)}
+                      >
+                        Delete
+                      </Button>
                     </Typography>
                   </CardContent>
                 </Card>

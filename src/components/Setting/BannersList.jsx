@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchBannerData, selectBannerData, selectBannerLoading, selectBannerError, deleteBannerData } from "../../app/BannerSlice";
-import { useNavigate } from "react-router-dom";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@mui/material";
 import errorimage from '../../assets/images/errorimage.jpg';
-import AddIcon from '@mui/icons-material/Add';
 import CircularProgress from '@mui/material/CircularProgress';
+import AddIcon from '@mui/icons-material/Add';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchBannerData, selectBannerData, selectBannerLoading, selectBannerError, deleteBannerData } from "../../app/BannerSlice";
 
 
 const BannersList = () => {
@@ -65,14 +75,14 @@ const BannersList = () => {
     navigate(`edit-banner/${Banner.bannerId}`);
   };
 
-  const handleClick = () =>{
+  const handleClick = () => {
     navigate("/setting/banners-list/add-banner")
   }
 
   return (
     <div style={{ position: "relative" }}>
       <Button
-         sx={{
+        sx={{
           position: "absolute",
           top: "10px",
           right: "30px",
@@ -93,10 +103,10 @@ const BannersList = () => {
                 key={index}
                 item
                 xs={12}
-                s={7}
-                md={5}
-                lg={4}
-                xl={2.4}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
@@ -148,12 +158,12 @@ const BannersList = () => {
                         Edit
                       </Button>
                       <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => deleteClick(Banner)}
-                    >
-                      Delete
-                    </Button>
+                        variant="outlined"
+                        color="error"
+                        onClick={() => deleteClick(Banner)}
+                      >
+                        Delete
+                      </Button>
                     </Typography>
                   </CardContent>
                 </Card>

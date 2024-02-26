@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
@@ -15,11 +15,10 @@ import {
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
-import { AddBannerData } from "../../app/BannerSlice";
 import { useNavigate } from "react-router-dom";
+import { AddBannerData } from "../../app/BannerSlice";
 
 
 const AddBanner = () => {
@@ -51,7 +50,7 @@ const AddBanner = () => {
             console.log(formData);
             setSnackbarOpen(true);
             setTimeout(() => {
-                navigate("/setting/banners-list");
+                navigate("../setting/banners-list");
             }, 1000);
         });
     };

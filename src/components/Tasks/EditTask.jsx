@@ -9,10 +9,13 @@ import {
   TextField,
   Button,
   Popover,
+  Snackbar,
+  IconButton
 } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
+import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
+import { useSelector, useDispatch } from "react-redux";
 import { selectTasksData, fetchTasksData, updateTaskData } from "../../app/TaskSlice";
 
 const EditTask = () => {
@@ -21,6 +24,8 @@ const EditTask = () => {
   const { taskId: taskIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
   const [data, setData] = useState({
     taskId: "",
@@ -31,6 +36,18 @@ const EditTask = () => {
     status: "",
   });
 
+  const handleSnackbarClose = (reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarOpen(true);
+  };
+
+
 
 
   const handleSubmit = async (event) => {
@@ -39,11 +56,18 @@ const EditTask = () => {
     dispatch(updateTaskData(data.taskId, data))
       .then(() => {
         toggleEditMode();
-        navigate("../tasks/task-list");
+
+        showSnackbar('Task updated successfully!');
+
+        setTimeout(() => {
+          navigate("../tasks/task-list");
+        }, 1000);
       })
 
-    toggleEditMode()
-
+      .catch((error) => {
+        showSnackbar('Error in updating task. Please try again.');
+        console.error('Error in updating task:', error);
+      });
   };
 
   const handleInputChange = (e) => {
@@ -74,7 +98,7 @@ const EditTask = () => {
   }, [taskIdParam, dispatch, taskData]);
 
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div
         style={{
@@ -88,6 +112,8 @@ const EditTask = () => {
       </div>
     );
   }
+
+
 
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
@@ -239,6 +265,28 @@ const EditTask = () => {
           )}
         </form>
 
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={snackbarOpen}
+          autoHideDuration={5000}
+          onClose={handleSnackbarClose}
+          message="Task updated successfully!"
+          action={
+            <React.Fragment>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleSnackbarClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+        />
       </CardContent>
     </Card>
   );

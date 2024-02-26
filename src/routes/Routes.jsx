@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, createRoutesFromElements ,Route} from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FullLayout from '../layouts/Sidebar/FullLayout';
 import Dashboard from '../components/Dashboard/Dashboard';
 import ExAutoComplete from '../components/AutoComplete/ExAutoComplete';
@@ -70,10 +70,10 @@ const routes = createBrowserRouter(
       <Route path="/news/edit-news/:newsId" element={<EditNews />} />
       <Route path="/setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
       <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
-      <Route path='/tasks/task-list/add-task' element={<AddTask/>}/>
-      <Route path='/plans/add-plan' element={<AddPlan/>}/>
-      <Route path='/news/add-news' element={<AddNews/>}/>
-      <Route path='/setting/banners-list/add-banner' element={<AddBanner/>}/>
+      <Route path='/tasks/task-list/add-task' element={<AddTask />} />
+      <Route path='/plans/add-plan' element={<AddPlan />} />
+      <Route path='/news/add-news' element={<AddNews />} />
+      <Route path='/setting/banners-list/add-banner' element={<AddBanner />} />
       <Route path="*" element={<Notfound />} />
     </Route>
   )

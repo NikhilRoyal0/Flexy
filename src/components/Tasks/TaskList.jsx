@@ -1,14 +1,22 @@
-import React from "react";
-import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError, deleteTaskData } from "../../app/TaskSlice";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@mui/material";
 import errorimage from '../../assets/images/errorimage.jpg'
+import AddIcon from '@mui/icons-material/Add';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError, deleteTaskData } from "../../app/TaskSlice";
 
 
 
@@ -76,7 +84,7 @@ const TaskList = () => {
   return (
     <div style={{ position: "relative" }}>
       <Button
-         sx={{
+        sx={{
           position: "absolute",
           top: "10px",
           right: "30px",
@@ -91,16 +99,16 @@ const TaskList = () => {
       </Button>
       <Card>
         <CardContent>
-        <Grid container sx={{ marginTop: "25px" }}>
+          <Grid container sx={{ marginTop: "25px" }}>
             {taskData.map((Task, index) => (
               <Grid
                 key={index}
                 item
                 xs={12}
-                s={7}
-                md={5}
-                lg={4}
-                xl={2.4}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
@@ -138,12 +146,14 @@ const TaskList = () => {
                       {Task.taskTitle}
                     </Typography>
                     <Typography
+                      color="textSecondary"
                       sx={{
-                        fontSize: "h4.fontSize",
-                        fontWeight: "500",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        mt: 1,
                       }}
                     >
-                      {Task.taskType}
+                      {Task.taskInfo}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -153,18 +163,8 @@ const TaskList = () => {
                         mt: 1,
                       }}
                     >
-                      {Task.taskInfo}
-                  </Typography>
-                  <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        mt: 1,
-                      }}
-                    >
                       {Task.createdBy}
-                  </Typography>
+                    </Typography>
                     <br />
                     <Button variant="outlined" color="primary" onClick={() => editClick(Task)}>
                       Edit

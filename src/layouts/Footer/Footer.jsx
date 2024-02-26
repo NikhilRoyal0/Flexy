@@ -3,14 +3,14 @@ import {
     Box,
     Link,
     Typography,
-    
-  } from "@mui/material";
+
+} from "@mui/material";
 const Footer = () => {
-    return ( 
-        <Box sx={{p:3, textAlign:'center'}}>
+    return (
+        <Box sx={{ p: 3, textAlign: 'center' }}>
             <Typography>© 2023 All rights reserved by <Link href="https://github.com/NikhilRoyal0">Chaudhary</Link> </Typography>
         </Box>
-     );
+    );
 }
- 
+
 export default Footer;

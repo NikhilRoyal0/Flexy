@@ -78,7 +78,7 @@ const Header = (props) => {
         >
           <MenuOutlinedIcon width="20" height="20" />
         </IconButton>
-    
+
         <Box flexGrow={1} />
 
         {/* Notifications Dropdown */}
@@ -99,13 +99,13 @@ const Header = (props) => {
         >
           <Box p={2} maxWidth={400 + "px"}>
             <Typography variant="h4">Notifications</Typography>
-            <br/>
-            <Divider/>
+            <br />
+            <Divider />
             <List>
               {notificationsData.map((notification) => (
                 <ListItem key={notification.id}>
                   <ListItemIcon>
-                      <HistoryIcon/>
+                    <HistoryIcon />
                   </ListItemIcon>
                   <Typography>{notification.message}</Typography>
                 </ListItem>

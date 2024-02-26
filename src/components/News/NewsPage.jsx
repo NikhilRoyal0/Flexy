@@ -1,15 +1,23 @@
-import React from "react";
-import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@mui/material";
+import errorimage from '../../assets/images/errorimage.jpg'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
-
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { fetchNewsData, selectNewsData, selectNewsLoading, selectNewsError, deleteNewsData } from "../../app/NewsSlice";
-import { useNavigate } from "react-router-dom";
-import errorimage from '../../assets/images/errorimage.jpg'
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNewsData, selectNewsData, selectNewsLoading, selectNewsError, deleteNewsData } from "../../app/NewsSlice";
 
 
 const NewsPage = () => {
@@ -98,10 +106,10 @@ const NewsPage = () => {
                 key={index}
                 item
                 xs={12}
-                s={7}
-                md={5}
-                lg={4}
-                xl={2.4}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",

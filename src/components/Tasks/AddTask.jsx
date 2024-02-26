@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
@@ -14,12 +14,11 @@ import {
     Snackbar,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
-import { AddTaskData } from "../../app/TaskSlice";
 import { useNavigate } from "react-router-dom";
+import { AddTaskData } from "../../app/TaskSlice";
 
 
 const AddTask = () => {
@@ -66,7 +65,7 @@ const AddTask = () => {
         })
     }
 
-    const handleSnackbarClose = (event, reason) => {
+    const handleSnackbarClose = (reason) => {
         if (reason === "clickaway") {
             return;
         }

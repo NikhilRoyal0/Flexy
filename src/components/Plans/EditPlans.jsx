@@ -9,11 +9,14 @@ import {
   TextField,
   Button,
   Popover,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSelector, useDispatch } from "react-redux";
+import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
-import { selectPlansData, fetchPlansData, updatePlans, updatePlansData } from "../../app/PlansSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPlansData, fetchPlansData, updatePlansData } from "../../app/PlansSlice";
 
 const EditPlan = () => {
   const dispatch = useDispatch();
@@ -21,6 +24,8 @@ const EditPlan = () => {
   const { planId: planIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
   const [data, setData] = useState({
     planId: "",
@@ -33,19 +38,25 @@ const EditPlan = () => {
 
 
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-    
-      const response = dispatch(updatePlansData(data.planId, data));
-    
-      const updatedPlansData = response.data;
-      
-      dispatch(updatePlans(updatedPlansData)).then(()=>{
-        navigate("/plans")
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    dispatch(updatePlansData(data.planId, data))
+      .then(() => {
+        toggleEditMode();
+
+        showSnackbar('Plan updated successfully!');
+
+        setTimeout(() => {
+          navigate("../plans");
+        }, 1000);
       })
-      console.log(updatePlans)
-    
-    };
+
+      .catch((error) => {
+        showSnackbar('Error in updating plan. Please try again.');
+        console.error('Error in updating plan:', error);
+      });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +86,7 @@ const EditPlan = () => {
   }, [planIdParam, dispatch, planData]);
 
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div
         style={{
@@ -89,6 +100,18 @@ const EditPlan = () => {
       </div>
     );
   }
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarOpen(true);
+  };
+
 
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
@@ -118,7 +141,7 @@ const EditPlan = () => {
         <br />
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
+            <Grid item xs={12} md={12}>
               <Card
                 variant="outlined"
                 sx={{
@@ -128,7 +151,7 @@ const EditPlan = () => {
                 }}
               >
                 <img
-                  src={data && data.planImages} 
+                  src={data && data.planImages}
                   alt="Preview"
                   id="planImages"
                   name="planImages"
@@ -139,22 +162,22 @@ const EditPlan = () => {
                     marginTop: "auto",
                   }}
                   onClick={handleImageClick}
-                  />
-                  {editMode && (
-                <Popover
-                  open={Boolean(popoverAnchor)}
-                  anchorEl={popoverAnchor}
-                  onClose={handlePopoverClose}
-                  disabled={!editMode}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                >
+                />
+                {editMode && (
+                  <Popover
+                    open={Boolean(popoverAnchor)}
+                    anchorEl={popoverAnchor}
+                    onClose={handlePopoverClose}
+                    disabled={!editMode}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
                     <input
                       type="file"
                       id="planImages"
@@ -170,8 +193,8 @@ const EditPlan = () => {
                     >
                       Change
                     </Button>
-                </Popover>
-              )}
+                  </Popover>
+                )}
               </Card>
             </Grid>
 
@@ -226,7 +249,7 @@ const EditPlan = () => {
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success"  type="submit" onSubmit={handleSubmit}>
+              <Button variant="contained" color="success" type="submit" onSubmit={handleSubmit}>
                 Save
               </Button>
               <Button variant="contained" color="error" onClick={toggleEditMode}>
@@ -239,6 +262,29 @@ const EditPlan = () => {
             </Button>
           )}
         </form>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={snackbarOpen}
+          autoHideDuration={5000}
+          onClose={handleSnackbarClose}
+          message="Plan updated successfully!"
+          action={
+            <React.Fragment>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleSnackbarClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+        />
 
       </CardContent>
     </Card>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     Card,
     CardContent,
@@ -14,7 +14,6 @@ import {
     IconButton,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from 'react-redux'
@@ -54,7 +53,7 @@ const AddNews = () => {
             console.log(formData);
             setSnackbarOpen(true);
             setTimeout(() => {
-                navigate("/news");
+                navigate("../news");
             }, 1000);
         });
     };
