@@ -71,7 +71,7 @@ export const updateBannerData = (bannerId, data) => async (dispatch) => {
         const updatedBannerData = response.data;
 
         dispatch(updateBanner(updatedBannerData));
-        
+
     } catch (error) {
         console.error('Error in updateBannerData:', error);
     }

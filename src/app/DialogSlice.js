@@ -13,22 +13,22 @@ const dialogData = [
     { id: 10, title: 'खुदीराम बोस', content: 'खुदीराम बोस, सबसे युवा क्रांतिकारी में से एक, ने भारतीय स्वतंत्रता के लिए अपना जीवन बलिदान किया।' },
     { id: 11, title: 'सरोजिनी नायडू', content: 'सरोजिनी नायडू, भारत की बुलबुल, कवित्री, और भारतीय राष्ट्रीय आंदोलन में प्रमुख नेता।' },
     { id: 12, title: 'मंगल पांडे', content: 'मंगल पांडे, वह सेपाई जो भारतीय बगावत 1857 के घटनाओं में महत्वपूर्ण भूमिका निभाई।' },
-  ];
-  
+];
 
 
-  const DialogSlice = createSlice({
-    name:'dialog',
-    initialState:{
+
+const DialogSlice = createSlice({
+    name: 'dialog',
+    initialState: {
         data: dialogData
     },
     reducers: {
-        setDialogData :(state,action) =>{
+        setDialogData: (state, action) => {
             state.data = action.payload
         }
     }
-  })
+})
 
-  export const {setDialogData} = DialogSlice.actions
-  export const selectDialogData = (state) => state.dialogData.data;
-  export default DialogSlice.reducer;
+export const { setDialogData } = DialogSlice.actions
+export const selectDialogData = (state) => state.dialogData.data;
+export default DialogSlice.reducer;

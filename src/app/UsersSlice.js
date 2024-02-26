@@ -30,7 +30,7 @@ export const { setUsersData, setUsersLoading, setUsersError } = UsersSlice.actio
 export const fetchUsersData = () => async (dispatch) => {
     try {
         dispatch(setUsersLoading());
-        const response = await axios.get( import.meta.env.VITE_BASE_URL +"admin/userslist");
+        const response = await axios.get(import.meta.env.VITE_BASE_URL + "admin/userslist");
         dispatch(setUsersData(response.data));
     } catch (error) {
         dispatch(setUsersError(error.message));
