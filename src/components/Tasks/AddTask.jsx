@@ -44,7 +44,7 @@ const AddTask = () => {
             
 
             dispatch(AddTaskData(form)).then(()=>{
-                navigate("tasks/task-list")
+                navigate("../tasks/task-list")
             })
 
             console.log(formData);
