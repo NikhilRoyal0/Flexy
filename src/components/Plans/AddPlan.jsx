@@ -10,12 +10,16 @@ import {
     Button,
     Grid,
     Popover,
+    Snackbar,
+    IconButton
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { AddPlanData } from "../../app/PlansSlice";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const AddPlan = () => {
@@ -23,6 +27,8 @@ const AddPlan = () => {
     const navigate = useNavigate();
     const [selectedFiles, setSelectedFiles] = React.useState([]);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
     const [formData, setFormData] = React.useState({
         'planTitle': '',
@@ -40,20 +46,30 @@ const AddPlan = () => {
         form.append('planExtraDetails', formData.planExtraDetails)
         form.append('image', formData.selectedFiles)
 
-        dispatch(AddPlanData(form)).then(()=>{
-            navigate("/plans")
-        })
-
-        console.log(formData);
-    }
+        dispatch(AddPlanData(form)).then(() => {
+            console.log(formData);
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                navigate("../plans");
+            }, 1000);
+        });
+    };
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target
+        const { name, value } = e.target
         setFormData({
-            ...formData, 
+            ...formData,
             [name]: value
         })
     }
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setSnackbarOpen(false);
+    };
 
 
     const handleFileSelect = (event) => {
@@ -169,7 +185,7 @@ const AddPlan = () => {
                                             name="planImages"
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
-                                            required
+                                            required={selectedFiles.length === 0}
                                         />
                                         <Card sx={{
                                             width: 190,
@@ -186,7 +202,7 @@ const AddPlan = () => {
                                                         />
                                                         <br />
                                                         <Typography variant="caption" sx={{ color: '#000' }}>
-                                                            Upload Image*
+                                                            Upload Image
                                                         </Typography>
                                                     </CardContent>
                                                 </Grid>
@@ -200,7 +216,7 @@ const AddPlan = () => {
                                 <TextField
                                     id="plan-title"
                                     label="Plan Title"
-                                    name = "planTitle"
+                                    name="planTitle"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth
@@ -253,6 +269,28 @@ const AddPlan = () => {
                     </form>
                 </CardContent>
             </Card>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+                open={snackbarOpen}
+                autoHideDuration={5000}
+                onClose={handleSnackbarClose}
+                message="Plan added successfully!"
+                action={
+                    <React.Fragment>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleSnackbarClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
         </div>
     );
 };

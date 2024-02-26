@@ -10,9 +10,13 @@ import {
     Button,
     Grid,
     Popover,
+    Snackbar,
+    IconButton
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { AddBannerData } from "../../app/BannerSlice";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +27,8 @@ const AddBanner = () => {
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
     const [formData, setFormData] = React.useState({
         'title': '',
@@ -41,12 +47,14 @@ const AddBanner = () => {
         form.append('bannerType', formData.bannerType)
         form.append('image', selectedFile)
 
-        dispatch(AddBannerData(form)).then(()=>{
-            navigate("/setting/banners-list")
-        })
-
-        console.log(formData);
-    }
+        dispatch(AddBannerData(form)).then(() => {
+            console.log(formData);
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                navigate("/setting/banners-list");
+            }, 1000);
+        });
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -56,7 +64,13 @@ const AddBanner = () => {
         })
     }
 
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
 
+        setSnackbarOpen(false);
+    };
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
@@ -161,6 +175,7 @@ const AddBanner = () => {
                                             name='image'
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
+                                            required
                                         />
                                         <Card sx={{ maxWidth: 190, height: 150, textAlign: "center", display: "flex" }}>
                                             <CardActionArea onClick={() => document.getElementById("file-input").click()}>
@@ -183,7 +198,7 @@ const AddBanner = () => {
                                 <TextField
                                     id="title"
                                     label="Title"
-                                    name = "title"
+                                    name="title"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth
@@ -197,7 +212,7 @@ const AddBanner = () => {
                                 <TextField
                                     id="endDate"
                                     label="endDateTime"
-                                    name = "endDate"
+                                    name="endDate"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth
@@ -211,7 +226,7 @@ const AddBanner = () => {
                                 <TextField
                                     id="bannerType"
                                     label="Banner-type"
-                                    name= "bannerType"
+                                    name="bannerType"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth
@@ -232,6 +247,28 @@ const AddBanner = () => {
                     </form>
                 </CardContent>
             </Card>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+                open={snackbarOpen}
+                autoHideDuration={5000}
+                onClose={handleSnackbarClose}
+                message="Banner added successfully!"
+                action={
+                    <React.Fragment>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleSnackbarClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
         </div>
     );
 };

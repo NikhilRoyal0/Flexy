@@ -10,10 +10,14 @@ import {
     Button,
     Grid,
     Popover,
+    Snackbar,
+    IconButton,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import { useState } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
-import {useDispatch} from 'react-redux'
+import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch } from 'react-redux'
 import { AddData } from "../../app/NewsSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +27,8 @@ const AddNews = () => {
     const dispatch = useDispatch()
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
     const [formData, setFormData] = React.useState({
         'newsTitle': '',
@@ -46,18 +52,30 @@ const AddNews = () => {
 
         dispatch(AddData(form)).then(() => {
             console.log(formData);
-            navigate('/news');
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                navigate("/news");
+            }, 1000);
         });
-    }
+    };
+
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target
+        const { name, value } = e.target
         setFormData({
-            ...formData, 
+            ...formData,
             [name]: value
         })
     }
 
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setSnackbarOpen(false);
+    };
 
 
     const handleFileSelect = (event) => {
@@ -161,9 +179,10 @@ const AddNews = () => {
                                         <input
                                             id="file-input"
                                             type="file"
-                                            name = "mediaPath"
+                                            name="mediaPath"
                                             onChange={handleFileSelect}
                                             style={{ display: 'none' }}
+                                            required
                                         />
                                         <Card sx={{ maxWidth: 190, height: 150, textAlign: "center", display: "flex" }}>
                                             <CardActionArea onClick={() => document.getElementById("file-input").click()}>
@@ -186,7 +205,7 @@ const AddNews = () => {
                                 <TextField
                                     id="news-title"
                                     label="News Title"
-                                    name = "newsTitle"
+                                    name="newsTitle"
                                     variant="outlined"
                                     fullWidth
                                     required
@@ -201,7 +220,7 @@ const AddNews = () => {
                                     id="news-date"
                                     label="News Date"
                                     variant="outlined"
-                                    name = "newsDate"
+                                    name="newsDate"
                                     fullWidth
                                     required
                                     onChange={handleInputChange}
@@ -214,7 +233,7 @@ const AddNews = () => {
                                 <TextField
                                     id="news-info"
                                     label="News Info"
-                                    name ="newsInfo"
+                                    name="newsInfo"
                                     required
                                     onChange={handleInputChange}
                                     fullWidth
@@ -236,6 +255,28 @@ const AddNews = () => {
                     </form>
                 </CardContent>
             </Card>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+                open={snackbarOpen}
+                autoHideDuration={5000}
+                onClose={handleSnackbarClose}
+                message="News added successfully!"
+                action={
+                    <React.Fragment>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleSnackbarClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
         </div>
     );
 };
