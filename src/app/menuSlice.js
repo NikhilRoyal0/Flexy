@@ -194,7 +194,7 @@ export const fetchMenuItems = () => (dispatch) => {
           href: "/setting/dialogs-list",
         },
         {
-          id: 35,
+          id: 36,
           title: "Banners List",
           icon: ViewCarouselIcon,
           href: "/setting/banners-list",
@@ -209,13 +209,13 @@ export const fetchMenuItems = () => (dispatch) => {
       visible: isVisible,
       subItems: [
         {
-          id: 36,
+          id: 37,
           title: "Task Category",
           icon: SplitscreenIcon,
           href: "/tasks/task-category",
         },
         {
-          id: 37,
+          id: 38,
           title: "Task List",
           icon: FormatListBulletedIcon,
           href: "/tasks/task-list",
