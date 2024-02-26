@@ -11,6 +11,7 @@ import {
   Popover,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
+import CircularProgress from '@mui/material/CircularProgress';
 import AddIcon from "@mui/icons-material/Add";
 import { selectBannerData, fetchBannerData, updateBannerData } from "../../app/BannerSlice";
 
@@ -69,10 +70,20 @@ const EditBanner = () => {
   }, [bannerIdParam, dispatch, bannerData]);
 
 
-  if (loading) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" size={120} thickness={4} />
+      </div>
+    );
   }
-
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
   };

@@ -9,7 +9,7 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import { fetchNewsData, selectNewsData, selectNewsLoading, selectNewsError, deleteNewsData } from "../../app/NewsSlice";
 import { useNavigate } from "react-router-dom";
 import errorimage from '../../assets/images/errorimage.jpg'
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const NewsPage = () => {
@@ -47,7 +47,18 @@ const NewsPage = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" size={120} thickness={4} />
+      </div>
+    );
   }
 
   if (error) {

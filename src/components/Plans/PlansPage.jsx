@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPlansData, selectPlansData, selectPlansLoading, selectPlansError, deletePlanData } from "../../app/PlansSlice";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import errorimage from '../../assets/images/errorimage.jpg'
+import errorimage from '../../assets/images/errorimage.jpg';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 const PlansPage = () => {
@@ -43,7 +45,18 @@ const PlansPage = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" size={120} thickness={4} />
+      </div>
+    );
   }
 
   if (error) {

@@ -10,6 +10,7 @@ import {
   Button,
   Popover,
 } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import { selectNewsData, fetchNewsData, updateNewsData } from "../../app/NewsSlice";
@@ -71,10 +72,20 @@ const EditNews = () => {
   }, [newsIdParam, dispatch, newsData]);
 
 
-  if (loading) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" size={120} thickness={4} />
+      </div>
+    );
   }
-
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
   };

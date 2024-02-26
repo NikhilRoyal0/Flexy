@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError, deleteTaskData } from "../../app/TaskSlice";
 import { useNavigate } from "react-router-dom";
 import errorimage from '../../assets/images/errorimage.jpg'
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
@@ -45,7 +46,18 @@ const TaskList = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" size={120} thickness={4} />
+      </div>
+    );
   }
 
   if (error) {
