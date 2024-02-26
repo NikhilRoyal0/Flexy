@@ -1,11 +1,10 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
-
-import { useEffect } from "react";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError } from "../../app/TaskSlice";
+import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError, deleteTaskData } from "../../app/TaskSlice";
 import { useNavigate } from "react-router-dom";
 import errorimage from '../../assets/images/errorimage.jpg'
 
@@ -18,6 +17,28 @@ const TaskList = () => {
   const taskData = useSelector(selectTasksData);
   const isLoading = useSelector(selectTasksLoading);
   const error = useSelector(selectTasksError);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  const deleteClick = (task) => {
+    setTaskToDelete(task);
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (taskToDelete) {
+      dispatch(deleteTaskData(taskToDelete.taskId)).then(() => {
+        setDeleteConfirmationOpen(false);
+        setTaskToDelete(null);
+        dispatch(fetchTasksData());
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmationOpen(false);
+    setTaskToDelete(null);
+  };
 
   useEffect(() => {
     dispatch(fetchTasksData());
@@ -136,6 +157,13 @@ const TaskList = () => {
                     <Button variant="outlined" color="primary" onClick={() => editClick(Task)}>
                       Edit
                     </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => deleteClick(Task)}
+                    >
+                      Delete
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>
@@ -143,6 +171,25 @@ const TaskList = () => {
           </Grid>
         </CardContent>
       </Card>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={handleDeleteCancel}
+      >
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this task?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

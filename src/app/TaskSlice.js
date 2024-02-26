@@ -27,10 +27,17 @@ const TasksSlice = createSlice({
       state.data.map((task) => task.taskId === updatedTask.taskId);
 
     },
+    deleteTask: (state, action) => {
+      const taskIdToDelete = action.payload;
+      state.data = state.data.filter((task) => task.taskId !== taskIdToDelete);
+      state.isLoading = false;
+      state.error = null;
+    },
+
   },
 });
 
-export const { setTasksData, setTasksLoading, setTasksError, updateTask, } = TasksSlice.actions;
+export const { setTasksData, setTasksLoading, setTasksError, updateTask, deleteTask } = TasksSlice.actions;
 
 export const fetchTasksData = () => async (dispatch) => {
   try {
@@ -76,6 +83,28 @@ export const updateTaskData = (taskId, data) => async (dispatch) => {
 
     dispatch(updateTask(updatedTaskData));
 
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const deleteTaskData = (taskId, data) => async (dispatch) => {
+  try {
+
+    const response = await axios.delete(
+      import.meta.env.VITE_BASE_URL + `feature/deleteDailyTask/${taskId}`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    const deleteTaskData = response.data;
+
+    dispatch(deleteTask(deleteTaskData));
 
   } catch (error) {
     console.error('Error:', error);

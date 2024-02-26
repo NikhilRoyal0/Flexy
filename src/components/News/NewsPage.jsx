@@ -3,12 +3,12 @@ import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNewsData, selectNewsData, selectNewsLoading, selectNewsError } from "../../app/NewsSlice";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { fetchNewsData, selectNewsData, selectNewsLoading, selectNewsError, deleteNewsData } from "../../app/NewsSlice";
 import { useNavigate } from "react-router-dom";
 import errorimage from '../../assets/images/errorimage.jpg'
-
 
 
 
@@ -18,6 +18,29 @@ const NewsPage = () => {
   const newsData = useSelector(selectNewsData);
   const isLoading = useSelector(selectNewsLoading);
   const error = useSelector(selectNewsError);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
+  const [newsToDelete, setNewsToDelete] = useState(null);
+
+
+  const deleteClick = (news) => {
+    setNewsToDelete(news);
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (newsToDelete) {
+      dispatch(deleteNewsData(newsToDelete.newsId)).then(() => {
+        setDeleteConfirmationOpen(false);
+        setNewsToDelete(null);
+        dispatch(fetchNewsData());
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmationOpen(false);
+    setNewsToDelete(null);
+  };
 
   useEffect(() => {
     dispatch(fetchNewsData());
@@ -43,7 +66,7 @@ const NewsPage = () => {
   return (
     <div style={{ position: "relative" }}>
       <Button
-         sx={{
+        sx={{
           position: "absolute",
           top: "10px",
           right: "30px",
@@ -58,7 +81,7 @@ const NewsPage = () => {
       </Button>
       <Card>
         <CardContent>
-        <Grid container sx={{ marginTop: "25px" }}>
+          <Grid container sx={{ marginTop: "25px" }}>
             {newsData.map((News, index) => (
               <Grid
                 key={index}
@@ -137,6 +160,13 @@ const NewsPage = () => {
                     <Button variant="outlined" color="primary" onClick={() => editClick(News)}>
                       Edit
                     </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => deleteClick(News)}
+                    >
+                      Delete
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>
@@ -144,6 +174,25 @@ const NewsPage = () => {
           </Grid>
         </CardContent>
       </Card>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={handleDeleteCancel}
+      >
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this news?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

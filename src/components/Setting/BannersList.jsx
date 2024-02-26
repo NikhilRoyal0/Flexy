@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBannerData, selectBannerData, selectBannerLoading, selectBannerError } from "../../app/BannerSlice";
+import { fetchBannerData, selectBannerData, selectBannerLoading, selectBannerError, deleteBannerData } from "../../app/BannerSlice";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import errorimage from '../../assets/images/errorimage.jpg';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -13,6 +14,28 @@ const BannersList = () => {
   const bannerData = useSelector(selectBannerData);
   const isLoading = useSelector(selectBannerLoading);
   const error = useSelector(selectBannerError);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
+  const [bannerToDelete, setBannerToDelete] = useState(null);
+
+  const deleteClick = (banner) => {
+    setBannerToDelete(banner);
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (bannerToDelete) {
+      dispatch(deleteBannerData(bannerToDelete.bannerId)).then(() => {
+        setDeleteConfirmationOpen(false);
+        setBannerToDelete(null);
+        dispatch(fetchBannerData());
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmationOpen(false);
+    setBannerToDelete(null);
+  };
 
   useEffect(() => {
     dispatch(fetchBannerData());
@@ -112,6 +135,13 @@ const BannersList = () => {
                       <Button variant="outlined" color="primary" onClick={() => editClick(Banner)}>
                         Edit
                       </Button>
+                      <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => deleteClick(Banner)}
+                    >
+                      Delete
+                    </Button>
                     </Typography>
                   </CardContent>
                 </Card>
@@ -120,6 +150,25 @@ const BannersList = () => {
           </Grid>
         </CardContent>
       </Card>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={handleDeleteCancel}
+      >
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this Banner?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

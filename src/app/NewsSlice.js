@@ -25,7 +25,12 @@ const NewsSlice = createSlice({
     updateNews: (state, action) => {
       const updatedNews = action.payload;
       state.data.map((news) => news.newsId === updatedNews.newsId);
-
+    },
+    deleteNews: (state, action) => {
+      const newsIdToDelete = action.payload;
+      state.data = state.data.filter((news) => news.newsId !== newsIdToDelete);
+      state.isLoading = false;
+      state.error = null;
     },
   },
 });
@@ -35,6 +40,7 @@ export const {
   setNewsLoading,
   setNewsError,
   updateNews,
+  deleteNews,
 } = NewsSlice.actions;
 
 export const fetchNewsData = () => async (dispatch) => {
@@ -76,6 +82,28 @@ export const updateNewsData = (newsId, data) => async (dispatch) => {
     const updatedNewsData = response.data;
 
     dispatch(updateNews(updatedNewsData));
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export const deleteNewsData = (newsId, data) => async (dispatch) => {
+  try {
+
+    const response = await axios.delete(
+      import.meta.env.VITE_BASE_URL + `feature/deleteNews/${newsId}`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    const deleteNewsData = response.data;
+
+    dispatch(deleteNews(deleteNewsData));
 
   } catch (error) {
     console.error('Error:', error);

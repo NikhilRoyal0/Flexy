@@ -27,6 +27,12 @@ const BannerSlice = createSlice({
             state.data.map((banner) => banner.bannerId === updatedBanner.bannerId);
 
         },
+        deleteBanner: (state, action) => {
+            const bannerIdToDelete = action.payload;
+            state.data = state.data.filter((banner) => banner.bannerId !== bannerIdToDelete);
+            state.isLoading = false;
+            state.error = null;
+          },
     },
 });
 
@@ -76,6 +82,28 @@ export const updateBannerData = (bannerId, data) => async (dispatch) => {
         console.error('Error in updateBannerData:', error);
     }
 };
+
+export const deleteBannerData = (bannerId, data) => async (dispatch) => {
+    try {
+  
+      const response = await axios.delete(
+        import.meta.env.VITE_BASE_URL + `feature/deleteBanner/${bannerId}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+  
+      const deleteBannerData = response.data;
+  
+      dispatch(deleteBanner(deleteBannerData));
+  
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
 

@@ -32,16 +32,18 @@ const EditTask = () => {
 
 
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-    
-      dispatch(updateTaskData(data.taskId, data)).then(()=>{
-        navigate("tasks/task-list")
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    dispatch(updateTaskData(data.taskId, data))
+      .then(() => {
+        toggleEditMode();
+        navigate("../tasks/task-list");
       })
 
-      toggleEditMode()
+    toggleEditMode()
 
-    };
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -103,7 +105,7 @@ const EditTask = () => {
         <br />
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
+            <Grid item xs={12} md={12}>
               <Card
                 variant="outlined"
                 sx={{
@@ -113,7 +115,7 @@ const EditTask = () => {
                 }}
               >
                 <img
-                  src={data && data.taskMedia} 
+                  src={data && data.taskMedia}
                   alt="Preview"
                   id="image"
                   style={{
@@ -123,22 +125,22 @@ const EditTask = () => {
                     marginTop: "auto",
                   }}
                   onClick={handleImageClick}
-                  />
-                  {editMode && (
-                <Popover
-                  open={Boolean(popoverAnchor)}
-                  anchorEl={popoverAnchor}
-                  onClose={handlePopoverClose}
-                  disabled={!editMode}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                >
+                />
+                {editMode && (
+                  <Popover
+                    open={Boolean(popoverAnchor)}
+                    anchorEl={popoverAnchor}
+                    onClose={handlePopoverClose}
+                    disabled={!editMode}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
                     <input
                       type="file"
                       id="image"
@@ -154,8 +156,8 @@ const EditTask = () => {
                     >
                       Change
                     </Button>
-                </Popover>
-              )}
+                  </Popover>
+                )}
               </Card>
             </Grid>
 
@@ -211,7 +213,7 @@ const EditTask = () => {
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success"  type="submit" >
+              <Button variant="contained" color="success" type="submit" >
                 Save
               </Button>
               <Button variant="contained" color="error" onClick={toggleEditMode}>

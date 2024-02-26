@@ -1,9 +1,10 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPlansData, selectPlansData, selectPlansLoading, selectPlansError } from "../../app/PlansSlice";
+import { fetchPlansData, selectPlansData, selectPlansLoading, selectPlansError, deletePlanData } from "../../app/PlansSlice";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import errorimage from '../../assets/images/errorimage.jpg'
 
@@ -14,6 +15,28 @@ const PlansPage = () => {
   const plansData = useSelector(selectPlansData);
   const isLoading = useSelector(selectPlansLoading);
   const error = useSelector(selectPlansError);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [planToDelete, setplanToDelete] = useState(null);
+
+  const deleteClick = (plan) => {
+    setplanToDelete(plan);
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (planToDelete) {
+      dispatch(deletePlanData(planToDelete.planId)).then(() => {
+        setDeleteConfirmationOpen(false);
+        setplanToDelete(null);
+        dispatch(fetchPlansData());
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmationOpen(false);
+    setplanToDelete(null);
+  };
 
   useEffect(() => {
     dispatch(fetchPlansData());
@@ -127,6 +150,13 @@ const PlansPage = () => {
                       <Button variant="outlined" color="primary" onClick={() => editClick(Plan)}>
                         Edit
                       </Button>
+                      <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => deleteClick(Plan)}
+                    >
+                      Delete
+                    </Button>
                     </Typography>
                   </CardContent>
                 </Card>
@@ -135,6 +165,25 @@ const PlansPage = () => {
           </Grid>
         </CardContent>
       </Card>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={handleDeleteCancel}
+      >
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this plan?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

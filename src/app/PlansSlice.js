@@ -23,15 +23,21 @@ const PlansSlice = createSlice({
       state.error = action.payload;
     },
     updatePlans: (state, action) => {
-      const updatedPlans = action.payload;
+      const updatedPlan = action.payload;
       console.log(action.payload);
-      state.data.map((Plans) => Plans.planId === updatedPlans.planId);
+      state.data.map((plan) => plan.planId === updatedPlan.planId);
 
+    },
+    deletePlan: (state, action) => {
+      const planIdToDelete = action.payload;
+      state.data = state.data.filter((plan) => plan.planId !== planIdToDelete);
+      state.isLoading = false;
+      state.error = null;
     },
   }
 });
 
-export const { setPlansData, setPlansLoading, setPlansError, updatePlans } = PlansSlice.actions;
+export const { setPlansData, setPlansLoading, setPlansError, updatePlans, deletePlan } = PlansSlice.actions;
 
 export const fetchPlansData = () => async (dispatch) => {
   try {
@@ -76,6 +82,28 @@ export const updatePlansData = (planId, data) => async (dispatch) => {
     const updatedPlansData = response.data;
 
     dispatch(updatePlans(updatedPlansData));
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const deletePlanData = (planId, data) => async (dispatch) => {
+  try {
+
+    const response = await axios.delete(
+      import.meta.env.VITE_BASE_URL + `feature/deletePlan/${planId}`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    const deletePlanData = response.data;
+
+    dispatch(deletePlan(deletePlanData));
 
   } catch (error) {
     console.error('Error:', error);
