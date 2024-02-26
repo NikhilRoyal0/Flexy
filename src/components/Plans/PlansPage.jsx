@@ -167,6 +167,16 @@ const PlansPage = () => {
                     >
                       {Plan.planExtraDetails}
                     </Typography>
+                    <Typography
+                      color="textSecondary"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        mt: 1,
+                      }}
+                    >
+                      {Plan.createdBy}
+                    </Typography>
                     <br />
                     <Typography>
                       <Button variant="outlined" color="primary" onClick={() => editClick(Plan)}>

@@ -33,7 +33,6 @@ const EditPlan = () => {
     planInfo: "",
     planExtraDetails: "",
     image: "",
-    createdBy: "",
   });
 
 
@@ -233,7 +232,7 @@ const EditPlan = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Status"
+                label="Created By"
                 variant="outlined"
                 name='isPublished'
                 onChange={handleInputChange}
@@ -242,7 +241,6 @@ const EditPlan = () => {
                 disabled={!editMode}
               />
             </Grid>
-
           </Grid>
           <br />
           <Divider />
