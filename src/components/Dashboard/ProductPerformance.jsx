@@ -71,8 +71,9 @@ const ProductPerformance = () => {
         <Box
           sx={{
             overflow: "auto",
+            overflowX: "hidden",
             mt: 3,
-            maxHeight: 470,
+            maxHeight: 374,
           }}
         >
           <ExampleTable />
