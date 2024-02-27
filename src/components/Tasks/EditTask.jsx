@@ -10,6 +10,7 @@ import {
   Button,
   Popover,
   Snackbar,
+  SnackbarContent,
   IconButton,
   FormControl,
   Select,
@@ -21,6 +22,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
 import { selectTasksData, fetchTasksData, updateTaskData } from "../../app/TaskSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
+
 
 const EditTask = () => {
   const dispatch = useDispatch();
@@ -29,6 +32,8 @@ const EditTask = () => {
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
 
 
   const [data, setData] = useState({
@@ -44,14 +49,14 @@ const EditTask = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setSnackbarOpen(false);
+    if (!isSuccess) {
+      setSnackbarOpen(false);
+    }
   };
 
   const showSnackbar = (message) => {
     setSnackbarOpen(true);
   };
-
-
 
 
   const handleSubmit = async (event) => {
@@ -60,6 +65,7 @@ const EditTask = () => {
     dispatch(updateTaskData(data.taskId, data))
       .then(() => {
         toggleEditMode();
+        setIsSuccess(true)
 
         showSnackbar('Task updated successfully!');
 
@@ -69,6 +75,8 @@ const EditTask = () => {
       })
 
       .catch((error) => {
+        setIsSuccess(false);
+
         showSnackbar('Error in updating task. Please try again.');
         console.error('Error in updating task:', error);
       });
@@ -301,9 +309,10 @@ const EditTask = () => {
           open={snackbarOpen}
           autoHideDuration={5000}
           onClose={handleSnackbarClose}
-          message="Task updated successfully!"
-          action={
-            <React.Fragment>
+        >
+          <SnackbarContent
+            message="task updated successfully!"
+            action={
               <IconButton
                 size="small"
                 aria-label="close"
@@ -312,9 +321,15 @@ const EditTask = () => {
               >
                 <CloseIcon fontSize="small" />
               </IconButton>
-            </React.Fragment>
-          }
-        />
+            }
+            sx={{
+              backgroundColor: isSuccess
+                ? baseTheme.palette.success.main
+                : baseTheme.palette.error.main,
+              color: isSuccess ? '#fff' : undefined,
+            }}
+          />
+        </Snackbar>
       </CardContent>
     </Card>
   );

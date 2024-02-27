@@ -63,6 +63,10 @@ const TaskCategory = () => {
                 e.target.alt = "Error Image";
               }}
               width="100%"
+              height="210px"
+              style={{
+                objectFit: 'contain',
+              }}
             />
             <CardContent
               sx={{

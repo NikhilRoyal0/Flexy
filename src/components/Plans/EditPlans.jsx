@@ -10,6 +10,7 @@ import {
   Button,
   Popover,
   Snackbar,
+  SnackbarContent,
   IconButton,
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -17,6 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPlansData, fetchPlansData, updatePlansData } from "../../app/PlansSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditPlan = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,8 @@ const EditPlan = () => {
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
 
 
   const [data, setData] = useState({
@@ -42,18 +46,18 @@ const EditPlan = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+
     dispatch(updatePlansData(data.planId, data))
       .then(() => {
         toggleEditMode();
-
+        setIsSuccess(true);
         showSnackbar('Plan updated successfully!');
-
         setTimeout(() => {
           navigate("../plans");
         }, 1000);
       })
-
       .catch((error) => {
+        setIsSuccess(false); 
         showSnackbar('Error in updating plan. Please try again.');
         console.error('Error in updating plan:', error);
       });
@@ -123,7 +127,9 @@ const EditPlan = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setSnackbarOpen(false);
+    if (!isSuccess) {
+      setSnackbarOpen(false);
+    }
   };
 
   const showSnackbar = (message) => {
@@ -288,9 +294,10 @@ const EditPlan = () => {
           open={snackbarOpen}
           autoHideDuration={5000}
           onClose={handleSnackbarClose}
-          message="Plan updated successfully!"
-          action={
-            <React.Fragment>
+        >
+          <SnackbarContent
+            message="Plan updated successfully!"
+            action={
               <IconButton
                 size="small"
                 aria-label="close"
@@ -299,10 +306,15 @@ const EditPlan = () => {
               >
                 <CloseIcon fontSize="small" />
               </IconButton>
-            </React.Fragment>
-          }
-        />
-
+            }
+            sx={{
+              backgroundColor: isSuccess
+                ? baseTheme.palette.success.main
+                : baseTheme.palette.error.main,
+              color: isSuccess ? '#fff' : undefined,
+            }}
+          />
+        </Snackbar>
       </CardContent>
     </Card>
   );

@@ -11,6 +11,7 @@ import {
   Popover,
   IconButton,
   Snackbar,
+  SnackbarContent,
   InputLabel,
   FormControl,
   Select,
@@ -21,6 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
 import { selectBannerData, fetchBannerData, updateBannerData } from "../../app/BannerSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditBanner = () => {
   const navigate = useNavigate();
@@ -29,6 +31,8 @@ const EditBanner = () => {
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
 
   const [oldData, setoldData] = useState(null);
 
@@ -48,7 +52,7 @@ const EditBanner = () => {
     dispatch(updateBannerData(data.bannerId, data))
       .then(() => {
         toggleEditMode();
-
+        setIsSuccess(true)
         showSnackbar('Banner updated successfully!');
 
         setTimeout(() => {
@@ -57,6 +61,7 @@ const EditBanner = () => {
       })
 
       .catch((error) => {
+        setIsSuccess(false);
         showSnackbar('Error in updating banner. Please try again.');
         console.error('Error in updating banner:', error);
       });
@@ -126,7 +131,9 @@ const EditBanner = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setSnackbarOpen(false);
+    if (!isSuccess) {
+      setSnackbarOpen(false);
+    }
   };
 
   const showSnackbar = (message) => {
@@ -308,9 +315,10 @@ const EditBanner = () => {
           open={snackbarOpen}
           autoHideDuration={5000}
           onClose={handleSnackbarClose}
-          message="Banner updated successfully!"
-          action={
-            <React.Fragment>
+        >
+          <SnackbarContent
+            message="Banner updated successfully!"
+            action={
               <IconButton
                 size="small"
                 aria-label="close"
@@ -319,9 +327,15 @@ const EditBanner = () => {
               >
                 <CloseIcon fontSize="small" />
               </IconButton>
-            </React.Fragment>
-          }
-        />
+            }
+            sx={{
+              backgroundColor: isSuccess
+                ? baseTheme.palette.success.main
+                : baseTheme.palette.error.main,
+              color: isSuccess ? '#fff' : undefined,
+            }}
+          />
+        </Snackbar>
 
       </CardContent>
     </Card>

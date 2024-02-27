@@ -98,8 +98,12 @@ const TaskList = () => {
         <Typography sx={{ ml: 1 }}>Add Task</Typography>
       </Button>
       <Card>
-        <CardContent>
-          <Grid container sx={{ marginTop: "25px" }}>
+        <CardContent
+          sx={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }}
+        >          <Grid container sx={{ marginTop: "25px" }}>
             {taskData.map((Task, index) => (
               <Grid
                 key={index}
@@ -170,7 +174,7 @@ const TaskList = () => {
                       {Task.createdBy}
                     </Typography>
                     <br />
-                    <Button variant="outlined" color="primary" onClick={() => editClick(Task)}>
+                    <Button variant="outlined" color="primary" onClick={() => editClick(Task)} sx={{ ml: 1 }}>
                       Edit
                     </Button>
                     <Button

@@ -10,6 +10,7 @@ import {
   Button,
   Popover,
   Snackbar,
+  SnackbarContent,
   IconButton,
   FormControl,
   InputLabel,
@@ -21,6 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
 import { selectNewsData, fetchNewsData, updateNewsData } from "../../app/NewsSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditNews = () => {
   const navigate = useNavigate();
@@ -30,6 +32,8 @@ const EditNews = () => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [file, setFile] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+
 
 
   const [data, setData] = useState({
@@ -48,6 +52,7 @@ const EditNews = () => {
     dispatch(updateNewsData(data.newsId, data))
       .then(() => {
         toggleEditMode();
+        setIsSuccess(true)
 
         showSnackbar('News updated successfully!');
         console.log(data)
@@ -58,6 +63,7 @@ const EditNews = () => {
       })
 
       .catch((error) => {
+        setIsSuccess(false); 
         showSnackbar('Error in updating news. Please try again.');
         console.error('Error in updating news:', error);
       });
@@ -129,7 +135,9 @@ const EditNews = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setSnackbarOpen(false);
+    if (!isSuccess) {
+      setSnackbarOpen(false);
+    }
   };
 
   const showSnackbar = (message) => {
@@ -252,7 +260,7 @@ const EditNews = () => {
                 fullWidth
                 value={data && data.newsDate}
                 disabled={!editMode}
-                
+
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -303,9 +311,10 @@ const EditNews = () => {
           open={snackbarOpen}
           autoHideDuration={5000}
           onClose={handleSnackbarClose}
-          message="News updated successfully!"
-          action={
-            <React.Fragment>
+        >
+          <SnackbarContent
+            message="News updated successfully!"
+            action={
               <IconButton
                 size="small"
                 aria-label="close"
@@ -314,9 +323,15 @@ const EditNews = () => {
               >
                 <CloseIcon fontSize="small" />
               </IconButton>
-            </React.Fragment>
-          }
-        />
+            }
+            sx={{
+              backgroundColor: isSuccess
+                ? baseTheme.palette.success.main
+                : baseTheme.palette.error.main,
+              color: isSuccess ? '#fff' : undefined,
+            }}
+          />
+        </Snackbar>
 
       </CardContent>
     </Card>

@@ -11,6 +11,7 @@ import {
     Grid,
     Popover,
     Snackbar,
+    SnackbarContent,
     IconButton,
     FormControl,
     MenuItem,
@@ -23,6 +24,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from 'react-redux'
 import { AddData } from "../../app/NewsSlice";
 import { useNavigate } from "react-router-dom";
+import { baseTheme } from "../../assets/global/Theme-variable";
+
 
 
 const AddNews = () => {
@@ -31,6 +34,7 @@ const AddNews = () => {
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
 
     const [formData, setFormData] = React.useState({
@@ -54,6 +58,7 @@ const AddNews = () => {
         form.append('createdBy', formData.createdBy)
 
         dispatch(AddData(form)).then(() => {
+            setIsSuccess(true)
             console.log(formData);
             setSnackbarOpen(true);
             setTimeout(() => {
@@ -77,8 +82,10 @@ const AddNews = () => {
             return;
         }
 
-        setSnackbarOpen(false);
-    };
+        if (!isSuccess) {
+            setSnackbarOpen(false);
+        }
+    }
 
 
     const handleFileSelect = (event) => {
@@ -105,6 +112,8 @@ const AddNews = () => {
                 variant="outlined"
                 sx={{
                     p: 0,
+                    borderRadius: baseTheme.shape.borderRadius,
+                    padding: baseTheme.mixins.toolbar.padding,
                 }}
             >
                 <Box
@@ -283,9 +292,10 @@ const AddNews = () => {
                 open={snackbarOpen}
                 autoHideDuration={5000}
                 onClose={handleSnackbarClose}
-                message="News added successfully!"
-                action={
-                    <React.Fragment>
+            >
+                <SnackbarContent
+                    message="New News added successfully!"
+                    action={
                         <IconButton
                             size="small"
                             aria-label="close"
@@ -294,9 +304,15 @@ const AddNews = () => {
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
-                    </React.Fragment>
-                }
-            />
+                    }
+                    sx={{
+                        backgroundColor: isSuccess
+                            ? baseTheme.palette.success.main
+                            : baseTheme.palette.error.main,
+                        color: isSuccess ? '#fff' : undefined,
+                    }}
+                />
+            </Snackbar>
         </div>
     );
 };

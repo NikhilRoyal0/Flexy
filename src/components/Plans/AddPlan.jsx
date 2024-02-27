@@ -11,6 +11,7 @@ import {
     Grid,
     Popover,
     Snackbar,
+    SnackbarContent,
     IconButton,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
@@ -19,6 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { AddPlanData } from "../../app/PlansSlice";
 import { useNavigate } from 'react-router-dom';
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 
 const AddPlan = () => {
@@ -27,6 +29,8 @@ const AddPlan = () => {
     const [selectedFiles, setSelectedFiles] = React.useState([]);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+
 
 
     const [formData, setFormData] = React.useState({
@@ -52,6 +56,7 @@ const AddPlan = () => {
         form.append('image', formData.selectedFiles)
 
         dispatch(AddPlanData(form)).then(() => {
+            setIsSuccess(true)
             console.log(formData);
             setSnackbarOpen(true);
             setTimeout(() => {
@@ -73,7 +78,9 @@ const AddPlan = () => {
             return;
         }
 
-        setSnackbarOpen(false);
+        if (!isSuccess) {
+            setSnackbarOpen(false);
+        }
     };
 
 
@@ -104,6 +111,8 @@ const AddPlan = () => {
                 variant="outlined"
                 sx={{
                     p: 0,
+                    borderRadius: baseTheme.shape.borderRadius,
+                    padding: baseTheme.mixins.toolbar.padding,
                 }}
             >
                 <Box
@@ -120,7 +129,7 @@ const AddPlan = () => {
                                 fontWeight: "500",
                             }}
                         >
-                            Add Task
+                            Add Plan
                         </Typography>
                     </Box>
                 </Box>
@@ -320,9 +329,10 @@ const AddPlan = () => {
                 open={snackbarOpen}
                 autoHideDuration={5000}
                 onClose={handleSnackbarClose}
-                message="Plan added successfully!"
-                action={
-                    <React.Fragment>
+            >
+                <SnackbarContent
+                    message="New Plan added successfully!"
+                    action={
                         <IconButton
                             size="small"
                             aria-label="close"
@@ -331,9 +341,15 @@ const AddPlan = () => {
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
-                    </React.Fragment>
-                }
-            />
+                    }
+                    sx={{
+                        backgroundColor: isSuccess
+                            ? baseTheme.palette.success.main
+                            : baseTheme.palette.error.main,
+                        color: isSuccess ? '#fff' : undefined,
+                    }}
+                />
+            </Snackbar>
         </div>
     );
 };

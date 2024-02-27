@@ -12,6 +12,7 @@ import {
     Popover,
     IconButton,
     Snackbar,
+    SnackbarContent,
     InputLabel,
     Select,
     MenuItem,
@@ -23,6 +24,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AddTaskData } from "../../app/TaskSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 
 const AddTask = () => {
@@ -31,6 +33,7 @@ const AddTask = () => {
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
 
     const [formData, setFormData] = React.useState({
@@ -57,6 +60,7 @@ const AddTask = () => {
 
 
         dispatch(AddTaskData(form)).then(() => {
+            setIsSuccess(true)
             console.log(formData);
             setSnackbarOpen(true);
             setTimeout(() => {
@@ -78,7 +82,9 @@ const AddTask = () => {
             return;
         }
 
-        setSnackbarOpen(false);
+        if (!isSuccess) {
+            setSnackbarOpen(false);
+        }
     };
 
 
@@ -106,6 +112,8 @@ const AddTask = () => {
                 variant="outlined"
                 sx={{
                     p: 0,
+                    borderRadius: baseTheme.shape.borderRadius,
+                    padding: baseTheme.mixins.toolbar.padding,
                 }}
             >
                 <Box
@@ -312,9 +320,10 @@ const AddTask = () => {
                 open={snackbarOpen}
                 autoHideDuration={5000}
                 onClose={handleSnackbarClose}
-                message="Task added successfully!"
-                action={
-                    <React.Fragment>
+            >
+                <SnackbarContent
+                    message="New Task added successfully!"
+                    action={
                         <IconButton
                             size="small"
                             aria-label="close"
@@ -323,9 +332,15 @@ const AddTask = () => {
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
-                    </React.Fragment>
-                }
-            />
+                    }
+                    sx={{
+                        backgroundColor: isSuccess
+                            ? baseTheme.palette.success.main
+                            : baseTheme.palette.error.main,
+                        color: isSuccess ? '#fff' : undefined,
+                    }}
+                />
+            </Snackbar>
         </div>
     );
 };

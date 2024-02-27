@@ -99,8 +99,12 @@ const NewsPage = () => {
         <Typography sx={{ ml: 1 }}>Add News</Typography>
       </Button>
       <Card>
-        <CardContent>
-          <Grid container sx={{ marginTop: "25px" }}>
+        <CardContent
+          sx={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }}
+        >          <Grid container sx={{ marginTop: "25px" }}>
             {newsData.map((News, index) => (
               <Grid
                 key={index}
@@ -170,7 +174,7 @@ const NewsPage = () => {
                     </Typography>
                     <br />
                     <br />
-                    <Button variant="outlined" color="primary" onClick={() => editClick(News)}>
+                    <Button variant="outlined" color="primary" onClick={() => editClick(News)} sx={{ ml: 1 }}>
                       Edit
                     </Button>
                     <Button
@@ -184,7 +188,8 @@ const NewsPage = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        mt: "15px",
+                        mt: "10px",
+                         ml: 1 
                       }}
                       color={News.btncolor}
                     >
@@ -209,10 +214,10 @@ const NewsPage = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button  sx={{ mr: 1 }} onClick={handleDeleteCancel} color="primary">
+          <Button sx={{ mr: 1 }} onClick={handleDeleteCancel} color="primary">
             Cancel
           </Button>
-          <Button  sx={{ ml: 1 }} onClick={handleDeleteConfirm} color="error" autoFocus>
+          <Button sx={{ ml: 1 }} onClick={handleDeleteConfirm} color="error" autoFocus>
             Delete
           </Button>
         </DialogActions>

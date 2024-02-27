@@ -11,15 +11,24 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Snackbar,
+  SnackbarContent,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUsersData, fetchUsersData } from "../../app/UsersSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditUsers = () => {
   const dispatch = useDispatch();
   const { userId: usersIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+
   const [user, setUserData] = useState({
     uId: "",
     userName: "",
@@ -51,6 +60,20 @@ const EditUsers = () => {
       fetusersdata();
     }
   }, [usersIdParam, dispatch, userData]);
+
+  const handleSnackbarClose = (reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    if (!isSuccess) {
+      setSnackbarOpen(false);
+    }
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarOpen(true);
+  };
+
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -158,6 +181,35 @@ const EditUsers = () => {
             </Button>
           )}
         </form>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={snackbarOpen}
+          autoHideDuration={5000}
+          onClose={handleSnackbarClose}
+        >
+          <SnackbarContent
+            message="task updated successfully!"
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleSnackbarClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+            sx={{
+              backgroundColor: isSuccess
+                ? baseTheme.palette.success.main
+                : baseTheme.palette.error.main,
+              color: isSuccess ? '#fff' : undefined,
+            }}
+          />
+        </Snackbar>
 
       </CardContent>
     </Card>

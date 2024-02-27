@@ -99,7 +99,12 @@ const PlansPage = () => {
       </Button>
 
       <Card>
-        <CardContent>
+        <CardContent
+          sx={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }}
+        >
           <Grid container>
             {plansData.map((Plan, index) => (
               <Grid
@@ -135,7 +140,7 @@ const PlansPage = () => {
                     style={{
                       objectFit: 'contain',
                     }}
-                    />
+                  />
 
                   <CardContent
                     sx={{
@@ -183,7 +188,7 @@ const PlansPage = () => {
                     </Typography>
                     <br />
                     <Typography>
-                      <Button variant="outlined" color="primary" onClick={() => editClick(Plan)}>
+                      <Button variant="outlined" color="primary" onClick={() => editClick(Plan)} sx={{ ml: 1 }}>
                         Edit
                       </Button>
                       <Button

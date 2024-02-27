@@ -11,6 +11,7 @@ import {
     Grid,
     Popover,
     Snackbar,
+    SnackbarContent,
     IconButton
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
@@ -19,6 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AddBannerData } from "../../app/BannerSlice";
+import { baseTheme } from "../../assets/global/Theme-variable";
 
 
 const AddBanner = () => {
@@ -27,6 +29,8 @@ const AddBanner = () => {
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+
 
 
     const [formData, setFormData] = React.useState({
@@ -49,6 +53,7 @@ const AddBanner = () => {
         form.append('image', selectedFile)
 
         dispatch(AddBannerData(form)).then(() => {
+            setIsSuccess(true)
             console.log(formData);
             setSnackbarOpen(true);
             setTimeout(() => {
@@ -69,8 +74,9 @@ const AddBanner = () => {
         if (reason === "clickaway") {
             return;
         }
-
-        setSnackbarOpen(false);
+        if (!isSuccess) {
+            setSnackbarOpen(false);
+        }
     };
 
     const handleFileSelect = (event) => {
@@ -97,6 +103,8 @@ const AddBanner = () => {
                 variant="outlined"
                 sx={{
                     p: 0,
+                    borderRadius: baseTheme.shape.borderRadius, 
+                    padding: baseTheme.mixins.toolbar.padding, 
                 }}
             >
                 <Box
@@ -270,9 +278,10 @@ const AddBanner = () => {
                 open={snackbarOpen}
                 autoHideDuration={5000}
                 onClose={handleSnackbarClose}
-                message="Banner added successfully!"
-                action={
-                    <React.Fragment>
+            >
+                <SnackbarContent
+                    message="New Banner added successfully!"
+                    action={
                         <IconButton
                             size="small"
                             aria-label="close"
@@ -281,9 +290,15 @@ const AddBanner = () => {
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
-                    </React.Fragment>
-                }
-            />
+                    }
+                    sx={{
+                        backgroundColor: isSuccess
+                            ? baseTheme.palette.success.main
+                            : baseTheme.palette.error.main,
+                        color: isSuccess ? '#fff' : undefined,
+                    }}
+                />
+            </Snackbar>
         </div>
     );
 };

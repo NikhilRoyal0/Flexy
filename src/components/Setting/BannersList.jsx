@@ -96,8 +96,12 @@ const BannersList = () => {
         <Typography sx={{ ml: 1 }}>Add Banner</Typography>
       </Button>
       <Card >
-        <CardContent>
-          <Grid container sx={{ marginTop: "25px" }}>
+        <CardContent
+          sx={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }}
+        >          <Grid container sx={{ marginTop: "25px" }}>
             {bannerData.map((Banner, index) => (
               <Grid
                 key={index}
@@ -158,7 +162,7 @@ const BannersList = () => {
                     </Typography>
                     <br />
                     <Typography>
-                      <Button variant="outlined" color="primary" onClick={() => editClick(Banner)}>
+                      <Button variant="outlined" color="primary" onClick={() => editClick(Banner)} sx={{ ml: 1 }}>
                         Edit
                       </Button>
                       <Button
