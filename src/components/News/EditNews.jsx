@@ -10,7 +10,11 @@ import {
   Button,
   Popover,
   Snackbar,
-  IconButton
+  IconButton,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,13 +29,14 @@ const EditNews = () => {
   const [editMode, setEditMode] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [file, setFile] = useState(null);
 
 
   const [data, setData] = useState({
     newsTitle: "",
     newsInfo: "",
     newsDate: "",
-    mediaPath: "",
+    mediaPath: file,
     isPublished: "",
   });
 
@@ -41,30 +46,50 @@ const EditNews = () => {
     event.preventDefault();
 
     dispatch(updateNewsData(data.newsId, data))
-    .then(() => {
-      toggleEditMode();
+      .then(() => {
+        toggleEditMode();
 
-      showSnackbar('News updated successfully!');
+        showSnackbar('News updated successfully!');
+        console.log(data)
 
-      setTimeout(() => {
-        navigate("../news");
-      }, 1000); 
-    })
-    
-    .catch((error) => {
-      showSnackbar('Error in updating news. Please try again.');
-      console.error('Error in updating news:', error);
-    });
-};
+        setTimeout(() => {
+          navigate("../news");
+        }, 1000);
+      })
 
-  const handleInputChange = (e) => {
+      .catch((error) => {
+        showSnackbar('Error in updating news. Please try again.');
+        console.error('Error in updating news:', error);
+      });
+  };
+
+
+  const handleTextChange = (e) => {
     const { name, value } = e.target;
-
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+
+    if (files.length > 0) {
+      const selectedFile = files[0];
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFile(event.target.result);
+        setData((prevData) => ({
+          ...prevData,
+          [name]: event.target.result,
+        }));
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
 
   const [loading, setLoading] = useState(true);
   const newsData = useSelector(selectNewsData);
@@ -149,7 +174,7 @@ const EditNews = () => {
                 }}
               >
                 <img
-                  src={data && data.mediaPath}
+                  src={file || (data && data.mediaPath)}
                   alt="Preview"
                   id="image"
                   name="mediaPath"
@@ -180,7 +205,7 @@ const EditNews = () => {
                       type="file"
                       id="mediaPath"
                       name="mediaPath"
-                      onChange={handleInputChange}
+                      onChange={handleFileChange}
                       style={{ display: "none" }}
                     />
                     <Button
@@ -201,7 +226,7 @@ const EditNews = () => {
                 label="Title"
                 variant="outlined"
                 name='newsTitle'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.newsTitle}
                 disabled={!editMode}
@@ -212,7 +237,7 @@ const EditNews = () => {
                 label="Info"
                 variant="outlined"
                 name='newsInfo'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.newsInfo}
                 disabled={!editMode}
@@ -223,22 +248,31 @@ const EditNews = () => {
                 label="news Details"
                 variant="outlined"
                 name='newsDate'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.newsDate}
                 disabled={!editMode}
+                
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Status"
-                variant="outlined"
-                name='isPublished'
-                onChange={handleInputChange}
-                fullWidth
-                value={data && data.isPublished}
-                disabled={!editMode}
-              />
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                <InputLabel htmlFor="status">Status</InputLabel>
+                <Select
+                  label="Status"
+                  variant="outlined"
+                  name='isPublished'
+                  onChange={handleTextChange}
+                  fullWidth
+                  value={data && data.isPublished}
+                  disabled={!editMode}
+                >
+                  <MenuItem value="0">Active</MenuItem>
+                  <MenuItem value="1">Inactive</MenuItem>
+                  <MenuItem value="2">Progress</MenuItem>
+                </Select>
+              </FormControl>
+
             </Grid>
 
           </Grid>
@@ -250,7 +284,7 @@ const EditNews = () => {
               <Button variant="contained" color="success" type="submit" onSubmit={handleSubmit}>
                 Save
               </Button>
-              <Button variant="contained" color="error" onClick={toggleEditMode}>
+              <Button variant="contained" color="error" sx={{ ml: 1 }} onClick={toggleEditMode}>
                 Cancel
               </Button>
             </>

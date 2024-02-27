@@ -128,6 +128,10 @@ const BannersList = () => {
                       e.target.alt = "Error Image";
                     }}
                     width="100%"
+                    height="210px"
+                    style={{
+                      objectFit: 'contain',
+                    }}
                   />
                   <CardContent
                     sx={{
@@ -161,6 +165,7 @@ const BannersList = () => {
                         variant="outlined"
                         color="error"
                         onClick={() => deleteClick(Banner)}
+                        sx={{ ml: 1 }}
                       >
                         Delete
                       </Button>

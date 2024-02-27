@@ -10,7 +10,11 @@ import {
   Button,
   Popover,
   Snackbar,
-  IconButton
+  IconButton,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from "@mui/icons-material/Close";
@@ -70,13 +74,30 @@ const EditTask = () => {
       });
   };
 
-  const handleInputChange = (e) => {
+  const handleTextChange = (e) => {
     const { name, value } = e.target;
-
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+
+    if (files.length > 0) {
+      const selectedFile = files[0];
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFile(event.target.result);
+        setData((prevData) => ({
+          ...prevData,
+          [name]: event.target.result,
+        }));
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const [loading, setLoading] = useState(true);
@@ -183,7 +204,7 @@ const EditTask = () => {
                       type="file"
                       id="image"
                       name="taskMedia"
-                      onChange={handleInputChange}
+                      onChange={handleFileChange}
                       style={{ display: "none" }}
                     />
                     <Button
@@ -204,7 +225,7 @@ const EditTask = () => {
                 label="Title"
                 variant="outlined"
                 name='taskTitle'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.taskTitle}
                 disabled={!editMode}
@@ -215,22 +236,29 @@ const EditTask = () => {
                 label="Info"
                 variant="outlined"
                 name='taskInfo'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.taskInfo}
                 disabled={!editMode}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="status"
-                variant="outlined"
-                name='status'
-                onChange={handleInputChange}
-                fullWidth
-                value={data && data.status}
-                disabled={!editMode}
-              />
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                <InputLabel htmlFor="status">Status</InputLabel>
+                <Select
+                  label="status"
+                  id="status"
+                  name="status"
+                  value={data && data.status}
+                  onChange={handleTextChange}
+                  disabled={!editMode}
+                >
+                  <MenuItem value="0">Active</MenuItem>
+                  <MenuItem value="1">Inactive</MenuItem>
+                  <MenuItem value="2">Progress</MenuItem>
+                </Select>
+              </FormControl>
+
             </Grid>
 
             <Grid item xs={12} sm={6}>
@@ -238,7 +266,7 @@ const EditTask = () => {
                 label="createdBy"
                 variant="outlined"
                 name='createdBy'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.createdBy}
                 disabled={!editMode}
@@ -254,7 +282,7 @@ const EditTask = () => {
               <Button variant="contained" color="success" type="submit" >
                 Save
               </Button>
-              <Button variant="contained" color="error" onClick={toggleEditMode}>
+              <Button variant="contained" color="error" onClick={toggleEditMode} sx={{ ml: 1 }}>
                 Cancel
               </Button>
             </>

@@ -206,6 +206,7 @@ const Lists = ({ searchText, setSearchText }) => {
                       variant="outlined"
                       color="error"
                       onClick={() => deleteClick(user)}
+                      sx={{ ml: 1 }}
                     >
                       Delete
                     </Button>

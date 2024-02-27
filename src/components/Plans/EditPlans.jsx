@@ -59,13 +59,30 @@ const EditPlan = () => {
       });
   };
 
-  const handleInputChange = (e) => {
+  const handleTextChange = (e) => {
     const { name, value } = e.target;
-
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+
+    if (files.length > 0) {
+      const selectedFile = files[0];
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFile(event.target.result);
+        setData((prevData) => ({
+          ...prevData,
+          [name]: event.target.result,
+        }));
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const [loading, setLoading] = useState(true);
@@ -183,7 +200,7 @@ const EditPlan = () => {
                       type="file"
                       id="planImages"
                       name="planImages"
-                      onChange={handleInputChange}
+                      onChange={handleFileChange}
                       style={{ display: "none" }}
                     />
                     <Button
@@ -204,7 +221,7 @@ const EditPlan = () => {
                 label="Title"
                 variant="outlined"
                 name='planTitle'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.planTitle}
                 disabled={!editMode}
@@ -215,7 +232,7 @@ const EditPlan = () => {
                 label="Info"
                 variant="outlined"
                 name='planInfo'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.planInfo}
                 disabled={!editMode}
@@ -226,7 +243,7 @@ const EditPlan = () => {
                 label="planExtraDetails"
                 variant="outlined"
                 name='planExtraDetails'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.planExtraDetails}
                 disabled={!editMode}
@@ -237,7 +254,7 @@ const EditPlan = () => {
                 label="Created By"
                 variant="outlined"
                 name='isPublished'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
                 value={data && data.createdBy}
                 disabled={!editMode}
@@ -252,7 +269,7 @@ const EditPlan = () => {
               <Button variant="contained" color="success" type="submit" onSubmit={handleSubmit}>
                 Save
               </Button>
-              <Button variant="contained" color="error" onClick={toggleEditMode}>
+              <Button variant="contained" color="error" sx={{ ml: 1 }} onClick={toggleEditMode}>
                 Cancel
               </Button>
             </>

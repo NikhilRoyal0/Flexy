@@ -131,6 +131,10 @@ const NewsPage = () => {
                       e.target.alt = "Error Image";
                     }}
                     width="100%"
+                    height="210px"
+                    style={{
+                      objectFit: 'contain',
+                    }}
                   />
                   <CardContent
                     sx={{
@@ -173,6 +177,7 @@ const NewsPage = () => {
                       variant="outlined"
                       color="error"
                       onClick={() => deleteClick(News)}
+                      sx={{ ml: 1 }}
                     >
                       Delete
                     </Button>
@@ -204,10 +209,10 @@ const NewsPage = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">
+          <Button  sx={{ mr: 1 }} onClick={handleDeleteCancel} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+          <Button  sx={{ ml: 1 }} onClick={handleDeleteConfirm} color="error" autoFocus>
             Delete
           </Button>
         </DialogActions>

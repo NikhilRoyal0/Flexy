@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
@@ -12,6 +12,10 @@ import {
     Popover,
     Snackbar,
     IconButton,
+    FormControl,
+    MenuItem,
+    Select,
+    InputLabel,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -33,7 +37,7 @@ const AddNews = () => {
         'newsTitle': '',
         'newsInfo': '',
         'newsDate': 0,
-        'isPublished': 0,
+        'isPublished': '',
         'createdBy': 0,
         'image': selectedFile
     });
@@ -228,6 +232,22 @@ const AddNews = () => {
                                     }}
                                 />
                             </Grid>
+                            <Grid item xs={12} md={6}>
+                                <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                                    <InputLabel htmlFor="isPublished">isPublished</InputLabel>
+                                    <Select
+                                        label="isPublished"
+                                        id="isPublished"
+                                        name="isPublished"
+                                        onChange={handleInputChange}
+                                    >
+                                        <MenuItem value="0">Active</MenuItem>
+                                        <MenuItem value="1">Inactive</MenuItem>
+                                        <MenuItem value="2">Progress</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                            </Grid>
                             <Grid item xs={12} md={12}>
                                 <TextField
                                     id="news-info"
@@ -243,6 +263,7 @@ const AddNews = () => {
                                     }}
                                 />
                             </Grid>
+
 
                         </Grid>
                         <div>

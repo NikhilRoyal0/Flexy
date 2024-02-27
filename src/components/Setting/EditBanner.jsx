@@ -10,7 +10,11 @@ import {
   Button,
   Popover,
   IconButton,
-  Snackbar
+  Snackbar,
+  InputLabel,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from "@mui/icons-material/Close";
@@ -26,6 +30,7 @@ const EditBanner = () => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+  const [oldData, setoldData] = useState(null);
 
   const [data, setData] = useState({
     title: "",
@@ -57,13 +62,30 @@ const EditBanner = () => {
       });
   };
 
-  const handleInputChange = (e) => {
+  const handleTextChange = (e) => {
     const { name, value } = e.target;
-
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+
+    if (files.length > 0) {
+      const selectedFile = files[0];
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFile(event.target.result);
+        setData((prevData) => ({
+          ...prevData,
+          [name]: event.target.result,
+        }));
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const [loading, setLoading] = useState(true);
@@ -72,7 +94,7 @@ const EditBanner = () => {
   const fetchBannerDataById = () => {
     const bannerId = parseInt(bannerIdParam);
     const selectedBanner = bannerData.find((banner) => banner.bannerId === bannerId);
-    setData({ ...selectedBanner });
+    setoldData({ ...selectedBanner });
     setLoading(false);
   };
 
@@ -133,7 +155,7 @@ const EditBanner = () => {
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit Banner - {data && data.bannerId}</Typography>
+        <Typography variant="h4">Edit Banner - {data && oldData.bannerId}</Typography>
         <br />
         <Divider />
         <br />
@@ -149,7 +171,7 @@ const EditBanner = () => {
                 }}
               >
                 <img
-                  src={data && data.mediaPath}
+                  src={data && oldData.mediaPath}
                   alt="Preview"
                   id="image"
                   style={{
@@ -179,7 +201,7 @@ const EditBanner = () => {
                       type="file"
                       id="image"
                       name="mediaPath"
-                      onChange={handleInputChange}
+                      onChange={handleFileChange}
                       style={{ display: "none" }}
                     />
                     <Button
@@ -200,9 +222,9 @@ const EditBanner = () => {
                 label="Title"
                 variant="outlined"
                 name='title'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
-                value={data && data.bannerTitle}
+                value={oldData.bannerTitle ?? data.title}
                 disabled={!editMode}
               />
             </Grid>
@@ -211,9 +233,9 @@ const EditBanner = () => {
                 label="Banner Type"
                 variant="outlined"
                 name='bannerType'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
-                value={data && data.bannerType}
+                value={data && oldData.bannerType}
                 disabled={!editMode}
               />
             </Grid>
@@ -222,31 +244,38 @@ const EditBanner = () => {
                 label="endDate"
                 variant="outlined"
                 name='endDate'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
-                value={data && data.endDateTime}
+                value={oldData.endDateTime ?? data.endDate}
                 disabled={!editMode}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Status"
-                variant="outlined"
-                name='bannerStatus'
-                onChange={handleInputChange}
-                fullWidth
-                value={data && data.bannerStatus}
-                disabled={!editMode}
-              />
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                <InputLabel htmlFor="status">Status</InputLabel>
+                <Select
+                  label="status"
+                  id="status"
+                  name="status"
+                  value={data && oldData.bannerStatus}
+                  onChange={handleTextChange}
+                  disabled={!editMode}
+                >
+                  <MenuItem value="0">Active</MenuItem>
+                  <MenuItem value="1">Inactive</MenuItem>
+                  <MenuItem value="2">Progress</MenuItem>
+                </Select>
+              </FormControl>
+
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="On Click"
                 variant="outlined"
                 name='onClick'
-                onChange={handleInputChange}
+                onChange={handleTextChange}
                 fullWidth
-                value={data && data.bannerOnClick}
+                value={oldData.bannerOnClick ?? data.onClick}
                 disabled={!editMode}
               />
             </Grid>
@@ -260,7 +289,7 @@ const EditBanner = () => {
               <Button variant="contained" color="success" type="submit">
                 Save
               </Button>
-              <Button variant="contained" color="error" onClick={toggleEditMode}>
+              <Button variant="contained" color="error" sx={{ ml: 1 }} onClick={toggleEditMode}>
                 Cancel
               </Button>
             </>

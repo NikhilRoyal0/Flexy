@@ -86,7 +86,7 @@ const Activity = () => {
               }}
               gutterBottom
             >
-              Daily Activities
+              Recent Interactions
             </Typography>
             <Typography
               color="textSecondary"

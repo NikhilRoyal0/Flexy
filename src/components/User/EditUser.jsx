@@ -8,6 +8,10 @@ import {
   Divider,
   TextField,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUsersData, fetchUsersData } from "../../app/UsersSlice";
@@ -24,7 +28,7 @@ const EditUsers = () => {
     walletAmount: "",
     status: "",
   });
-  
+
   const [loading, setLoading] = useState(true);
 
   const userData = useSelector(selectUsersData);
@@ -115,14 +119,24 @@ const EditUsers = () => {
                 disabled={!editMode}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Status"
-                variant="outlined"
-                fullWidth
-                value={user && user.status}
-                disabled={!editMode}
-              />
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                <InputLabel htmlFor="isPublished">isPublished</InputLabel>
+                <Select
+                  label="Status"
+                  id="Status"
+                  name="status"
+                  value={user && user.status}
+                  disabled={!editMode}
+                  variant="outlined"
+                  fullWidth
+                >
+                  <MenuItem value="0">Active</MenuItem>
+                  <MenuItem value="1">Inactive</MenuItem>
+                  <MenuItem value="2">Progress</MenuItem>
+                </Select>
+              </FormControl>
+
             </Grid>
 
           </Grid>
@@ -134,7 +148,7 @@ const EditUsers = () => {
               <Button variant="contained" color="success" onClick={handleSave}>
                 Save
               </Button>
-              <Button variant="contained" color="error" onClick={toggleEditMode}>
+              <Button variant="contained" sx={{ ml: 1 }} color="error" onClick={toggleEditMode}>
                 Cancel
               </Button>
             </>
@@ -144,7 +158,7 @@ const EditUsers = () => {
             </Button>
           )}
         </form>
-       
+
       </CardContent>
     </Card>
   );

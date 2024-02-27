@@ -130,6 +130,10 @@ const TaskList = () => {
                       e.target.alt = "Error Image";
                     }}
                     width="100%"
+                    height="210px"
+                    style={{
+                      objectFit: 'contain',
+                    }}
                   />
                   <CardContent
                     sx={{
@@ -173,6 +177,7 @@ const TaskList = () => {
                       variant="outlined"
                       color="error"
                       onClick={() => deleteClick(Task)}
+                      sx={{ ml: 1 }}
                     >
                       Delete
                     </Button>

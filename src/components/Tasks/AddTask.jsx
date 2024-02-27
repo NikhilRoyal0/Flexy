@@ -12,6 +12,10 @@ import {
     Popover,
     IconButton,
     Snackbar,
+    InputLabel,
+    Select,
+    MenuItem,
+    FormControl,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
@@ -258,18 +262,20 @@ const AddTask = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="isDailyTask"
-                                    label="isDailyTask"
-                                    name="isDailyTask"
-                                    onChange={handleInputChange}
-                                    variant="outlined"
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
+                                <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                                    <InputLabel htmlFor="isDailyTask">Is Daily Task</InputLabel>
+                                    <Select
+                                        label="isDailyTask"
+                                        id="isDailyTask"
+                                        name="isDailyTask"
+                                        value={formData.isDailyTask}
+                                        onChange={handleInputChange}
+                                    >
+                                        <MenuItem value="0">Active</MenuItem>
+                                        <MenuItem value="1">Inactive</MenuItem>
+                                        <MenuItem value="2">Progress</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </Grid>
 
                             <Grid item xs={12} md={12}>

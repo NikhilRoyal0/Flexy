@@ -8,7 +8,7 @@ import {
 const Footer = () => {
     return (
         <Box sx={{ p: 3, textAlign: 'center' }}>
-            <Typography>© 2023 All rights reserved by <Link href="https://github.com/NikhilRoyal0">Chaudhary</Link> </Typography>
+            <Typography>© 2023 All rights reserved by <Link href="#">Admin Dashboard</Link> </Typography>
         </Box>
     );
 }

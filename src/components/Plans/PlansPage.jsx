@@ -131,7 +131,11 @@ const PlansPage = () => {
                       e.target.alt = "Error Image";
                     }}
                     width="100%"
-                  />
+                    height="210px"
+                    style={{
+                      objectFit: 'contain',
+                    }}
+                    />
 
                   <CardContent
                     sx={{
@@ -186,6 +190,7 @@ const PlansPage = () => {
                         variant="outlined"
                         color="error"
                         onClick={() => deleteClick(Plan)}
+                        sx={{ ml: 1 }}
                       >
                         Delete
                       </Button>
