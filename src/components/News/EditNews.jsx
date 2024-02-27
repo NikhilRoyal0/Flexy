@@ -28,7 +28,6 @@ const EditNews = () => {
 
 
   const [data, setData] = useState({
-    newsId: "",
     newsTitle: "",
     newsInfo: "",
     newsDate: "",
