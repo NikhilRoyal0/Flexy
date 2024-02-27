@@ -41,7 +41,7 @@ const EditNews = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    dispatch(updateNewsData(data.taskId, data))
+    dispatch(updateNewsData(data.newsId, data))
     .then(() => {
       toggleEditMode();
 
