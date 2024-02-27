@@ -108,8 +108,8 @@ const NewsPage = () => {
                 xs={12}
                 sm={6}
                 md={4}
-                lg={3}
-                xl={2}
+                lg={4}
+                xl={3}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
@@ -164,16 +164,6 @@ const NewsPage = () => {
                     >
                       {News.newsTitle}
                     </Typography>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        mt: "15px",
-                      }}
-                      color={News.btncolor}
-                    >
-                      Full Article
-                      <ArrowForwardIosIcon />
-                    </Button>
                     <br />
                     <br />
                     <Button variant="outlined" color="primary" onClick={() => editClick(News)}>
@@ -185,6 +175,16 @@ const NewsPage = () => {
                       onClick={() => deleteClick(News)}
                     >
                       Delete
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        mt: "15px",
+                      }}
+                      color={News.btncolor}
+                    >
+                      Full Article
+                      <ArrowForwardIosIcon />
                     </Button>
                   </CardContent>
                 </Card>

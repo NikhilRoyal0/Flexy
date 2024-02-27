@@ -32,8 +32,11 @@ const AddPlan = () => {
     const [formData, setFormData] = React.useState({
         'planTitle': '',
         'planInfo': '',
+        'planPrice': '',
         'planExtraDetails': '',
-        'image': selectedFiles
+        'planImages': [selectedFiles],
+        'planMaxPayOut': '',
+        'createdBy': '',
     });
 
 
@@ -42,7 +45,10 @@ const AddPlan = () => {
         const form = new FormData()
         form.append('planTitle', formData.planTitle)
         form.append('planInfo', formData.planInfo)
+        form.append('planPrice', formData.planPrice)
         form.append('planExtraDetails', formData.planExtraDetails)
+        form.append('planMaxPayOut', formData.planMaxPayOut)
+        form.append('createdBy', formData.createdBy)
         form.append('image', formData.selectedFiles)
 
         dispatch(AddPlanData(form)).then(() => {
@@ -225,33 +231,71 @@ const AddPlan = () => {
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={12}>
+                            <Grid item xs={12} md={6}>
                                 <TextField
                                     id="Plan-info"
                                     label="Plan Info"
                                     name="planInfo"
+                                    variant="outlined"
                                     onChange={handleInputChange}
                                     required
                                     fullWidth
-                                    multiline
-                                    minRows={4}
-                                    maxRows={2}
                                     sx={{
                                         mb: 2,
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={12}>
+                            <Grid item xs={12} md={6}>
                                 <TextField
-                                    id="plan extra-details"
+                                    id="planPrice"
+                                    label="Plan Price"
+                                    name="planPrice"
+                                    variant="outlined"
+                                    onChange={handleInputChange}
+                                    required
+                                    fullWidth
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="planExtraDetails"
                                     label="Plan Extra-Details"
                                     name="planExtraDetails"
+                                    variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth
-                                    multiline
                                     required
-                                    minRows={4}
-                                    maxRows={2}
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="planMaxPayOut"
+                                    label="Plan Payout"
+                                    name="planMaxPayOut"
+                                    variant="outlined"
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                    required
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="createdBy"
+                                    label="Created By"
+                                    name="createdBy"
+                                    variant="outlined"
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                    required
                                     sx={{
                                         mb: 2,
                                     }}

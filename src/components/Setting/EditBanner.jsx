@@ -28,12 +28,12 @@ const EditBanner = () => {
 
 
   const [data, setData] = useState({
-    bannerId: "",
-    bannerTitle: "",
+    title: "",
     bannerType: "",
-    endDateTime: "",
-    mediaPath: "",
+    endDate: "",
     bannerStatus: "",
+    onClick: "",
+    mediaPath: "",
   });
 
 
@@ -152,7 +152,6 @@ const EditBanner = () => {
                   src={data && data.mediaPath}
                   alt="Preview"
                   id="image"
-                  name="mediaPath"
                   style={{
                     maxWidth: "100%",
                     maxHeight: "130px",
@@ -200,7 +199,7 @@ const EditBanner = () => {
               <TextField
                 label="Title"
                 variant="outlined"
-                name='bannerTitle'
+                name='title'
                 onChange={handleInputChange}
                 fullWidth
                 value={data && data.bannerTitle}
@@ -220,9 +219,9 @@ const EditBanner = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="endDateTime"
+                label="endDate"
                 variant="outlined"
-                name='endDateTime'
+                name='endDate'
                 onChange={handleInputChange}
                 fullWidth
                 value={data && data.endDateTime}
@@ -237,6 +236,17 @@ const EditBanner = () => {
                 onChange={handleInputChange}
                 fullWidth
                 value={data && data.bannerStatus}
+                disabled={!editMode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="On Click"
+                variant="outlined"
+                name='onClick'
+                onChange={handleInputChange}
+                fullWidth
+                value={data && data.bannerOnClick}
                 disabled={!editMode}
               />
             </Grid>

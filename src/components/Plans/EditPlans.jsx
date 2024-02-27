@@ -28,11 +28,13 @@ const EditPlan = () => {
 
 
   const [data, setData] = useState({
-    planId: "",
-    planTitle: "",
-    planInfo: "",
-    planExtraDetails: "",
-    image: "",
+    planTitle: '',
+    planInfo: '',
+    planPrice: '',
+    planExtraDetails: '',
+    planImages: '',
+    planMaxPayOut: '',
+    createdBy: '',
   });
 
 

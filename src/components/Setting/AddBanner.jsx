@@ -33,6 +33,7 @@ const AddBanner = () => {
         'title': '',
         'endDate': '',
         'bannerType': '',
+        'onClick': '',
         'image': selectedFile
     });
 
@@ -44,6 +45,7 @@ const AddBanner = () => {
         form.append('title', formData.title)
         form.append('endDate', formData.endDate)
         form.append('bannerType', formData.bannerType)
+        form.append('onClick', formData.onClick)
         form.append('image', selectedFile)
 
         dispatch(AddBannerData(form)).then(() => {
@@ -226,6 +228,20 @@ const AddBanner = () => {
                                     id="bannerType"
                                     label="Banner-type"
                                     name="bannerType"
+                                    variant="outlined"
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                    required
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="On click"
+                                    label="On click"
+                                    name="onClick"
                                     variant="outlined"
                                     onChange={handleInputChange}
                                     fullWidth

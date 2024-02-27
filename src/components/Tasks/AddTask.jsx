@@ -31,9 +31,11 @@ const AddTask = () => {
 
     const [formData, setFormData] = React.useState({
         'taskTitle': '',
-        'status': '',
-        'isDailyTask': '',
         'taskInfo': '',
+        'isDailyTask': '',
+        'createdBy': '',
+        'taskType': '',
+        'taskPayout': '',
         'image': selectedFile
     });
 
@@ -42,9 +44,11 @@ const AddTask = () => {
         event.preventDefault();
         const form = new FormData()
         form.append('taskTitle', formData.taskTitle)
-        form.append('status', formData.status)
-        form.append('isDailyTask', formData.isDailyTask)
         form.append('taskInfo', formData.taskInfo)
+        form.append('isDailyTask', formData.isDailyTask)
+        form.append('createdBy', formData.createdBy)
+        form.append('taskType', formData.taskType)
+        form.append('taskPayout', formData.taskPayout)
         form.append('image', selectedFile)
 
 
@@ -213,9 +217,37 @@ const AddTask = () => {
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
-                                    id="status"
-                                    label="Status"
-                                    name="status"
+                                    id="createdBy"
+                                    label="Created By"
+                                    name="createdBy"
+                                    onChange={handleInputChange}
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="taskType"
+                                    label="Task Type"
+                                    name="taskType"
+                                    onChange={handleInputChange}
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="taskPayout"
+                                    label="Payout"
+                                    name="taskPayout"
                                     onChange={handleInputChange}
                                     variant="outlined"
                                     fullWidth
