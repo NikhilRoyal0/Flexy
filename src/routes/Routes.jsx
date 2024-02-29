@@ -77,8 +77,8 @@ const routes = createBrowserRouter(
         <Route path='/plans/add-plan' element={<AddPlan />} />
         <Route path='/news/add-news' element={<AddNews />} />
         <Route path='/setting/banners-list/add-banner' element={<AddBanner />} />
-        <Route path="*" element={<Notfound />} />
       </Route>
+        <Route path="*" element={<Notfound />} />
     </>
   )
 );
