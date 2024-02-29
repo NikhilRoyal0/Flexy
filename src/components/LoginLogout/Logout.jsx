@@ -13,7 +13,7 @@ export default function Logout() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+    <div style={{ overflow: 'hidden', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Card style={{ maxWidth: 400 }}>
         <CardContent>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

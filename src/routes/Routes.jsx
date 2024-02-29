@@ -39,43 +39,47 @@ import AddBanner from '../components/Setting/AddBanner';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<FullLayout />}>
-      <Route index element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/autocomplete" element={<ExAutoComplete />} />
-      <Route path="/button" element={<ExButton />} />
-      <Route path="/checkbox" element={<Checkmain />} />
-      <Route path="/radio" element={<Radiomain />} />
-      <Route path="/slider" element={<Slidermain />} />
-      <Route path="/switch" element={<Switchmain />} />
-      <Route path="/form-layouts" element={<Formmain />} />
-      <Route path="/basic-table" element={<Tablemain />} />
-      <Route path="/register" element={<Registermain />} />
-      <Route path="/plans" element={<PlansPage />} />
-      <Route path="/news" element={<NewsPage />} />
-      <Route path="/user/add-user" element={<AddUser />} />
-      <Route path="/user/user-list" element={<UserList />} />
-      <Route path="/setting/app-setting" element={<AppSetting />} />
-      <Route path="/setting/basic-setting" element={<BasicSetting />} />
-      <Route path="/setting/dialogs-list" element={<DialogsList />} />
-      <Route path="/setting/banners-list" element={<BannersList />} />
-      <Route path="/tasks/task-category" element={<TaskCategory />} />
-      <Route path="/tasks/task-list" element={<TasksList />} />
-      <Route path="/logout" element={<Logout />} />
+    <>
       <Route path="/login" element={<Login />} />
       <Route path="/register-now" element={<Register />} />
-      <Route path="/user/user-list/edit-user/:userId" element={<EditUser />} />
-      <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
-      <Route path="/plans/edit-plan/:planId" element={<EditPlan />} />
-      <Route path="/news/edit-news/:newsId" element={<EditNews />} />
-      <Route path="/setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
-      <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
-      <Route path='/tasks/task-list/add-task' element={<AddTask />} />
-      <Route path='/plans/add-plan' element={<AddPlan />} />
-      <Route path='/news/add-news' element={<AddNews />} />
-      <Route path='/setting/banners-list/add-banner' element={<AddBanner />} />
-      <Route path="*" element={<Notfound />} />
-    </Route>
+      <Route path="/logout" element={<Logout />} />
+
+
+      <Route path="/" element={<FullLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/autocomplete" element={<ExAutoComplete />} />
+        <Route path="/button" element={<ExButton />} />
+        <Route path="/checkbox" element={<Checkmain />} />
+        <Route path="/radio" element={<Radiomain />} />
+        <Route path="/slider" element={<Slidermain />} />
+        <Route path="/switch" element={<Switchmain />} />
+        <Route path="/form-layouts" element={<Formmain />} />
+        <Route path="/basic-table" element={<Tablemain />} />
+        <Route path="/register" element={<Registermain />} />
+        <Route path="/plans" element={<PlansPage />} />
+        <Route path="/news" element={<NewsPage />} />
+        <Route path="/user/add-user" element={<AddUser />} />
+        <Route path="/user/user-list" element={<UserList />} />
+        <Route path="/setting/app-setting" element={<AppSetting />} />
+        <Route path="/setting/basic-setting" element={<BasicSetting />} />
+        <Route path="/setting/dialogs-list" element={<DialogsList />} />
+        <Route path="/setting/banners-list" element={<BannersList />} />
+        <Route path="/tasks/task-category" element={<TaskCategory />} />
+        <Route path="/tasks/task-list" element={<TasksList />} />
+        <Route path="/user/user-list/edit-user/:userId" element={<EditUser />} />
+        <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
+        <Route path="/plans/edit-plan/:planId" element={<EditPlan />} />
+        <Route path="/news/edit-news/:newsId" element={<EditNews />} />
+        <Route path="/setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
+        <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
+        <Route path='/tasks/task-list/add-task' element={<AddTask />} />
+        <Route path='/plans/add-plan' element={<AddPlan />} />
+        <Route path='/news/add-news' element={<AddNews />} />
+        <Route path='/setting/banners-list/add-banner' element={<AddBanner />} />
+        <Route path="*" element={<Notfound />} />
+      </Route>
+    </>
   )
 );
 

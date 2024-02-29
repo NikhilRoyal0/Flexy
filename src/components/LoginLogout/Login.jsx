@@ -28,6 +28,7 @@ export default function Login() {
       navigate('/');
     } else {
       console.log('Invalid credentials');
+      alert("Username and password not matched");
     }
   };
 
@@ -44,8 +45,7 @@ export default function Login() {
         backgroundImage: `url(${uiBackgroundImage})`,
         backgroundSize: 'cover',
         height: '100vh',
-        margin: '0',
-        padding: '0',
+        
       }}
     >
       <Grid item>
@@ -53,7 +53,7 @@ export default function Login() {
           style={{
             width: '100%',
             maxWidth: '500px',
-            padding: '15px',
+            padding: '25px',
             boxSizing: 'border-box',
             textAlign: 'center',
             backgroundImage: `url(${backgroundImage})`,
