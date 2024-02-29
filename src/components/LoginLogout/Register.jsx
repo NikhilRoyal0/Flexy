@@ -30,6 +30,7 @@ export default function Register() {
         <Card
           style={{
             width: '100%',
+            maxHeight: '520px',
             maxWidth: '500px',
             padding: '15px',
             boxSizing: 'border-box',
@@ -37,8 +38,12 @@ export default function Register() {
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            overflow: 'auto',
+            scrollbarWidth: 'none',
+            overflowY: 'scroll',
           }}
         >
+
           <CardContent>
             <Typography variant="h4" gutterBottom style={{ fontSize: '24px', color: '#ffffff' }}>
               Register
@@ -53,7 +58,7 @@ export default function Register() {
                 id="firstName"
                 name="firstName"
                 InputProps={{ style: { color: 'black' } }}
-                InputLabelProps={{ style: { color: 'black' } }} 
+                InputLabelProps={{ style: { color: 'black' } }}
               />
 
               <TextField
