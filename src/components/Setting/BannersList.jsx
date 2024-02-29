@@ -27,6 +27,9 @@ const BannersList = () => {
   const error = useSelector(selectBannerError);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
   const [bannerToDelete, setBannerToDelete] = useState(null);
+  const [selectedbanner, setSelectedbanner] = useState(null);
+  const [fullArticleDialogOpen, setFullArticleDialogOpen] = useState(false);
+
 
   const deleteClick = (banner) => {
     setBannerToDelete(banner);
@@ -79,6 +82,17 @@ const BannersList = () => {
     navigate("/setting/banners-list/add-banner")
   }
 
+  const openFullArticleDialog = (Banner) => {
+    setSelectedbanner(Banner);
+    setFullArticleDialogOpen(true);
+  };
+
+  const closeFullArticleDialog = () => {
+    setSelectedbanner(null);
+    setFullArticleDialogOpen(false);
+  };
+
+
   return (
     <div style={{ position: "relative" }}>
       <Button
@@ -101,7 +115,8 @@ const BannersList = () => {
             paddingLeft: 0,
             paddingRight: 0,
           }}
-        >          <Grid container sx={{ marginTop: "25px" }}>
+        >     
+             <Grid container sx={{ marginTop: "25px" }}>
             {bannerData.map((Banner, index) => (
               <Grid
                 key={index}
@@ -154,6 +169,34 @@ const BannersList = () => {
                     </Typography>
                     <Typography
                       sx={{
+                        fontSize: "h4.fontSize",
+                        fontWeight: "500",
+                        overflow: "hidden",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      {Banner.bannerType.length <= 15 ? (
+                        Banner.bannerType
+                      ) : (
+                        <>
+                          {Banner.bannerType.split(' ').slice(0, 5).join(' ')}
+                          <span
+                            style={{
+                              fontSize: "15px",
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'inline-block',
+                              marginLeft: '4px',
+                            }}
+                            onClick={() => openFullArticleDialog(Banner)}
+                          >
+                            ... <span style={{ display: 'inline' }}>read more</span>
+                          </span>
+                        </>
+                      )}
+                    </Typography>
+                    <Typography
+                      sx={{
                         fontSize: "h5.fontSize",
                         fontWeight: "300",
                       }}
@@ -181,6 +224,41 @@ const BannersList = () => {
           </Grid>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={fullArticleDialogOpen}
+        onClose={closeFullArticleDialog}
+      >
+        <DialogTitle>{selectedbanner?.bannerTitle}</DialogTitle>
+        <DialogContent>
+          <img
+            src={selectedbanner?.mediaPath}
+            alt={selectedbanner?.mediaPath}
+            onError={(e) => {
+              e.target.src = errorimage;
+              e.target.alt = "Error Image";
+            }}
+            width="100%"
+            height="210px"
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+          <Typography>
+            Date: {selectedbanner?.bannerDate}
+          </Typography>
+          <Typography>
+            banner Info: {selectedbanner?.bannerInfo}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeFullArticleDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
       <Dialog
         open={deleteConfirmationOpen}
         onClose={handleDeleteCancel}

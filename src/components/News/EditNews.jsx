@@ -63,7 +63,7 @@ const EditNews = () => {
       })
 
       .catch((error) => {
-        setIsSuccess(false); 
+        setIsSuccess(false);
         showSnackbar('Error in updating news. Please try again.');
         console.error('Error in updating news:', error);
       });

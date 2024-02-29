@@ -28,6 +28,8 @@ const NewsPage = () => {
   const error = useSelector(selectNewsError);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
   const [newsToDelete, setNewsToDelete] = useState(null);
+  const [selectedNews, setSelectedNews] = useState(null);
+  const [fullArticleDialogOpen, setFullArticleDialogOpen] = useState(false);
 
 
   const deleteClick = (news) => {
@@ -81,6 +83,16 @@ const NewsPage = () => {
     navigate('/news/add-news');
   }
 
+  const openFullArticleDialog = (news) => {
+    setSelectedNews(news);
+    setFullArticleDialogOpen(true);
+  };
+
+  const closeFullArticleDialog = () => {
+    setSelectedNews(null);
+    setFullArticleDialogOpen(false);
+  };
+
 
   return (
     <div style={{ position: "relative" }}>
@@ -104,7 +116,8 @@ const NewsPage = () => {
             paddingLeft: 0,
             paddingRight: 0,
           }}
-        >          <Grid container sx={{ marginTop: "25px" }}>
+        >
+          <Grid container sx={{ marginTop: "25px" }}>
             {newsData.map((News, index) => (
               <Grid
                 key={index}
@@ -124,7 +137,8 @@ const NewsPage = () => {
                   sx={{
                     p: 0,
                     width: "100%",
-                    mt: "8px"
+                    mt: "8px",
+                    maxHeight: "600px",
                   }}
                 >
                   <img
@@ -142,6 +156,7 @@ const NewsPage = () => {
                   />
                   <CardContent
                     sx={{
+                      maxHeight: "500px",
                       paddingLeft: "30px",
                       paddingRight: "30px",
                     }}
@@ -155,14 +170,6 @@ const NewsPage = () => {
                       Date: {News.newsDate}
                     </Typography>
                     <Typography
-                      sx={{
-                        fontSize: "h4.fontSize",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {News.newsInfo}
-                    </Typography>
-                    <Typography
                       color="textSecondary"
                       sx={{
                         fontSize: "14px",
@@ -172,29 +179,51 @@ const NewsPage = () => {
                     >
                       {News.newsTitle}
                     </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "h4.fontSize",
+                        fontWeight: "500",
+                        overflow: "hidden",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      {News.newsInfo.length <= 15 ? (
+                        News.newsInfo
+                      ) : (
+                        <>
+                          {News.newsInfo.split(' ').slice(0, 5).join(' ')}
+                          <span
+                            style={{
+                              fontSize: "15px",
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'inline-block',
+                              marginLeft: '4px',
+                            }}
+                            onClick={() => openFullArticleDialog(News)}
+                          >
+                            ... <span style={{ display: 'inline' }}>read more</span>
+                          </span>
+                        </>
+                      )}
+                    </Typography>
                     <br />
                     <br />
-                    <Button variant="outlined" color="primary" onClick={() => editClick(News)} sx={{ ml: 1 }}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => editClick(News)}
+                      sx={{ mt: "auto", ml: 1 }}
+                    >
                       Edit
                     </Button>
                     <Button
                       variant="outlined"
                       color="error"
                       onClick={() => deleteClick(News)}
-                      sx={{ ml: 1 }}
+                      sx={{ mt: "auto", ml: 1 }}
                     >
                       Delete
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        mt: "10px",
-                         ml: 1 
-                      }}
-                      color={News.btncolor}
-                    >
-                      Full Article
-                      <ArrowForwardIosIcon />
                     </Button>
                   </CardContent>
                 </Card>
@@ -203,6 +232,39 @@ const NewsPage = () => {
           </Grid>
         </CardContent>
       </Card>
+      <Dialog
+        open={fullArticleDialogOpen}
+        onClose={closeFullArticleDialog}
+      >
+        <DialogTitle>{selectedNews?.newsTitle}</DialogTitle>
+        <DialogContent>
+          <img
+            src={selectedNews?.mediaPath}
+            alt={selectedNews?.mediaPath}
+            onError={(e) => {
+              e.target.src = errorimage;
+              e.target.alt = "Error Image";
+            }}
+            width="100%"
+            height="210px"
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+          <Typography>
+            Date: {selectedNews?.newsDate}
+          </Typography>
+          <Typography>
+            News Info: {selectedNews?.newsInfo}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeFullArticleDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
       <Dialog
         open={deleteConfirmationOpen}
         onClose={handleDeleteCancel}

@@ -28,6 +28,8 @@ const TaskList = () => {
   const error = useSelector(selectTasksError);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
   const [taskToDelete, setTaskToDelete] = useState(null);
+  const [selectedtask, setSelectedtask] = useState(null);
+  const [fullArticleDialogOpen, setFullArticleDialogOpen] = useState(false);
 
   const deleteClick = (task) => {
     setTaskToDelete(task);
@@ -79,6 +81,16 @@ const TaskList = () => {
   const handleClick = () => {
     navigate('/tasks/task-list/add-task');
   }
+
+  const openFullArticleDialog = (task) => {
+    setSelectedtask(task);
+    setFullArticleDialogOpen(true);
+  };
+
+  const closeFullArticleDialog = () => {
+    setSelectedtask(null);
+    setFullArticleDialogOpen(false);
+  };
 
 
   return (
@@ -154,14 +166,30 @@ const TaskList = () => {
                       {Task.taskTitle}
                     </Typography>
                     <Typography
-                      color="textSecondary"
                       sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        mt: 1,
+                        fontSize: "h4.fontSize",
+                        fontWeight: "500",
                       }}
                     >
-                      {Task.taskInfo}
+                      {Task.taskInfo.length <= 15 ? (
+                        Task.taskInfo
+                      ) : (
+                        <>
+                          {Task.taskInfo.split(' ').slice(0, 5).join(' ')}
+                          <span
+                            style={{
+                              fontSize: "15px",
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'inline-block',
+                              marginLeft: '4px',
+                            }}
+                            onClick={() => openFullArticleDialog(Task)}
+                          >
+                            ... <span style={{ display: 'inline' }}>read more</span>
+                          </span>
+                        </>
+                      )}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -192,6 +220,41 @@ const TaskList = () => {
           </Grid>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={fullArticleDialogOpen}
+        onClose={closeFullArticleDialog}
+      >
+        <DialogTitle>{selectedtask?.taskTitle}</DialogTitle>
+        <DialogContent>
+          <img
+            src={selectedtask?.taskMedia}
+            alt={selectedtask?.taskMedia}
+            onError={(e) => {
+              e.target.src = errorimage;
+              e.target.alt = "Error Image";
+            }}
+            width="100%"
+            height="210px"
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+          <Typography>
+            Created By: {selectedtask?.createdBy}
+          </Typography>
+          <Typography>
+            Task Info: {selectedtask?.taskInfo}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeFullArticleDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
       <Dialog
         open={deleteConfirmationOpen}
         onClose={handleDeleteCancel}

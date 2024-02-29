@@ -28,6 +28,8 @@ const PlansPage = () => {
   const error = useSelector(selectPlansError);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [planToDelete, setplanToDelete] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [fullArticleDialogOpen, setFullArticleDialogOpen] = useState(false);
 
   const deleteClick = (plan) => {
     setplanToDelete(plan);
@@ -79,6 +81,17 @@ const PlansPage = () => {
   const handleClick = () => {
     navigate('/plans/add-plan')
   }
+
+  const openFullArticleDialog = (Plan) => {
+    setSelectedPlan(Plan);
+    setFullArticleDialogOpen(true);
+  };
+
+  const closeFullArticleDialog = () => {
+    setSelectedPlan(null);
+    setFullArticleDialogOpen(false);
+  };
+
 
 
   return (
@@ -162,9 +175,28 @@ const PlansPage = () => {
                         fontSize: "14px",
                         fontWeight: "400",
                         mt: 1,
+                        width: "100%",
                       }}
                     >
-                      {Plan.planInfo}
+                      {Plan.planInfo.length <= 15 ? (
+                        Plan.planInfo
+                      ) : (
+                        <>
+                          {Plan.planInfo.split(' ').slice(0, 5).join(' ')}
+                          <span
+                            style={{
+                              fontSize: "15px",
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'inline-block',
+                              marginLeft: '4px',
+                            }}
+                            onClick={() => openFullArticleDialog(Plan)}
+                          >
+                            ... <span style={{ display: 'inline' }}>read more</span>
+                          </span>
+                        </>
+                      )}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -172,9 +204,28 @@ const PlansPage = () => {
                         fontSize: "14px",
                         fontWeight: "400",
                         mt: 1,
+                        width: "100%",
                       }}
                     >
-                      {Plan.planExtraDetails}
+                      {Plan.planExtraDetails.length <= 15 ? (
+                        Plan.planExtraDetails
+                      ) : (
+                        <>
+                          {Plan.planExtraDetails.split(' ').slice(0, 5).join(' ')}
+                          <span
+                            style={{
+                              fontSize: "15px",
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'inline-block',
+                              marginLeft: '4px',
+                            }}
+                            onClick={() => openFullArticleDialog(Plan)}
+                          >
+                            ... <span style={{ display: 'inline' }}>read more</span>
+                          </span>
+                        </>
+                      )}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -207,6 +258,45 @@ const PlansPage = () => {
           </Grid>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={fullArticleDialogOpen}
+        onClose={closeFullArticleDialog}
+      >
+        <DialogTitle>{selectedPlan?.planTitle}</DialogTitle>
+        <DialogContent>
+          <img
+            src={selectedPlan?.PlanImages}
+            alt={selectedPlan?.PlanImages}
+            onError={(e) => {
+              e.target.src = errorimage;
+              e.target.alt = "Error Image";
+            }}
+            width="100%"
+            height="210px"
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+          <Typography>
+            Created By: {selectedPlan?.createdBy}
+          </Typography>
+          <Typography>
+            Plan Info: {selectedPlan?.planInfo}
+          </Typography>
+          <br />
+          <Typography>
+            Plan ExtraDetails: {selectedPlan?.planExtraDetails}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeFullArticleDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
       <Dialog
         open={deleteConfirmationOpen}
         onClose={handleDeleteCancel}
