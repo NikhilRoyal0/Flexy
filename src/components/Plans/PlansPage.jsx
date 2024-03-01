@@ -88,7 +88,6 @@ const PlansPage = () => {
   };
 
   const closeFullArticleDialog = () => {
-    setSelectedPlan(null);
     setFullArticleDialogOpen(false);
   };
 

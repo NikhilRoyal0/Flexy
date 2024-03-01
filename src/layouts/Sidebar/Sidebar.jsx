@@ -52,7 +52,7 @@ const Sidebar = (props) => {
       <Box>
         <List
           sx={{
-            mt: 4,
+            mt: 0,
           }}
         >
           {menuItems.map((item, index) => (

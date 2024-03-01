@@ -88,7 +88,6 @@ const TaskList = () => {
   };
 
   const closeFullArticleDialog = () => {
-    setSelectedtask(null);
     setFullArticleDialogOpen(false);
   };
 

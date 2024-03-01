@@ -35,6 +35,7 @@ import AddTask from '../components/Tasks/AddTask';
 import AddPlan from '../components/Plans/AddPlan';
 import AddNews from '../components/News/AddNews';
 import AddBanner from '../components/Setting/AddBanner';
+import AddDialog from '../components/Setting/AddDialog';
 
 
 const routes = createBrowserRouter(
@@ -57,12 +58,12 @@ const routes = createBrowserRouter(
         <Route path="/form-layouts" element={<Formmain />} />
         <Route path="/basic-table" element={<Tablemain />} />
         <Route path="/register" element={<Registermain />} />
+        <Route path='/profile-setting' element={<BasicSetting/>}/>
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/news" element={<NewsPage />} />
         <Route path="/user/add-user" element={<AddUser />} />
         <Route path="/user/user-list" element={<UserList />} />
         <Route path="/setting/app-setting" element={<AppSetting />} />
-        <Route path="/setting/basic-setting" element={<BasicSetting />} />
         <Route path="/setting/dialogs-list" element={<DialogsList />} />
         <Route path="/setting/banners-list" element={<BannersList />} />
         <Route path="/tasks/task-category" element={<TaskCategory />} />
@@ -71,7 +72,8 @@ const routes = createBrowserRouter(
         <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
         <Route path="/plans/edit-plan/:planId" element={<EditPlan />} />
         <Route path="/news/edit-news/:newsId" element={<EditNews />} />
-        <Route path="/setting/dialogs-list/edit-dialogs-list/:dialogsId" element={<EditDialog />} />
+        <Route path="/setting/dialogs-list/edit-dialog/:dId" element={<EditDialog />} />
+        <Route path="/setting/dialogs-list/add-dialog" element={<AddDialog />} />
         <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
         <Route path='/tasks/task-list/add-task' element={<AddTask />} />
         <Route path='/plans/add-plan' element={<AddPlan />} />

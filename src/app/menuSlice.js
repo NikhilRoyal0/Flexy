@@ -182,12 +182,6 @@ export const fetchMenuItems = () => (dispatch) => {
           href: "/setting/app-setting",
         },
         {
-          id: 34,
-          title: "Profile Setting",
-          icon: SettingsIcon,
-          href: "/setting/basic-setting",
-        },
-        {
           id: 35,
           title: "Dialogs List",
           icon: BallotIcon,

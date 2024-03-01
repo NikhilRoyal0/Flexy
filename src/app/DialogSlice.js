@@ -1,34 +1,117 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const dialogData = [
-    { id: 1, title: 'भगत सिंह', content: 'इंक़लाब ज़िन्दाबाद! भगत सिंह, निडर स्वतंत्रता सेनानी, जिन्होंने राष्ट्र के लिए अपना जीवन बलिदान किया।' },
-    { id: 2, title: 'रानी लक्ष्मीबाई', content: 'झाँसी की रानी, साहस और शूरवीरता की प्रतीक, जो 1857 के भारतीय बगावत में साहसपूर्वक युद्ध किया।' },
-    { id: 3, title: 'सुभाष चंद्र बोस', content: 'नेताजी सुभाष चंद्र बोस, करिश्माई नेता, और उनका प्रसिद्ध नारा - "मुझे रक्त दो, मैं तुम्हें आज़ादी दूंगा!"' },
-    { id: 4, title: 'सरदार पटेल', content: 'सरदार वल्लभभाई पटेल, भारत के लोहे का आदमी, ने राजवंशी राज्यों को भारतीय संघ में सम्मिलित करने में कुंजी भूमिका निभाई।' },
-    { id: 5, title: 'बिरसा मुंडा', content: 'बिरसा मुंडा, जनजाति के नेता और स्वतंत्रता सेनानी, जो ब्रिटिश शासन के खिलाफ मुंडा विद्रोह का मार्गदर्शन किया।' },
-    { id: 6, title: 'लाला लाजपत राय', content: 'पंजाब केसरी लाला लाजपत राय, भारतीय स्वतंत्रता आंदोलन के प्रमुख नेता और स्वदेशी के पक्षपाती अभिभाषक।' },
-    { id: 7, title: 'राजेन्द्र प्रसाद', content: 'डॉ. राजेन्द्र प्रसाद, भारत के पहले राष्ट्रपति, और भारतीय संविधान को रूपांतरित करने में कुंजी फिगर।' },
-    { id: 8, title: 'चंद्रशेखर आज़ाद', content: 'चंद्रशेखर आज़ाद, निडर क्रांतिकारी जो काकोरी साजिश में महत्वपूर्ण भूमिका निभाई और ब्रिटिश द्वारा अजीत रहे।' },
-    { id: 9, title: 'अल्लुरी सीताराम राजु', content: 'अल्लुरी सीताराम राजु, जनजाति नेता और स्वतंत्रता सेनानी, जो ब्रिटिश राज के खिलाफ राम्पा विद्रोह की नेतृत्व की।' },
-    { id: 10, title: 'खुदीराम बोस', content: 'खुदीराम बोस, सबसे युवा क्रांतिकारी में से एक, ने भारतीय स्वतंत्रता के लिए अपना जीवन बलिदान किया।' },
-    { id: 11, title: 'सरोजिनी नायडू', content: 'सरोजिनी नायडू, भारत की बुलबुल, कवित्री, और भारतीय राष्ट्रीय आंदोलन में प्रमुख नेता।' },
-    { id: 12, title: 'मंगल पांडे', content: 'मंगल पांडे, वह सेपाई जो भारतीय बगावत 1857 के घटनाओं में महत्वपूर्ण भूमिका निभाई।' },
-];
-
-
-
-const DialogSlice = createSlice({
-    name: 'dialog',
+const dialogsSlice = createSlice({
+    name: "dialogs",
     initialState: {
-        data: dialogData
+        data: [],
+        isLoading: false,
+        error: null,
     },
     reducers: {
-        setDialogData: (state, action) => {
-            state.data = action.payload
-        }
-    }
-})
+        setdialogsData: (state, action) => {
+            state.data = action.payload.data;
+            state.isLoading = false;
+            state.error = null;
+        },
+        setdialogsLoading: (state) => {
+            state.isLoading = true;
+            state.error = null;
+        },
+        setdialogsError: (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        updatedialogs: (state, action) => {
+            const updateddialogs = action.payload;
+            state.data = state.data.map((dialogs) =>
+                dialogs.dId === updateddialogs.dId ? updatedDialogs : dialogs
+            );
+            state.isLoading = false;
+            state.error = null;
+        },
+        deletedialogs: (state, action) => {
+            const dIdToDelete = action.payload;
+            state.data = state.data.filter((dialogs) => dialogs.dId !== dIdToDelete);
+            state.isLoading = false;
+            state.error = null;
+        },
+    },
+});
 
-export const { setDialogData } = DialogSlice.actions
-export const selectDialogData = (state) => state.dialogData.data;
-export default DialogSlice.reducer;
+export const {
+    setdialogsData,
+    setdialogsLoading,
+    setdialogsError,
+    updatedialogs,
+    deletedialogs,
+} = dialogsSlice.actions;
+
+export const fetchdialogsData = () => async (dispatch) => {
+    try {
+        dispatch(setdialogsLoading());
+        const response = await axios.get(
+            import.meta.env.VITE_BASE_URL + "feature/appDialogs"
+        );
+        dispatch(setdialogsData(response.data));
+    } catch (error) {
+        dispatch(setdialogsError(error.message));
+    }
+};
+
+export const AddData = (form) => async () => {
+    try {
+        const response = await axios.post(
+            import.meta.env.VITE_BASE_URL + "feature/addDialog",
+            form,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+        console.log("Response:", response.data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
+
+export const updatedialogsData = (dId, data) => async (dispatch) => {
+    try {
+        const response = await axios.put(
+            import.meta.env.VITE_BASE_URL + `feature/updateDialog/${dId}`,
+            data,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        const updateddialogsData = response.data;
+
+        dispatch(updatedialogs(updateddialogsData));
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
+
+export const deletedialogsData = (dId) => async (dispatch) => {
+    try {
+        const response = await axios.delete(
+            import.meta.env.VITE_BASE_URL + `feature/deleteDialog/${dId}`
+        );
+
+        const deletedialogsData = response.data;
+
+        dispatch(deletedialogs(deletedialogsData));
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
+
+export const selectdialogsData = (state) => state.dialogs.data;
+export const selectdialogsLoading = (state) => state.dialogs.isLoading;
+export const selectdialogsError = (state) => state.dialogs.error;
+
+export default dialogsSlice.reducer;

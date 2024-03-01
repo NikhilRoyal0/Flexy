@@ -21,6 +21,7 @@ import {
   Typography,
   List,
   ListItem,
+  Badge,
 } from "@mui/material";
 
 import userimg from "../../assets/images/users/user.jpg";
@@ -47,6 +48,10 @@ const Header = (props) => {
 
   const handleClose4 = () => {
     setAnchorEl4(null);
+  };
+
+  const handleprofile = () => {
+    navigate("/profile-setting")
   };
 
 
@@ -87,7 +92,9 @@ const Header = (props) => {
           color="inherit"
           onClick={handleNotificationsClick}
         >
-          <NotificationsNoneOutlinedIcon width="20" height="20" />
+          <Badge badgeContent={2} color="primary">
+            <NotificationsNoneOutlinedIcon width="20" height="20" />
+          </Badge>
         </IconButton>
         <Popover
           id="notifications-popover"
@@ -190,11 +197,11 @@ const Header = (props) => {
             </ListItemIcon>
             Add another account
           </MenuItem>
-          <MenuItem onClick={handleClose4}>
+          <MenuItem onClick={handleprofile}>
             <ListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </ListItemIcon>
-            Settings
+            Profile Settings
           </MenuItem>
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>

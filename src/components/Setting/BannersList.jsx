@@ -88,7 +88,6 @@ const BannersList = () => {
   };
 
   const closeFullArticleDialog = () => {
-    setSelectedbanner(null);
     setFullArticleDialogOpen(false);
   };
 

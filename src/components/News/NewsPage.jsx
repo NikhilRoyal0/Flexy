@@ -89,7 +89,6 @@ const NewsPage = () => {
   };
 
   const closeFullArticleDialog = () => {
-    setSelectedNews(null);
     setFullArticleDialogOpen(false);
   };
 
