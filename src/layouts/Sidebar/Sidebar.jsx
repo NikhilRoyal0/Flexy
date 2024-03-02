@@ -85,7 +85,7 @@ const Sidebar = (props) => {
                     {item.title}
                     {item.subItems && (
                       <IconButton
-                      sx={{ position: 'absolute', right: 50, color: 'inherit', p: 0 }}
+                      sx={{ position: 'absolute', right: 20, color: 'inherit', p: 0 }}
                       >
                         {open === index ? (
                           <KeyboardArrowUpIcon />
