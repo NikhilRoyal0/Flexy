@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Table,
@@ -9,44 +9,33 @@ import {
   Typography,
   Box,
   Chip,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
 } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
-import { fetchUsersData, selectUsersData, selectUsersLoading, selectUsersError } from "../../app/UsersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
+import { fetchWithdrawalData, selectWithdrawalData, selectWithdrawalLoading, selectWithdrawalError } from "../../app/WithdrawalSlice";
 
-
-
-const Lists = ({ searchText, setSearchText }) => {
+const Lists = ({ filterOption }) => {
   const dispatch = useDispatch();
-  const usersData = useSelector(selectUsersData);
-  const isLoading = useSelector(selectUsersLoading);
-  const error = useSelector(selectUsersError);
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  const [UserToDelete, setUserToDelete] = useState(null);
-
-  const navigate = useNavigate();
-
-  const editClick = (user) => {
-    navigate(`edit-user/${user.uId}`);
-  };
+  const withdrawalData = useSelector(selectWithdrawalData);
+  const isLoading = useSelector(selectWithdrawalLoading);
+  const error = useSelector(selectWithdrawalError);
 
   useEffect(() => {
-    dispatch(fetchUsersData());
+    dispatch(fetchWithdrawalData());
   }, [dispatch]);
 
-  const filteredUsersData = usersData.filter((user) =>
-    user.userName.toLowerCase().includes(searchText.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchText.toLowerCase()) ||
-    user.phone.toLowerCase().includes(searchText.toLowerCase())
-  );
-
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" size={120} thickness={4} />
+      </div>
+    );
   }
 
   if (error) {
@@ -67,37 +56,31 @@ const Lists = ({ searchText, setSearchText }) => {
     );
   }
 
-  const deleteClick = (user) => {
-    setUserToDelete(user);
-    setDeleteConfirmationOpen(true);
+  const filterDataByStatus = (data, filterOption) => {
+    return data.filter((user) => {
+      return (
+        (filterOption === "accepted" && user.status === 0) ||
+        (filterOption === "rejected" && user.status === 1) ||
+        (filterOption === "inProgress" && user.status === 2) ||
+        !filterOption || filterOption === "all"
+      );
+    });
   };
 
-  const handleDeleteConfirm = () => {
-    if (UserToDelete) {
-      dispatch(deleteUserData(userToDelete.userId)).then(() => {
-        setDeleteConfirmationOpen(false);
-        setUserToDelete(null);
-        dispatch(fetchUsersData());
-      });
-    }
-  };
+  const filteredData = filterDataByStatus(withdrawalData, filterOption);
 
-  const handleDeleteCancel = () => {
-    setDeleteConfirmationOpen(false);
-    setUserToDelete(null);
-  };
 
 
   return (
     <Box>
-      {filteredUsersData.length === 0 ? (
+      {filteredData.length === 0 ? (
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           height="100px"
         >
-          <Typography variant="h3">No user available...</Typography>
+          <Typography variant="h3">No request available...</Typography>
         </Box>) : (
         <div style={{ overflowX: "auto" }}>
           <Table
@@ -112,44 +95,48 @@ const Lists = ({ searchText, setSearchText }) => {
               <TableRow>
                 <TableCell>
                   <Typography color="textDanger" variant="h6">
-                    Id
+                    User Id
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Name
+                    Account Number
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Assigned To:
+                    Bank Name/
+                    <br />IFSC Code
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Mobile no
+                    UPI ID
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Priority
+                    Created Date
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    Status
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography color="textSecondary" variant="h6">
-                    Wallet
+                    Wallet Amount
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Edit / Delete
-                  </Typography>
+
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsersData.map((user) => (
-                <TableRow key={user.uId}>
+              {filteredData.map((user) => (
+                <TableRow key={user.user_id}>
                   <TableCell>
                     <Typography
                       sx={{
@@ -157,7 +144,12 @@ const Lists = ({ searchText, setSearchText }) => {
                         fontWeight: "500",
                       }}
                     >
-                      {user.uId}
+                      {user.user_id}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {user.accountNumber}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -174,7 +166,7 @@ const Lists = ({ searchText, setSearchText }) => {
                             fontWeight: "600",
                           }}
                         >
-                          {user.userName}
+                          {user.bankName}
                         </Typography>
                         <Typography
                           color="textSecondary"
@@ -182,72 +174,43 @@ const Lists = ({ searchText, setSearchText }) => {
                             fontSize: "13px",
                           }}
                         >
-                          {user.referCode}
+                          {user.ifscCode}
                         </Typography>
                       </Box>
                     </Box>
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {user.email}
+                      {user.upiId}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {user.phone}
+                      {user.createdDateTime}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Chip
-                      sx={{
-                        pl: "4px",
-                        pr: "4px",
-                        backgroundColor: user.status === 1 ? "#4CAF50" : "#F44336",
+                      style={{
+                        backgroundColor: user.status === 0 ? "#4CAF50" : (user.status === 1 ? "#F44336" : "#2196F3"),
                         color: "#fff",
+                        paddingLeft: "4px",
+                        paddingRight: "4px",
                       }}
                       size="small"
-                      label={user.status === 1 ? "Active" : "Inactive"}
-                    ></Chip>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="h6">${user.walletAmount}k</Typography>
+                      label={user.status === 0 ? "Accepted" : (user.status === 1 ? "Rejected" : "In Progress")}
+                    />
                   </TableCell>
                   <TableCell>
-                    <Button variant="outlined" color="primary" onClick={() => editClick(user)}>
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => deleteClick(user)}
-                      sx={{ ml: 1 }}
-                    >
-                      Delete
-                    </Button>
+                    <Typography variant="h6">{user.amount}k</Typography>
+                  </TableCell>
+                  <TableCell>
+
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <Dialog
-            open={deleteConfirmationOpen}
-            onClose={handleDeleteCancel}
-          >
-            <DialogTitle>Delete Confirmation</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Are you sure you want to delete this Banner?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDeleteCancel} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleDeleteConfirm} color="error" autoFocus>
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
         </div>
       )}
     </Box>

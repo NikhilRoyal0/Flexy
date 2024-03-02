@@ -9,6 +9,7 @@ import PlansReducer from './PlansSlice';
 import NewsReducer from './NewsSlice';
 import BannerReducer from './BannerSlice';
 import appSettingReducer from './AppSlice';
+import WithdrawalReducer from './WithdrawalSlice';
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     News: NewsReducer,
     Banner: BannerReducer,
     appSetting: appSettingReducer,
+    Withdrawal: WithdrawalReducer,
   },
 });
 

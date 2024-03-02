@@ -71,7 +71,21 @@ const PlansPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh"
+      >
+        <Typography variant="h4" color="error" gutterBottom>
+          Oops! Something went wrong.
+        </Typography>
+        <Typography variant="body1" color="textSecondary" align="center">
+          {error}
+        </Typography>
+      </Box>
+    );
   }
 
   const editClick = (Plan) => {

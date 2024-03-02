@@ -17,13 +17,14 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import SettingsIcon from '@mui/icons-material/Settings';
 import BallotIcon from '@mui/icons-material/Ballot';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import TaskIcon from '@mui/icons-material/Task';
 import SplitscreenIcon from '@mui/icons-material/Splitscreen';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import LogoutIcon from '@mui/icons-material/Logout';
+import WalletIcon from '@mui/icons-material/Wallet';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
 
 const initialState = {
   menuItems: [],
@@ -156,20 +157,35 @@ export const fetchMenuItems = () => (dispatch) => {
     },
     {
       id: 13,
+      title: "Wallet",
+      icon: WalletIcon,
+      href: '#',
+      visible: isVisible,
+      subItems: [
+        {
+          id: 31,
+          title: "Withdrawal Request",
+          icon: RequestPageIcon,
+          href: "/wallet/withdrawal-request",
+        },
+      ],
+    },
+    {
+      id: 14,
       title: "Plans",
       icon: LightbulbIcon,
       href: "/plans",
       visible: isVisible,
     },
     {
-      id: 14,
+      id: 15,
       title: "News",
       icon: NewspaperIcon,
       href: "/news",
       visible: isVisible,
     },
     {
-      id: 15,
+      id: 16,
       title: "Setting",
       icon: ManageAccountsIcon,
       href: '#',
@@ -196,7 +212,7 @@ export const fetchMenuItems = () => (dispatch) => {
       ],
     },
     {
-      id: 16,
+      id: 17,
       title: "Tasks",
       icon: TaskIcon,
       href: '#',
@@ -217,7 +233,7 @@ export const fetchMenuItems = () => (dispatch) => {
       ],
     },
     {
-      id: 17,
+      id: 18,
       title: "Logout",
       icon: LogoutIcon,
       href: "/logout",

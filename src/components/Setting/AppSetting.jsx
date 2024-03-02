@@ -138,7 +138,7 @@ const AppSetting = () => {
               <TextField
                 label="App Version"
                 variant="outlined"
-                name= "appVersion"
+                name="appVersion"
                 fullWidth
                 value={AppSetting && AppSetting.appVersion}
                 onChange={handleTextChange}
@@ -149,7 +149,7 @@ const AppSetting = () => {
               <TextField
                 label="Minimum Version"
                 variant="outlined"
-                name = "minVersion"
+                name="minVersion"
                 fullWidth
                 value={AppSetting && AppSetting.minVersion}
                 onChange={handleTextChange}
@@ -160,7 +160,7 @@ const AppSetting = () => {
               <TextField
                 label="Website"
                 variant="outlined"
-                name = "website"
+                name="website"
                 fullWidth
                 value={AppSetting && AppSetting.website}
                 onChange={handleTextChange}
@@ -171,7 +171,7 @@ const AppSetting = () => {
               <TextField
                 label="Ref Message"
                 variant="outlined"
-                name = "refMessage"
+                name="refMessage"
                 fullWidth
                 value={AppSetting && AppSetting.refMessage}
                 onChange={handleTextChange}
@@ -182,7 +182,7 @@ const AppSetting = () => {
               <TextField
                 label="Terms and Conditions"
                 variant="outlined"
-                name = "termsConditions"
+                name="termsConditions"
                 fullWidth
                 value={AppSetting && AppSetting.termsConditions}
                 onChange={handleTextChange}
@@ -213,7 +213,7 @@ const AppSetting = () => {
               <TextField
                 label="Link"
                 variant="outlined"
-                name ="floatingButtonLink"
+                name="floatingButtonLink"
                 fullWidth
                 value={AppSetting && AppSetting.floatingButtonLink}
                 onChange={handleTextChange}
@@ -224,7 +224,7 @@ const AppSetting = () => {
               <TextField
                 label="About Us"
                 variant="outlined"
-                name = "aboutUs"
+                name="aboutUs"
                 fullWidth
                 value={AppSetting && AppSetting.aboutUs}
                 onChange={handleTextChange}
@@ -235,7 +235,7 @@ const AppSetting = () => {
               <TextField
                 label="Contact Us"
                 variant="outlined"
-                name = "contactUs"
+                name="contactUs"
                 fullWidth
                 value={AppSetting && AppSetting.contactUs}
                 onChange={handleTextChange}
