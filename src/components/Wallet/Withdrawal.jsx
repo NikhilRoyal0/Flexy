@@ -25,7 +25,7 @@ const Withdrawal = () => {
         <CardContent>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} s={8} md={7} lg={6} xl={6}>
-              <Typography variant="h3">Withdrawal Request Data</Typography>
+              <Typography variant="h3">Withdrawal Requests</Typography>
             </Grid>
             <Grid item xs={12} s={4} md={5} lg={6} xl={6} container justifyContent="flex-end">
               <FormControl variant="outlined" sx={{ minWidth: '150px' }}>

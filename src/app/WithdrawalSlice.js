@@ -38,8 +38,6 @@ export const fetchWithdrawalData = () => async (dispatch) => {
 };
 
 
-
-
 export const selectWithdrawalData = (state) => state.Withdrawal.data;
 export const selectWithdrawalLoading = (state) => state.Withdrawal.isLoading;
 export const selectWithdrawalError = (state) => state.Withdrawal.error;
