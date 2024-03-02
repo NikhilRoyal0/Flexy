@@ -22,10 +22,6 @@ const WithdrawalSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
-        updateWithdrawal: (state, action) => {
-            const updatedWithdrawal = action.payload;
-            state.data.map((Withdrawal) => Withdrawal.wr_id === updatedWithdrawal.wr_id);
-        },
     },
 });
 
@@ -41,27 +37,6 @@ export const fetchWithdrawalData = () => async (dispatch) => {
     }
 };
 
-export const updateWithdrawalData = (wr_id, data) => async (dispatch) => {
-    try {
-
-        const response = await axios.put(
-            import.meta.env.VITE_BASE_URL + `feature/updateWithdrawal/${wr_id}`,
-            data,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
-
-        const updatedWithdrawalData = response.data;
-
-        dispatch(updateWithdrawal(updatedWithdrawalData));
-
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
 
 

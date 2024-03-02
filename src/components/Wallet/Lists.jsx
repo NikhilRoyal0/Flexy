@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Table,
@@ -9,8 +9,24 @@ import {
   Typography,
   Box,
   Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Grid,
+  Snackbar,
+  SnackbarContent,
+  IconButton,
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
+import CloseIcon from "@mui/icons-material/Close";
+import { baseTheme } from "../../assets/global/Theme-variable";
 import { fetchWithdrawalData, selectWithdrawalData, selectWithdrawalLoading, selectWithdrawalError } from "../../app/WithdrawalSlice";
 
 const Lists = ({ filterOption }) => {
@@ -18,6 +34,32 @@ const Lists = ({ filterOption }) => {
   const withdrawalData = useSelector(selectWithdrawalData);
   const isLoading = useSelector(selectWithdrawalLoading);
   const error = useSelector(selectWithdrawalError);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedUserDetails, setSelectedUserDetails] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSnackbarClose = (reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    if (!isSuccess) {
+      setSnackbarOpen(false);
+    }
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarOpen(true);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    setIsSuccess(true);
+
+    showSnackbar('Task updated successfully!');
+    setOpenDialog(false);
+  };
 
   useEffect(() => {
     dispatch(fetchWithdrawalData());
@@ -56,6 +98,11 @@ const Lists = ({ filterOption }) => {
     );
   }
 
+  const handleRowClick = (userDetails) => {
+    setSelectedUserDetails(userDetails);
+    setOpenDialog(true);
+  };
+
   const filterDataByStatus = (data, filterOption) => {
     return data.filter((user) => {
       return (
@@ -68,6 +115,13 @@ const Lists = ({ filterOption }) => {
   };
 
   const filteredData = filterDataByStatus(withdrawalData, filterOption);
+
+  const handleStatusChange = (newStatus) => {
+    setSelectedUserDetails((prevDetails) => ({
+      ...prevDetails,
+      status: newStatus,
+    }));
+  };
 
 
 
@@ -92,7 +146,7 @@ const Lists = ({ filterOption }) => {
             }}
           >
             <TableHead>
-              <TableRow>
+              <TableRow >
                 <TableCell>
                   <Typography color="textDanger" variant="h6">
                     User Id
@@ -136,7 +190,9 @@ const Lists = ({ filterOption }) => {
             </TableHead>
             <TableBody>
               {filteredData.map((user) => (
-                <TableRow key={user.user_id}>
+                <TableRow key={user.user_id} onClick={() => handleRowClick(user)}
+                  sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#ADD8E6' } }}
+                >
                   <TableCell>
                     <Typography
                       sx={{
@@ -213,6 +269,73 @@ const Lists = ({ filterOption }) => {
           </Table>
         </div>
       )}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle variant="h3">Withdrawal Details</DialogTitle>
+        <span />
+        <DialogContent>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField label="Withdrawal Request ID" value={selectedUserDetails && selectedUserDetails.wr_id} disabled fullWidth />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField label="User ID" value={selectedUserDetails && selectedUserDetails.userId} disabled fullWidth />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField label="Amount" value={selectedUserDetails && selectedUserDetails.amount} disabled fullWidth />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="status">Status</InputLabel>
+                  <Select
+                    label="Status"
+                    name="status"
+                    value={selectedUserDetails && selectedUserDetails.status}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                  >
+                    <MenuItem value="0">Accepted</MenuItem>
+                    <MenuItem value="1">Rejected</MenuItem>
+                    <MenuItem value="2">In Progress</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Close</Button>
+          <Button color="primary" type="submit">Submit</Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+      >
+        <SnackbarContent
+          message="Status updated successfully!"
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleSnackbarClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+          sx={{
+            backgroundColor: isSuccess
+              ? baseTheme.palette.success.main
+              : baseTheme.palette.error.main,
+            color: isSuccess ? '#fff' : undefined,
+          }}
+        />
+      </Snackbar>
     </Box>
   );
 };
