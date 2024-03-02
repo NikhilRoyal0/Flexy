@@ -51,13 +51,13 @@ export const fetchPlansData = () => async (dispatch) => {
 
 export const AddPlanData = (data) => async (dispatch) => {
   try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertPlan',
+    const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertImages',
       data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
     });
-    console.log('Response:', response.data);  //! Response for Success
+    console.log('Response:', response.data); 
 
   } catch (error) {
     console.error('Error:', error);

@@ -48,9 +48,9 @@ export const updateappSettingData = (AppSetting) => async (dispatch) => {
       AppSetting,
     );
 
-    const updatedAppSettingData = response.data;
+    const updatedAppSetting = response.data;
 
-    dispatch(updatedAppSettingData);
+    dispatch(setAppData(updatedAppSetting));
   } catch (error) {
     console.error('Error in updateappSettingData:', error);
   }
