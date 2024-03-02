@@ -61,7 +61,7 @@ const FullLayout = () => {
         <Container
           maxWidth={false}
           sx={{
-            paddingLeft: shouldRenderHeaderFooterSidebar && lgUp ? "290px!important" : "",
+            paddingLeft: shouldRenderHeaderFooterSidebar && lgUp ? "280px!important" : "",
             overflow: "hidden",
           }}
         >
