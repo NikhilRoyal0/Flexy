@@ -81,11 +81,11 @@ const Sidebar = (props) => {
                   >
                     <item.icon width="20" height="20" />
                   </ListItemIcon>
-                  <ListItemText>
+                  <ListItemText sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     {item.title}
                     {item.subItems && (
                       <IconButton
-                        sx={{ ml: 1, color: "inherit", p: 0 }}
+                      sx={{ position: 'absolute', right: 50, color: 'inherit', p: 0 }}
                       >
                         {open === index ? (
                           <KeyboardArrowUpIcon />

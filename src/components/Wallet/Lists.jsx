@@ -178,7 +178,7 @@ const Lists = ({ filterOption }) => {
                     Status
                   </Typography>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell >
                   <Typography color="textSecondary" variant="h6">
                     Wallet Amount
                   </Typography>
@@ -193,7 +193,7 @@ const Lists = ({ filterOption }) => {
                 <TableRow key={user.user_id} onClick={() => handleRowClick(user)}
                   sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#ADD8E6' } }}
                 >
-                  <TableCell>
+                  <TableCell align="center">
                     <Typography
                       sx={{
                         fontSize: "15px",
@@ -257,7 +257,7 @@ const Lists = ({ filterOption }) => {
                       label={user.status === 0 ? "Accepted" : (user.status === 1 ? "Rejected" : "In Progress")}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <Typography variant="h6">{user.amount}k</Typography>
                   </TableCell>
                   <TableCell>
