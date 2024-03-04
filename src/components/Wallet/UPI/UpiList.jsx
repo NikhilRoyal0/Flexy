@@ -74,7 +74,7 @@ const UpiList = () => {
         <Box>
             <Card variant="outlined">
                 <CardContent>
-                    <Grid container spacing={1} alignItems="center">
+                    <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={4} md={5} lg={6} xl={6}>
                             <Typography variant="h3">UPI Lists</Typography>
                         </Grid>
@@ -90,13 +90,16 @@ const UpiList = () => {
                             alignItems="center"
                         >
                             <FormControl variant="outlined" sx={{ minWidth: "150px" }}>
-                                <InputLabel htmlFor="status">Filter By Status</InputLabel>
+                                <InputLabel htmlFor="status" sx={{ marginLeft: 1, marginTop: 1 }}
+                                >Filter By Status</InputLabel>
                                 <Select
                                     label="Filter By Status"
                                     variant="outlined"
                                     size="small"
                                     value={filterOption}
                                     onChange={handleFilterChange}
+                                    sx={{ marginLeft: 1, marginTop: 1 }}
+
                                 >
                                     <MenuItem value="Active">Active</MenuItem>
                                     <MenuItem value="Inactive">Inactive</MenuItem>
@@ -106,7 +109,7 @@ const UpiList = () => {
                                 variant="contained"
                                 color="primary"
                                 onClick={handleAddUpiData}
-                                sx={{ marginLeft: 2 }}
+                                sx={{ marginLeft: 1, marginTop: 1 }}
                             >
                                 <AddIcon />
                                 <Typography sx={{ ml: 1 }}>Add UPI</Typography>
