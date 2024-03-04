@@ -45,121 +45,125 @@ export default function Login() {
         backgroundImage: `url(${uiBackgroundImage})`,
         backgroundSize: 'cover',
         height: '100vh',
-        
+
       }}
     >
-      <Grid item>
-        <Card
-          style={{
-            width: '100%',
-            maxWidth: '500px',
-            padding: '25px',
-            boxSizing: 'border-box',
-            textAlign: 'center',
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <CardContent>
-            <Typography variant="h4" gutterBottom style={{ fontSize: '24px', color: '#ffffff' }}>
-              Login
-            </Typography>
-
-            <form>
-              <TextField
-                label="Username"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                id="username"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-
-              <TextField
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton onClick={handleTogglePasswordVisibility} edge="end" style={{ color: '#ffffff' }}>
-                      {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  ),
-                }}
-              />
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
-                <FormControlLabel
-                  control={<Checkbox color="primary" />}
-                  label="Remember me"
-                />
-
-                <Link to="#" style={{ color: '#ffffff' }}>
-                  Forgot password?
-                </Link>
-              </div>
-
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                type="button"
-                onClick={handleLogin}
-                style={{ marginBottom: '10px', marginTop: '10px' }}
-              >
+      <Grid item xs={12} md={8} lg={6}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <Card
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              padding: '25px',
+              boxSizing: 'border-box',
+              textAlign: 'center',
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: 'cover',
+              '@media (max-width: 600px)': {
+                width: '90%',
+              },
+            }}
+          >
+            <CardContent>
+              <Typography variant="h4" gutterBottom style={{ fontSize: '24px', color: '#ffffff' }}>
                 Login
-              </Button>
-
-              <Typography variant="body2" style={{ textAlign: 'center', marginBottom: '15px', position: 'relative', color: '#000000' }}>
-                <span
-                  style={{
-                    display: 'inline-block',
-                    backgroundColor: '#000000',
-                    color: '#ffffff',
-                    padding: '8px',
-                    borderRadius: '50%',
-                    zIndex: '1',
-                    position: 'relative',
-                  }}
-                >
-                  or
-                </span>
-
-                <span
-                  style={{
-                    display: 'inline-block',
-                    border: '1px solid #ffffff',
-                    width: '100%',
-                    position: 'absolute',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    left: '0',
-                    zIndex: '0',
-                  }}
-                ></span>
               </Typography>
 
-              <Button variant="contained" color="inherit" fullWidth type="button">
-                Continue with Google
-              </Button>
+              <form>
+                <TextField
+                  label="Username"
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  id="username"
+                  name="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
 
-              <div style={{ marginTop: '10px' }}>
-                <Typography>
-                  Don't have an account? <Link to="/register-now" style={{ color: '#ffffff' }}>Register now</Link>
+                <TextField
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={handleTogglePasswordVisibility} edge="end" style={{ color: '#ffffff' }}>
+                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    ),
+                  }}
+                />
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
+                  <FormControlLabel
+                    control={<Checkbox color="primary" />}
+                    label="Remember me"
+                  />
+
+                  <Link to="#" style={{ color: '#ffffff' }}>
+                    Forgot password?
+                  </Link>
+                </div>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  type="button"
+                  onClick={handleLogin}
+                  style={{ marginBottom: '10px', marginTop: '10px' }}
+                >
+                  Login
+                </Button>
+
+                <Typography variant="body2" style={{ textAlign: 'center', marginBottom: '15px', position: 'relative', color: '#000000' }}>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      backgroundColor: '#000000',
+                      color: '#ffffff',
+                      padding: '8px',
+                      borderRadius: '50%',
+                      zIndex: '1',
+                      position: 'relative',
+                    }}
+                  >
+                    or
+                  </span>
+
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      border: '1px solid #ffffff',
+                      width: '100%',
+                      position: 'absolute',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      left: '0',
+                      zIndex: '0',
+                    }}
+                  ></span>
                 </Typography>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+
+                <Button variant="contained" color="inherit" fullWidth type="button">
+                  Continue with Google
+                </Button>
+
+                <div style={{ marginTop: '10px' }}>
+                  <Typography>
+                    Don't have an account? <Link to="/register-now" style={{ color: '#ffffff' }}>Register now</Link>
+                  </Typography>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </Grid>
     </Grid>
   );

@@ -71,7 +71,6 @@ const ProductPerformance = () => {
         <Box
           sx={{
             overflow: "auto",
-            overflowX: "hidden",
             mt: 3,
             maxHeight: 374,
           }}

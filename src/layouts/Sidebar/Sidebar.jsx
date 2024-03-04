@@ -33,9 +33,19 @@ const Sidebar = (props) => {
 
   const [open, setOpen] = React.useState(true);
 
-  const handleClick = (index) => {
-    if (open === index) {
-      setOpen((prevopen) => !prevopen);
+  useEffect(() => {
+    setOpen(true);
+  }, [pathDirect]);
+
+  const handleClick = (index, hasSubItems) => {
+    if (lgUp) {
+      props.onSidebarClose();
+    }
+
+    if (!hasSubItems) {
+      props.onSidebarClose();
+    } else if (open === index) {
+      setOpen((prevOpen) => !prevOpen);
     } else {
       setOpen(index);
     }
@@ -60,7 +70,7 @@ const Sidebar = (props) => {
               <List component="li" disablePadding>
                 <ListItem
                   key={item.id}
-                  onClick={() => handleClick(index)}
+                  onClick={() => handleClick(index, !!item.subItems)}
                   button
                   component={NavLink}
                   to={item.href}
@@ -85,7 +95,7 @@ const Sidebar = (props) => {
                     {item.title}
                     {item.subItems && (
                       <IconButton
-                      sx={{ position: 'absolute', right: 20, color: 'inherit', p: 0 }}
+                        sx={{ position: 'absolute', right: 20, color: 'inherit', p: 0 }}
                       >
                         {open === index ? (
                           <KeyboardArrowUpIcon />
@@ -103,6 +113,7 @@ const Sidebar = (props) => {
                   {item.subItems.map((subItem) => (
                     <ListItem
                       key={subItem.id}
+                      onClick={() => handleClick(index, false)}
                       button
                       component={NavLink}
                       to={subItem.href}
