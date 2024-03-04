@@ -27,7 +27,7 @@ import {
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from "@mui/icons-material/Close";
 import { baseTheme } from "../../assets/global/Theme-variable";
-import { fetchWithdrawalData, selectWithdrawalData, selectWithdrawalLoading, selectWithdrawalError } from "../../app/WithdrawalSlice";
+import { fetchWithdrawalData, selectWithdrawalData, selectWithdrawalLoading, selectWithdrawalError, updateWithdrawalData } from "../../app/WithdrawalSlice";
 
 const Lists = ({ filterOption }) => {
   const dispatch = useDispatch();
@@ -38,6 +38,8 @@ const Lists = ({ filterOption }) => {
   const [selectedUserDetails, setSelectedUserDetails] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [updatedStatus, setUpdatedStatus] = useState(null);
+
 
   const handleSnackbarClose = (reason) => {
     if (reason === 'clickaway') {
@@ -50,16 +52,38 @@ const Lists = ({ filterOption }) => {
 
   const showSnackbar = (message) => {
     setSnackbarOpen(true);
+
+    setTimeout(() => {
+      setSnackbarOpen(false);
+    }, 3000);
+  };
+
+  const handleStatusChange = (newStatus) => {
+    setSelectedUserDetails((prevDetails) => ({
+      ...prevDetails,
+      wStatus: newStatus,
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setIsSuccess(true);
+    try {
+      const updatedStatus = selectedUserDetails.wStatus;
 
-    showSnackbar('Task updated successfully!');
-    setOpenDialog(false);
+      await dispatch(updateWithdrawalData(selectedUserDetails.wr_id, updatedStatus));
+
+      dispatch(fetchWithdrawalData());
+
+      setIsSuccess(true);
+      showSnackbar('Status updated successfully!');
+      setOpenDialog(false);
+
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
   };
+
 
   useEffect(() => {
     dispatch(fetchWithdrawalData());
@@ -101,28 +125,22 @@ const Lists = ({ filterOption }) => {
   const handleRowClick = (userDetails) => {
     setSelectedUserDetails(userDetails);
     setOpenDialog(true);
+    setUpdatedStatus(userDetails.wStatus);
+
   };
 
   const filterDataByStatus = (data, filterOption) => {
     return data.filter((user) => {
       return (
-        (filterOption === "accepted" && user.status === 0) ||
-        (filterOption === "rejected" && user.status === 1) ||
-        (filterOption === "inProgress" && user.status === 2) ||
+        (filterOption === "accepted" && user.wStatus === 0) ||
+        (filterOption === "rejected" && user.wStatus === 1) ||
+        (filterOption === "inProgress" && user.wStatus === 2) ||
         !filterOption || filterOption === "all"
       );
     });
   };
 
   const filteredData = filterDataByStatus(withdrawalData, filterOption);
-
-  const handleStatusChange = (newStatus) => {
-    setSelectedUserDetails((prevDetails) => ({
-      ...prevDetails,
-      status: newStatus,
-    }));
-  };
-
 
 
   return (
@@ -248,13 +266,13 @@ const Lists = ({ filterOption }) => {
                   <TableCell>
                     <Chip
                       style={{
-                        backgroundColor: user.status === 0 ? "#4CAF50" : (user.status === 1 ? "#F44336" : "#2196F3"),
+                        backgroundColor: user.wStatus === 0 ? "#4CAF50" : (user.wStatus === 1 ? "#F44336" : "#2196F3"),
                         color: "#fff",
                         paddingLeft: "4px",
                         paddingRight: "4px",
                       }}
                       size="small"
-                      label={user.status === 0 ? "Accepted" : (user.status === 1 ? "Rejected" : "In Progress")}
+                      label={user.wStatus === 0 ? "Accepted" : (user.wStatus === 1 ? "Rejected" : "In Progress")}
                     />
                   </TableCell>
                   <TableCell align="center">
@@ -273,7 +291,7 @@ const Lists = ({ filterOption }) => {
         <DialogTitle variant="h3">Withdrawal Details</DialogTitle>
         <span />
         <DialogContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ margin: '16px' }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField label="Withdrawal Request ID" value={selectedUserDetails && selectedUserDetails.wr_id} disabled fullWidth />
@@ -290,7 +308,7 @@ const Lists = ({ filterOption }) => {
                   <Select
                     label="Status"
                     name="status"
-                    value={selectedUserDetails && selectedUserDetails.status}
+                    value={selectedUserDetails && selectedUserDetails.wStatus}
                     onChange={(e) => handleStatusChange(e.target.value)}
                   >
                     <MenuItem value="0">Accepted</MenuItem>
@@ -304,7 +322,7 @@ const Lists = ({ filterOption }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Close</Button>
-          <Button color="primary" type="submit">Submit</Button>
+          <Button color="primary" type="submit" onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
       <Snackbar
@@ -313,11 +331,11 @@ const Lists = ({ filterOption }) => {
           horizontal: "right",
         }}
         open={snackbarOpen}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
         onClose={handleSnackbarClose}
       >
         <SnackbarContent
-          message="Status updated successfully!"
+          message={isSuccess ? 'Status updated successfully!' : 'Failed to update status!'}
           action={
             <IconButton
               size="small"
