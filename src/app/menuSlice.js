@@ -25,6 +25,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import LogoutIcon from '@mui/icons-material/Logout';
 import WalletIcon from '@mui/icons-material/Wallet';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 const initialState = {
   menuItems: [],
@@ -163,10 +164,16 @@ export const fetchMenuItems = () => (dispatch) => {
       visible: isVisible,
       subItems: [
         {
-          id: 31,
+          id: 41,
           title: "Withdrawal Request",
           icon: RequestPageIcon,
           href: "/wallet/withdrawal-request",
+        },
+        {
+          id: 42,
+          title: "UPI Lists",
+          icon: ListAltIcon,
+          href: "/upi-lists",
         },
       ],
     },

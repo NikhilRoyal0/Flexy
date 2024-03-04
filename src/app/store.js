@@ -10,6 +10,7 @@ import NewsReducer from './NewsSlice';
 import BannerReducer from './BannerSlice';
 import appSettingReducer from './AppSlice';
 import WithdrawalReducer from './WithdrawalSlice';
+import UPISliceReducer from './UpiSlice';
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     Banner: BannerReducer,
     appSetting: appSettingReducer,
     Withdrawal: WithdrawalReducer,
+    UPI: UPISliceReducer
   },
 });
 
