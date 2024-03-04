@@ -32,7 +32,7 @@ const Lists = ({ filterOption = "Active" }) => {
   const error = useSelector(selectUPIError);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [state, setState] = useState(true);
+  const [SwitchState, setSwitchState] = useState(true);
 
 
   const handleSnackbarClose = (reason) => {
@@ -46,7 +46,7 @@ const Lists = ({ filterOption = "Active" }) => {
 
   const handleToggleChange = async (user, e) => {
     const updatedStatus = user.status == 0 ? 1 : user.status == 1 ? 0 : user.status;
-    setState(e.target.checked)
+    setSwitchState(e.target.checked)
 
     try {
       await dispatch(updateUPIData(user.upi_id, updatedStatus));
@@ -110,9 +110,6 @@ const Lists = ({ filterOption = "Active" }) => {
     );
   }
 
-  const getSwitchColor = (status) => {
-    return status === 0 ? "primary" : "secondary";
-  };
 
   const filterDataByStatus = (data, filterOption) => {
     return data.filter((user) => {
@@ -181,10 +178,17 @@ const Lists = ({ filterOption = "Active" }) => {
                 <TableRow key={user.upi_id}>
                   <TableCell>
                     <Switch
-                      color={getSwitchColor(user.status)}
-                      checked={state}
+                      checked={SwitchState}
                       name="toggleStatus"
                       onChange={(e) => handleToggleChange(user, e)}
+                      sx={{
+                        "& .MuiSwitch-thumb": {
+                          color: SwitchState ? baseTheme.palette.success.main : baseTheme.palette.danger.main,
+                        },
+                        "& .MuiSwitch-track": {
+                          backgroundColor: SwitchState ? baseTheme.palette.success.main : baseTheme.palette.danger.main,
+                        },
+                      }}
                     />
                   </TableCell>
                   <TableCell>
