@@ -32,6 +32,7 @@ const AddPlan = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [imgUrls, setImageUrls] = useState([])
+    const [isImageSelected, setIsImageSelected] = useState(false);
 
 
 
@@ -95,6 +96,7 @@ const AddPlan = () => {
                 const imageUrl = await dispatch(AddImagesData(formDataForImage));
 
                 setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
+                setIsImageSelected(true);
 
                 console.log("Updated Image URLs:", [...imgUrls, imageUrl]);
             } catch (error) {
@@ -136,9 +138,10 @@ const AddPlan = () => {
             return newSelectedFiles;
         });
 
+        const anyImageSelected = selectedFiles.some((file) => file !== null);
+        setIsImageSelected(anyImageSelected);
         setPopoverAnchor(null);
     };
-
 
     const handleImageClick = (event) => {
         setPopoverAnchor(event.currentTarget);
@@ -220,20 +223,25 @@ const AddPlan = () => {
                                             }}
                                         >
                                             <Box p={1}>
-                                                <Button
-                                                    color="secondary"
-                                                    variant="outlined"
-                                                    onClick={() => handleRemoveClick(index)}
-                                                    startIcon={<DeleteIcon />}
-                                                >
-                                                </Button>
-                                                <Button
-                                                    color="secondary"
-                                                    variant="outlined"
-                                                    onClick={() => handleUploadImage(index)}
-                                                    startIcon={<CloudUploadIcon />}
-                                                >
-                                                </Button>
+                                                {isImageSelected ? (
+                                                    <Button
+                                                        color="secondary"
+                                                        variant="outlined"
+                                                        onClick={() => handleRemoveClick(index)}
+                                                        startIcon={<DeleteIcon />}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        color="secondary"
+                                                        variant="outlined"
+                                                        onClick={() => handleUploadImage(index)}
+                                                        startIcon={<CloudUploadIcon />}
+                                                    >
+                                                     Upload
+                                                    </Button>
+                                                )}
                                             </Box>
                                         </Popover>
                                         <Typography sx={{ mt: 1, fontSize: 9 }}>
