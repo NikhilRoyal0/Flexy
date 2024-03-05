@@ -32,7 +32,6 @@ const AddPlan = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [imgUrls, setImageUrls] = useState([])
-    const [isImageSelected, setIsImageSelected] = useState(false);
 
 
 
@@ -56,16 +55,8 @@ const AddPlan = () => {
         form.append('planExtraDetails', formData.planExtraDetails);
         form.append('planMaxPayOut', formData.planMaxPayOut);
         form.append('createdBy', formData.createdBy);
+        form.append('planImages',JSON.stringify(imgUrls))
 
-        formData.planImages.forEach((file, index) => {
-            form.append(`planImages[${index}]`, file);
-        });
-
-        selectedFiles.forEach((file, index) => {
-            if (file !== null) {
-                form.append(`planImages[${formData.planImages.length + index}]`, file);
-            }
-        });
 
         try {
             console.log("Before Dispatch", formData)
@@ -96,7 +87,6 @@ const AddPlan = () => {
                 const imageUrl = await dispatch(AddImagesData(formDataForImage));
 
                 setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
-                setIsImageSelected(true);
 
                 console.log("Updated Image URLs:", [...imgUrls, imageUrl]);
             } catch (error) {
@@ -138,10 +128,9 @@ const AddPlan = () => {
             return newSelectedFiles;
         });
 
-        const anyImageSelected = selectedFiles.some((file) => file !== null);
-        setIsImageSelected(anyImageSelected);
         setPopoverAnchor(null);
     };
+
 
     const handleImageClick = (event) => {
         setPopoverAnchor(event.currentTarget);
@@ -223,25 +212,20 @@ const AddPlan = () => {
                                             }}
                                         >
                                             <Box p={1}>
-                                                {isImageSelected ? (
-                                                    <Button
-                                                        color="secondary"
-                                                        variant="outlined"
-                                                        onClick={() => handleRemoveClick(index)}
-                                                        startIcon={<DeleteIcon />}
-                                                    >
-                                                        Delete
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        color="secondary"
-                                                        variant="outlined"
-                                                        onClick={() => handleUploadImage(index)}
-                                                        startIcon={<CloudUploadIcon />}
-                                                    >
-                                                     Upload
-                                                    </Button>
-                                                )}
+                                                <Button
+                                                    color="secondary"
+                                                    variant="outlined"
+                                                    onClick={() => handleRemoveClick(index)}
+                                                    startIcon={<DeleteIcon />}
+                                                >
+                                                </Button>
+                                                <Button
+                                                    color="secondary"
+                                                    variant="outlined"
+                                                    onClick={() => handleUploadImage(index)}
+                                                    startIcon={<CloudUploadIcon />}
+                                                >
+                                                </Button>
                                             </Box>
                                         </Popover>
                                         <Typography sx={{ mt: 1, fontSize: 9 }}>

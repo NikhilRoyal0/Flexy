@@ -132,142 +132,145 @@ const PlansPage = () => {
           }}
         >
           <Grid container>
-            {plansData.map((Plan, index) => (
-              <Grid
-                key={index}
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={4}
-                xl={3}
-                sx={{
-                  display: "flex",
-                  alignItems: "stretch",
-                  mt: "8px",
-                }}
-              >
-                <Card
-                  variant="outlined"
+            {plansData.map((Plan, index) => {
+              const myarray = JSON.parse(Plan.planImages)
+            return (
+                <Grid
+                  key={index}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={4}
+                  xl={3}
                   sx={{
-                    p: 0,
-                    width: "100%",
+                    display: "flex",
+                    alignItems: "stretch",
+                    mt: "8px",
                   }}
                 >
-                  <img
-                    src={Plan.planImages}
-                    alt={Plan.planImages[0]}
-                    onError={(e) => {
-                      e.target.src = errorimage;
-                      e.target.alt = "Error Image";
-                    }}
-                    width="100%"
-                    height="210px"
-                    style={{
-                      objectFit: 'contain',
-                    }}
-                  />
-
-                  <CardContent
+                  <Card
+                    variant="outlined"
                     sx={{
-                      paddingLeft: "30px",
-                      paddingRight: "30px",
+                      p: 0,
+                      width: "100%",
                     }}
                   >
-                    <Typography
+                    <img
+                      src={myarray[0]}
+                      alt={myarray[0]}
+                      onError={(e) => {
+                        e.target.src = errorimage;
+                        e.target.alt = "Error Image";
+                      }}
+                      width="100%"
+                      height="210px"
+                      style={{
+                        objectFit: 'contain',
+                      }}
+                    />
+
+                    <CardContent
                       sx={{
-                        fontSize: "h4.fontSize",
-                        fontWeight: "500",
+                        paddingLeft: "30px",
+                        paddingRight: "30px",
                       }}
                     >
-                      {Plan.planTitle}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        mt: 1,
-                        width: "100%",
-                      }}
-                    >
-                      {Plan.planInfo.length <= 15 ? (
-                        Plan.planInfo
-                      ) : (
-                        <>
-                          {Plan.planInfo.split(' ').slice(0, 5).join(' ')}
-                          <span
-                            style={{
-                              fontSize: "15px",
-                              color: 'blue',
-                              cursor: 'pointer',
-                              display: 'inline-block',
-                              marginLeft: '4px',
-                            }}
-                            onClick={() => openFullArticleDialog(Plan)}
-                          >
-                            ... <span style={{ display: 'inline' }}>read more</span>
-                          </span>
-                        </>
-                      )}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        mt: 1,
-                        width: "100%",
-                      }}
-                    >
-                      {Plan.planExtraDetails.length <= 15 ? (
-                        Plan.planExtraDetails
-                      ) : (
-                        <>
-                          {Plan.planExtraDetails.split(' ').slice(0, 5).join(' ')}
-                          <span
-                            style={{
-                              fontSize: "15px",
-                              color: 'blue',
-                              cursor: 'pointer',
-                              display: 'inline-block',
-                              marginLeft: '4px',
-                            }}
-                            onClick={() => openFullArticleDialog(Plan)}
-                          >
-                            ... <span style={{ display: 'inline' }}>read more</span>
-                          </span>
-                        </>
-                      )}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        mt: 1,
-                      }}
-                    >
-                      {Plan.createdBy}
-                    </Typography>
-                    <br />
-                    <Typography>
-                      <Button variant="outlined" color="primary" onClick={() => editClick(Plan)} sx={{ ml: 1 }}>
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => deleteClick(Plan)}
-                        sx={{ ml: 1 }}
+                      <Typography
+                        sx={{
+                          fontSize: "h4.fontSize",
+                          fontWeight: "500",
+                        }}
                       >
-                        Delete
-                      </Button>
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+                        {Plan.planTitle}
+                      </Typography>
+                      <Typography
+                        color="textSecondary"
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          mt: 1,
+                          width: "100%",
+                        }}
+                      >
+                        {Plan.planInfo.length <= 15 ? (
+                          Plan.planInfo
+                        ) : (
+                          <>
+                            {Plan.planInfo.split(' ').slice(0, 5).join(' ')}
+                            <span
+                              style={{
+                                fontSize: "15px",
+                                color: 'blue',
+                                cursor: 'pointer',
+                                display: 'inline-block',
+                                marginLeft: '4px',
+                              }}
+                              onClick={() => openFullArticleDialog(Plan)}
+                            >
+                              ... <span style={{ display: 'inline' }}>read more</span>
+                            </span>
+                          </>
+                        )}
+                      </Typography>
+                      <Typography
+                        color="textSecondary"
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          mt: 1,
+                          width: "100%",
+                        }}
+                      >
+                        {Plan.planExtraDetails.length <= 15 ? (
+                          Plan.planExtraDetails
+                        ) : (
+                          <>
+                            {Plan.planExtraDetails.split(' ').slice(0, 5).join(' ')}
+                            <span
+                              style={{
+                                fontSize: "15px",
+                                color: 'blue',
+                                cursor: 'pointer',
+                                display: 'inline-block',
+                                marginLeft: '4px',
+                              }}
+                              onClick={() => openFullArticleDialog(Plan)}
+                            >
+                              ... <span style={{ display: 'inline' }}>read more</span>
+                            </span>
+                          </>
+                        )}
+                      </Typography>
+                      <Typography
+                        color="textSecondary"
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          mt: 1,
+                        }}
+                      >
+                        {Plan.createdBy}
+                      </Typography>
+                      <br />
+                      <Typography>
+                        <Button variant="outlined" color="primary" onClick={() => editClick(Plan)} sx={{ ml: 1 }}>
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={() => deleteClick(Plan)}
+                          sx={{ ml: 1 }}
+                        >
+                          Delete
+                        </Button>
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )
+            })}
           </Grid>
         </CardContent>
       </Card>
@@ -279,8 +282,8 @@ const PlansPage = () => {
         <DialogTitle>{selectedPlan?.planTitle}</DialogTitle>
         <DialogContent>
           <img
-            src={selectedPlan?.PlanImages}
-            alt={selectedPlan?.PlanImages}
+            src={selectedPlan?.myarray[0]}
+            alt={selectedPlan?.myarray[0]}
             onError={(e) => {
               e.target.src = errorimage;
               e.target.alt = "Error Image";
