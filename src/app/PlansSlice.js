@@ -7,12 +7,17 @@ const PlansSlice = createSlice({
     data: [],
     isLoading: false,
     error: null,
+    images: [],
   },
   reducers: {
     setPlansData: (state, action) => {
       state.data = action.payload.data;
       state.isLoading = false;
       state.error = null;
+    },
+    addImage: (state, action) => {
+      const newImage = action.payload;
+      state.images.push(newImage);
     },
     setPlansLoading: (state) => {
       state.isLoading = true;
@@ -24,9 +29,9 @@ const PlansSlice = createSlice({
     },
     updatePlans: (state, action) => {
       const updatedPlan = action.payload;
-      console.log(action.payload);
-      state.data.map((plan) => plan.planId === updatedPlan.planId);
-
+      state.data = state.data.map((plan) =>
+        plan.planId === updatedPlan.planId ? updatedPlan : plan
+      );
     },
     deletePlan: (state, action) => {
       const planIdToDelete = action.payload;
@@ -34,15 +39,24 @@ const PlansSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
-  }
+  },
 });
 
-export const { setPlansData, setPlansLoading, setPlansError, updatePlans, deletePlan } = PlansSlice.actions;
+export const {
+  setPlansData,
+  setPlansLoading,
+  setPlansError,
+  updatePlans,
+  deletePlan,
+  addImage,
+} = PlansSlice.actions;
 
 export const fetchPlansData = () => async (dispatch) => {
   try {
     dispatch(setPlansLoading());
-    const response = await axios.get(import.meta.env.VITE_BASE_URL + "feature/plans");
+    const response = await axios.get(
+      import.meta.env.VITE_BASE_URL + "feature/plans"
+    );
     dispatch(setPlansData(response.data));
   } catch (error) {
     dispatch(setPlansError(error.message));
@@ -51,30 +65,55 @@ export const fetchPlansData = () => async (dispatch) => {
 
 export const AddPlanData = (data) => async (dispatch) => {
   try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + 'feature/insertImages',
-      data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.post(
+      import.meta.env.VITE_BASE_URL + "feature/insertPlan",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
-    console.log('Response:', response.data); 
+    );
+
+    console.log("Response:", response.data);
 
   } catch (error) {
-    console.error('Error:', error);
-
+    console.error("Error:", error);
   }
 };
 
+export const AddImagesData = (data) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      import.meta.env.VITE_BASE_URL + "feature/insertImages",
+      data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    const imageData = response.data;
+    console.log("Image Data before dispatch:", imageData);
+
+    dispatch(addImage(imageData));
+
+    return imageData.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 
 export const updatePlansData = (planId, data) => async (dispatch) => {
   try {
-
     const response = await axios.put(
       import.meta.env.VITE_BASE_URL + `feature/updatePlan/${planId}`,
       data,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -82,37 +121,27 @@ export const updatePlansData = (planId, data) => async (dispatch) => {
     const updatedPlansData = response.data;
 
     dispatch(updatePlans(updatedPlansData));
-
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
 
-export const deletePlanData = (planId, data) => async (dispatch) => {
+export const deletePlanData = (planId) => async (dispatch) => {
   try {
-
     const response = await axios.delete(
-      import.meta.env.VITE_BASE_URL + `feature/deletePlan/${planId}`,
-      data,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
+      import.meta.env.VITE_BASE_URL + `feature/deletePlan/${planId}`
     );
 
     const deletePlanData = response.data;
 
     dispatch(deletePlan(deletePlanData));
-
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
 
 export const selectPlansData = (state) => state.Plans.data;
 export const selectPlansLoading = (state) => state.Plans.isLoading;
 export const selectPlansError = (state) => state.Plans.error;
-
 
 export default PlansSlice.reducer;

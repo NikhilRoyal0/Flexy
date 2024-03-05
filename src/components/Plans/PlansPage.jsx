@@ -156,7 +156,7 @@ const PlansPage = () => {
                 >
                   <img
                     src={Plan.planImages}
-                    alt={Plan.planImages}
+                    alt={Plan.planImages[0]}
                     onError={(e) => {
                       e.target.src = errorimage;
                       e.target.alt = "Error Image";

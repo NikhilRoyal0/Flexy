@@ -15,10 +15,11 @@ import {
     IconButton,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useDispatch } from "react-redux";
-import { AddPlanData } from "../../app/PlansSlice";
+import { AddPlanData, AddImagesData } from "../../app/PlansSlice";
 import { useNavigate } from 'react-router-dom';
 import { baseTheme } from "../../assets/global/Theme-variable";
 
@@ -30,40 +31,78 @@ const AddPlan = () => {
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [imgUrls, setImageUrls] = useState([])
 
 
 
     const [formData, setFormData] = React.useState({
-        'planTitle': '',
-        'planInfo': '',
-        'planPrice': '',
-        'planExtraDetails': '',
-        'planImages': [selectedFiles],
-        'planMaxPayOut': '',
-        'createdBy': '',
+        "planTitle": '',
+        "planInfo": '',
+        "planPrice": '',
+        "planExtraDetails": '',
+        "planImages": [],
+        "planMaxPayOut": '',
+        "createdBy": '',
     });
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const form = new FormData()
-        form.append('planTitle', formData.planTitle)
-        form.append('planInfo', formData.planInfo)
-        form.append('planPrice', formData.planPrice)
-        form.append('planExtraDetails', formData.planExtraDetails)
-        form.append('planMaxPayOut', formData.planMaxPayOut)
-        form.append('createdBy', formData.createdBy)
-        form.append('image', formData.selectedFiles)
+        const form = new FormData();
+        form.append('planTitle', formData.planTitle);
+        form.append('planInfo', formData.planInfo);
+        form.append('planPrice', formData.planPrice);
+        form.append('planExtraDetails', formData.planExtraDetails);
+        form.append('planMaxPayOut', formData.planMaxPayOut);
+        form.append('createdBy', formData.createdBy);
 
-        dispatch(AddPlanData(form)).then(() => {
-            setIsSuccess(true)
-            console.log(formData);
-            setSnackbarOpen(true);
-            setTimeout(() => {
-                navigate("../plans");
-            }, 1000);
+        formData.planImages.forEach((file, index) => {
+            form.append(`planImages[${index}]`, file);
         });
+
+        selectedFiles.forEach((file, index) => {
+            if (file !== null) {
+                form.append(`planImages[${formData.planImages.length + index}]`, file);
+            }
+        });
+
+        try {
+            console.log("Before Dispatch", formData)
+            const response = await dispatch(AddPlanData(form));
+
+            if (response && response.error) {
+                console.error("Error adding plan:", response.error);
+            } else {
+                setIsSuccess(true);
+                setSnackbarOpen(true);
+                setTimeout(() => {
+                    navigate("../plans");
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Unexpected error:", error);
+        }
     };
+
+
+    const handleUploadImage = async (index) => {
+        const file = selectedFiles[index];
+        if (file !== null) {
+            const formDataForImage = new FormData();
+            formDataForImage.append("image", file);
+
+            try {
+                const imageUrl = await dispatch(AddImagesData(formDataForImage));
+
+                setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
+
+                console.log("Updated Image URLs:", [...imgUrls, imageUrl]);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
+    };
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -89,12 +128,17 @@ const AddPlan = () => {
         setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
     };
 
+
     const handleRemoveClick = (index) => {
-        setSelectedFiles((prevSelectedFiles) =>
-            prevSelectedFiles.filter((file, i) => i !== index)
-        );
+        setSelectedFiles((prevSelectedFiles) => {
+            const newSelectedFiles = [...prevSelectedFiles];
+            newSelectedFiles[index] = null;
+            return newSelectedFiles;
+        });
+
         setPopoverAnchor(null);
     };
+
 
     const handleImageClick = (event) => {
         setPopoverAnchor(event.currentTarget);
@@ -175,14 +219,20 @@ const AddPlan = () => {
                                                 horizontal: 'center',
                                             }}
                                         >
-                                            <Box p={2}>
+                                            <Box p={1}>
                                                 <Button
                                                     color="secondary"
-                                                    variant="contained"
+                                                    variant="outlined"
                                                     onClick={() => handleRemoveClick(index)}
-                                                    startIcon={<CancelIcon />}
+                                                    startIcon={<DeleteIcon />}
                                                 >
-                                                    Remove
+                                                </Button>
+                                                <Button
+                                                    color="secondary"
+                                                    variant="outlined"
+                                                    onClick={() => handleUploadImage(index)}
+                                                    startIcon={<CloudUploadIcon />}
+                                                >
                                                 </Button>
                                             </Box>
                                         </Popover>
