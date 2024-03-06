@@ -105,6 +105,11 @@ const PlansPage = () => {
     setFullArticleDialogOpen(false);
   };
 
+  const getFirstImageUrl = (Plan) => {
+    const myarray = JSON.parse(Plan.planImages);
+    return myarray[0].url;
+  };
+
 
 
   return (
@@ -134,7 +139,8 @@ const PlansPage = () => {
           <Grid container>
             {plansData.map((Plan, index) => {
               const myarray = JSON.parse(Plan.planImages)
-            return (
+              const firstimage = myarray[0].url
+              return (
                 <Grid
                   key={index}
                   item
@@ -157,8 +163,8 @@ const PlansPage = () => {
                     }}
                   >
                     <img
-                      src={myarray[0]}
-                      alt={myarray[0]}
+                      src={firstimage}
+                      alt={firstimage}
                       onError={(e) => {
                         e.target.src = errorimage;
                         e.target.alt = "Error Image";
@@ -281,9 +287,10 @@ const PlansPage = () => {
       >
         <DialogTitle>{selectedPlan?.planTitle}</DialogTitle>
         <DialogContent>
+
           <img
-            src={selectedPlan?.myarray[0]}
-            alt={selectedPlan?.myarray[0]}
+            src={getFirstImageUrl(selectedPlan)}
+            alt={getFirstImageUrl(selectedPlan)}
             onError={(e) => {
               e.target.src = errorimage;
               e.target.alt = "Error Image";

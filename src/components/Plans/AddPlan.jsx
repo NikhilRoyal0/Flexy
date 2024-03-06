@@ -45,6 +45,20 @@ const AddPlan = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let imagearray = []
+    if (imgUrls.length == 0) {
+      console.log("data empty")
+    } else
+
+    for (let index = 0; index < imgUrls.length; index++){
+
+      var plandataimage = {
+        key: index,
+        url: imgUrls[index]
+
+      }
+      imagearray.push(plandataimage)
+    }
     const form = new FormData();
     form.append('planTitle', formData.planTitle);
     form.append('planInfo', formData.planInfo);
@@ -52,7 +66,7 @@ const AddPlan = () => {
     form.append('planExtraDetails', formData.planExtraDetails);
     form.append('planMaxPayOut', formData.planMaxPayOut);
     form.append('createdBy', formData.createdBy);
-    form.append('planImages', JSON.stringify(imgUrls));
+    form.append('planImages', JSON.stringify(imagearray));
 
     try {
       console.log("Before Dispatch", formData)
@@ -63,9 +77,6 @@ const AddPlan = () => {
       } else {
         setIsSuccess(true);
         setSnackbarOpen(true);
-        setTimeout(() => {
-          navigate("../plans");
-        }, 1000);
       }
     } catch (error) {
       console.error("Unexpected error:", error);
