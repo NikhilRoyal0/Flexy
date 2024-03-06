@@ -32,8 +32,7 @@ const Lists = ({ filterOption = "Active" }) => {
   const error = useSelector(selectUPIError);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [SwitchState, setSwitchState] = useState(true);
-
+  const [switchStates, setSwitchStates] = useState([]);
 
   const handleSnackbarClose = (reason) => {
     if (reason === "clickaway") {
@@ -44,10 +43,8 @@ const Lists = ({ filterOption = "Active" }) => {
     }
   };
 
-  const handleToggleChange = async (user, e) => {
-    const updatedStatus = user.status == 0 ? 1 : user.status == 1 ? 0 : user.status;
-    setSwitchState(e.target.checked)
-
+  const handleToggleChange = async (user, index, e) => {
+    const updatedStatus = e.target.checked == true ? 1 : 0;
     try {
       await dispatch(updateUPIData(user.upi_id, updatedStatus));
 
@@ -55,14 +52,22 @@ const Lists = ({ filterOption = "Active" }) => {
 
       setIsSuccess(true);
       showSnackbar("Status updated successfully!");
+
+      setSwitchStates(prevState => {
+        const newState = [...prevState];
+        newState[index] = e.target.checked;
+        return newState;
+      });
+
+      //? Print index and id to console
+      console.log("Index:", index);
+      console.log("Id:", user.upi_id);
     } catch (error) {
       console.error("Error updating status:", error);
       setIsSuccess(false);
       showSnackbar("Failed to update status!");
     }
   };
-
-
 
   const showSnackbar = (message) => {
     setSnackbarOpen(true);
@@ -71,7 +76,6 @@ const Lists = ({ filterOption = "Active" }) => {
       setSnackbarOpen(false);
     }, 3000);
   };
-
 
   useEffect(() => {
     dispatch(fetchUPIData());
@@ -109,7 +113,6 @@ const Lists = ({ filterOption = "Active" }) => {
       </Box>
     );
   }
-
 
   const filterDataByStatus = (data, filterOption) => {
     return data.filter((user) => {
@@ -174,19 +177,20 @@ const Lists = ({ filterOption = "Active" }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((user) => (
+              {filteredData.map((user, index) => ( // Pass index to map function
+                // Set initial switch state based on user status (0 = Active, 1 = Inactive   );
                 <TableRow key={user.upi_id}>
                   <TableCell>
                     <Switch
-                      checked={SwitchState}
+                      checked={user.status === '1'}
                       name="toggleStatus"
-                      onChange={(e) => handleToggleChange(user, e)}
+                      onChange={(e) => handleToggleChange(user, index, e)}
                       sx={{
                         "& .MuiSwitch-thumb": {
-                          color: SwitchState ? baseTheme.palette.success.main : baseTheme.palette.danger.main,
+                          color: user.status === '1' ? baseTheme.palette.danger.main : baseTheme.palette.success.main,
                         },
                         "& .MuiSwitch-track": {
-                          backgroundColor: SwitchState ? baseTheme.palette.success.main : baseTheme.palette.danger.main,
+                          backgroundColor: user.status === '1' ? baseTheme.palette.danger.main : baseTheme.palette.success.main,
                         },
                       }}
                     />

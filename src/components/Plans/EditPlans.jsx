@@ -16,6 +16,7 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlansData,
@@ -43,8 +44,7 @@ const EditPlan = () => {
     createdBy: "",
   });
 
-  const [file, setFile] = useState(null);
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -75,28 +75,6 @@ const EditPlan = () => {
       ...prevData,
       [name]: value,
     }));
-  };
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-
-    if (files.length > 0) {
-      const selectedFiles = Array.from(files);
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const newImages = [...data.planImages, event.target.result];
-        setFile(event.target.result);
-        setData((prevData) => ({
-          ...prevData,
-          [name]: newImages,
-        }));
-      };
-
-      selectedFiles.forEach((file) => {
-        reader.readAsDataURL(file);
-      });
-    }
   };
 
   const [loading, setLoading] = useState(true);
@@ -153,23 +131,43 @@ const EditPlan = () => {
     setSnackbarOpen(true);
   };
 
-  const handleImageClick = (event) => {
-    setPopoverAnchor(event.currentTarget);
-  };
-
   const handlePopoverClose = () => {
     setPopoverAnchor(null);
   };
 
-  const handleImageChange = () => {
-    const fileInput = document.getElementById("planImages");
-    if (fileInput) {
-      fileInput.click();
+  const toggleEditMode = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const newImage = {
+          url: reader.result,
+        };
+
+        setData((prevData) => ({
+          ...prevData,
+          planImages: [...prevData.planImages, newImage],
+        }));
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
-  const toggleEditMode = () => {
-    setEditMode((prevEditMode) => !prevEditMode);
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...data.planImages];
+    updatedImages.splice(index, 1);
+    setData((prevData) => ({
+      ...prevData,
+      planImages: updatedImages,
+    }));
+    handlePopoverClose();
   };
 
   return (
@@ -181,65 +179,81 @@ const EditPlan = () => {
         <br />
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={12}>
-              <Card
-                variant="outlined"
-                sx={{
-                  height: "150px",
-                  width: "190px",
-                  textAlign: "center",
-                }}
-              >
-                <img
-                  src={file || (data && data.planImages[0].url)}
-                  alt="Preview"
-                  id="planImages"
-                  name="planImages"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "130px",
-                    marginRight: "10px",
-                    marginTop: "auto",
-                  }}
-                  onClick={handleImageClick}
-                />
-                {editMode && (
-                  <Popover
-                    open={Boolean(popoverAnchor)}
-                    anchorEl={popoverAnchor}
-                    onClose={handlePopoverClose}
-                    disabled={!editMode}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                  >
-                    <input
-                      type="file"
-                      id="planImages"
-                      name="planImages"
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                      multiple
+            {data.planImages.map((image, index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} xl={1} key={index}>
+                <Card style={{ height: "180px", width: "220px" }}>
+                  <CardContent>
+                    <img
+                      src={image.url}
+                      alt={`Preview ${index + 1}`}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "130px",
+                        marginBottom: "10px",
+                      }}
                     />
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={handleImageChange}
-                      startIcon={<AddIcon />}
-                    >
-                      Change
-                    </Button>
-                  </Popover>
-                )}
-              </Card>
-            </Grid>
+                    {editMode && (
+                      <Popover
+                        open={Boolean(popoverAnchor)}
+                        anchorEl={popoverAnchor}
+                        onClose={handlePopoverClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "center",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "center",
+                        }}
+                      >
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={(event) => handleDeleteImage(index, event)}
+                        >
+                          <DeleteIcon />
+                          Delete
+                        </Button>
+                      </Popover>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+            {editMode && data.planImages.length < 4 && (
+              <Grid item xs={12} sm={6} md={4} lg={3} xl={1}>
+                <Card style={{ height: "180px", width: "220px" }}>
+                  <label htmlFor={`file-input-upload`}>
+                    <input
+                      id={`file-input-upload`}
+                      type="file"
+                      name={`planImages-upload`}
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
 
-            <Grid item xs={12} sm={6}>
+                    <CardContent
+                      onClick={() =>
+                        document.getElementById(`file-input-upload`)
+                      }
+                      style={{ textAlign: "center", marginTop: 23 }}
+                    >
+                      <AddIcon sx={{ fontSize: 40, color: "#808080" }} />
+                      <br />
+                      <Typography variant="caption" sx={{ color: "#000" }}>
+                        Upload Image
+                      </Typography>
+                    </CardContent>
+                  </label>
+                </Card>
+              </Grid>
+            )}
+          </Grid>
+          <br />
+          <Divider />
+          <br />
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={6}>
               <TextField
                 label="Title"
                 variant="outlined"
@@ -276,7 +290,7 @@ const EditPlan = () => {
               <TextField
                 label="Created By"
                 variant="outlined"
-                name="isPublished"
+                name="createdBy" // Corrected the field name
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.createdBy}
@@ -293,7 +307,7 @@ const EditPlan = () => {
                 variant="contained"
                 color="success"
                 type="submit"
-                onSubmit={handleSubmit}
+              // onSubmit should be removed from here
               >
                 Save
               </Button>
