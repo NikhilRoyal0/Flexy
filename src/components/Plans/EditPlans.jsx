@@ -191,7 +191,7 @@ const EditPlan = () => {
                 }}
               >
                 <img
-                  src={file || (data && data.planImages[0])}
+                  src={file || (data && data.planImages[0].url)}
                   alt="Preview"
                   id="planImages"
                   name="planImages"
