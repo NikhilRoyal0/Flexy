@@ -13,11 +13,15 @@ import {
   SnackbarContent,
   IconButton,
 } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPlansData, fetchPlansData, updatePlansData } from "../../app/PlansSlice";
+import {
+  selectPlansData,
+  fetchPlansData,
+  updatePlansData,
+} from "../../app/PlansSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditPlan = () => {
@@ -29,37 +33,39 @@ const EditPlan = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-
-
   const [data, setData] = useState({
-    planTitle: '',
-    planInfo: '',
-    planPrice: '',
-    planExtraDetails: '',
-    planImages: '',
-    planMaxPayOut: '',
-    createdBy: '',
+    planTitle: "",
+    planInfo: "",
+    planPrice: "",
+    planExtraDetails: "",
+    planImages: [],
+    planMaxPayOut: "",
+    createdBy: "",
   });
 
-
+  const [file, setFile] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const dataToSend = {
+      ...data,
+      planImages: JSON.stringify(data.planImages),
+    };
 
-    dispatch(updatePlansData(data.planId, data))
+    dispatch(updatePlansData(data.planId, dataToSend))
       .then(() => {
         toggleEditMode();
         setIsSuccess(true);
-        showSnackbar('Plan updated successfully!');
+        showSnackbar("Plan updated successfully!");
         setTimeout(() => {
           navigate("../plans");
         }, 1000);
       })
       .catch((error) => {
-        setIsSuccess(false); 
-        showSnackbar('Error in updating plan. Please try again.');
-        console.error('Error in updating plan:', error);
+        setIsSuccess(false);
+        showSnackbar("Error in updating plan. Please try again.");
+        console.error("Error in updating plan:", error);
       });
   };
 
@@ -75,17 +81,21 @@ const EditPlan = () => {
     const { name, files } = e.target;
 
     if (files.length > 0) {
-      const selectedFile = files[0];
+      const selectedFiles = Array.from(files);
 
       const reader = new FileReader();
       reader.onload = (event) => {
+        const newImages = [...data.planImages, event.target.result];
         setFile(event.target.result);
         setData((prevData) => ({
           ...prevData,
-          [name]: event.target.result,
+          [name]: newImages,
         }));
       };
-      reader.readAsDataURL(selectedFile);
+
+      selectedFiles.forEach((file) => {
+        reader.readAsDataURL(file);
+      });
     }
   };
 
@@ -95,7 +105,15 @@ const EditPlan = () => {
   const fetchPlansDataById = () => {
     const planId = parseInt(planIdParam);
     const selectedPlans = planData.find((Plans) => Plans.planId === planId);
-    setData({ ...selectedPlans });
+
+    const parsedPlanImages = JSON.parse(selectedPlans.planImages);
+
+    const updatedSelectedPlans = {
+      ...selectedPlans,
+      planImages: parsedPlanImages,
+    };
+
+    setData(updatedSelectedPlans);
     setLoading(false);
   };
 
@@ -106,7 +124,6 @@ const EditPlan = () => {
       fetchPlansDataById();
     }
   }, [planIdParam, dispatch, planData]);
-
 
   if (loading) {
     return (
@@ -124,7 +141,7 @@ const EditPlan = () => {
   }
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (!isSuccess) {
@@ -135,7 +152,6 @@ const EditPlan = () => {
   const showSnackbar = (message) => {
     setSnackbarOpen(true);
   };
-
 
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
@@ -175,7 +191,7 @@ const EditPlan = () => {
                 }}
               >
                 <img
-                  src={data && data.planImages}
+                  src={file || (data && data.planImages[0])}
                   alt="Preview"
                   id="planImages"
                   name="planImages"
@@ -208,6 +224,7 @@ const EditPlan = () => {
                       name="planImages"
                       onChange={handleFileChange}
                       style={{ display: "none" }}
+                      multiple
                     />
                     <Button
                       color="primary"
@@ -226,7 +243,7 @@ const EditPlan = () => {
               <TextField
                 label="Title"
                 variant="outlined"
-                name='planTitle'
+                name="planTitle"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.planTitle}
@@ -237,7 +254,7 @@ const EditPlan = () => {
               <TextField
                 label="Info"
                 variant="outlined"
-                name='planInfo'
+                name="planInfo"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.planInfo}
@@ -248,7 +265,7 @@ const EditPlan = () => {
               <TextField
                 label="planExtraDetails"
                 variant="outlined"
-                name='planExtraDetails'
+                name="planExtraDetails"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.planExtraDetails}
@@ -259,7 +276,7 @@ const EditPlan = () => {
               <TextField
                 label="Created By"
                 variant="outlined"
-                name='isPublished'
+                name="isPublished"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.createdBy}
@@ -272,10 +289,20 @@ const EditPlan = () => {
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success" type="submit" onSubmit={handleSubmit}>
+              <Button
+                variant="contained"
+                color="success"
+                type="submit"
+                onSubmit={handleSubmit}
+              >
                 Save
               </Button>
-              <Button variant="contained" color="error" sx={{ ml: 1 }} onClick={toggleEditMode}>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ ml: 1 }}
+                onClick={toggleEditMode}
+              >
                 Cancel
               </Button>
             </>
@@ -311,7 +338,7 @@ const EditPlan = () => {
               backgroundColor: isSuccess
                 ? baseTheme.palette.success.main
                 : baseTheme.palette.error.main,
-              color: isSuccess ? '#fff' : undefined,
+              color: isSuccess ? "#fff" : undefined,
             }}
           />
         </Snackbar>

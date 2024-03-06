@@ -112,7 +112,6 @@ const AddPlan = () => {
     const file = event.target.files[0];
     setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
 
-    // Read the file as a data URL for preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setFilePreviews((prevPreviews) => [...prevPreviews, reader.result]);
@@ -244,7 +243,7 @@ const AddPlan = () => {
                       name="planImages"
                       onChange={handleFileSelect}
                       style={{ display: 'none' }}
-                      required={selectedFiles.length === 0}
+                      required={selectedFiles.length === 1}
                     />
                     <Card sx={{
                       width: 190,
