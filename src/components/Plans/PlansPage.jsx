@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -106,10 +107,21 @@ const PlansPage = () => {
   };
 
   const getFirstImageUrl = (Plan) => {
-    const myarray = JSON.parse(Plan.planImages);
-    return myarray[0].url;
+    if (Plan && Plan.planImages) {
+      const myarray = JSON.parse(Plan.planImages);
+      return myarray.length > 0 ? myarray[0].url : '';
+    }
+    return '';
   };
 
+  const getSpecificImageUrl = (Plan, targetKey) => {
+    if (Plan && Plan.planImages) {
+      const imagesArray = JSON.parse(Plan.planImages);
+      const targetImage = imagesArray.find((image) => image.key === targetKey);
+      return targetImage ? targetImage.url : '';
+    }
+    return '';
+  };
 
 
   return (
@@ -138,8 +150,7 @@ const PlansPage = () => {
         >
           <Grid container>
             {plansData.map((Plan, index) => {
-              const myarray = JSON.parse(Plan.planImages)
-              const firstimage = myarray[0].url
+              const specificImageUrl = getSpecificImageUrl(Plan, 0);
               return (
                 <Grid
                   key={index}
@@ -163,8 +174,8 @@ const PlansPage = () => {
                     }}
                   >
                     <img
-                      src={firstimage}
-                      alt={firstimage}
+                      src={specificImageUrl}
+                      alt={specificImageUrl}
                       onError={(e) => {
                         e.target.src = errorimage;
                         e.target.alt = "Error Image";
@@ -289,7 +300,7 @@ const PlansPage = () => {
         <DialogContent>
 
           <img
-            src={selectedPlan ? getFirstImageUrl(selectedPlan) : errorimage}
+            src={getFirstImageUrl(selectedPlan)}
             alt={selectedPlan?.planTitle}
             onError={(e) => {
               e.target.src = errorimage;

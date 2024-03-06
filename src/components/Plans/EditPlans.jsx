@@ -47,20 +47,17 @@ const EditPlan = () => {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const dataToSend = {
-      ...data,
-      planImages: JSON.stringify(data.planImages),
-    };
-
-    dispatch(updatePlansData(data.planId, dataToSend))
+  
+    console.log("Data before dispatch:", data)
+  
+    dispatch(updatePlansData(data.planId, data))
       .then(() => {
         toggleEditMode();
         setIsSuccess(true);
         showSnackbar("Plan updated successfully!");
-        setTimeout(() => {
-          navigate("../plans");
-        }, 1000);
+        // setTimeout(() => {
+        //   // navigate("../plans");
+        // }, 1000);
       })
       .catch((error) => {
         setIsSuccess(false);
@@ -68,6 +65,7 @@ const EditPlan = () => {
         console.error("Error in updating plan:", error);
       });
   };
+
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;

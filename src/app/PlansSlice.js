@@ -113,7 +113,7 @@ export const updatePlansData = (planId, data) => async (dispatch) => {
       data,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );
