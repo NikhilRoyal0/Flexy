@@ -289,8 +289,8 @@ const PlansPage = () => {
         <DialogContent>
 
           <img
-            src={getFirstImageUrl(selectedPlan)}
-            alt={getFirstImageUrl(selectedPlan)}
+            src={selectedPlan ? getFirstImageUrl(selectedPlan) : errorimage}
+            alt={selectedPlan?.planTitle}
             onError={(e) => {
               e.target.src = errorimage;
               e.target.alt = "Error Image";

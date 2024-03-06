@@ -77,6 +77,9 @@ const AddPlan = () => {
       } else {
         setIsSuccess(true);
         setSnackbarOpen(true);
+        setTimeout(() => {
+          navigate("../plans");
+      }, 1000);
       }
     } catch (error) {
       console.error("Unexpected error:", error);
