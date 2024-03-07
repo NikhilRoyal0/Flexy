@@ -162,13 +162,19 @@ const AddPlan = () => {
       newSelectedFiles[popoverIndex] = null;
       return newSelectedFiles.filter(Boolean); // Remove null values
     });
-
+  
     setFilePreviews((prevPreviews) => {
       const newPreviews = [...prevPreviews];
       newPreviews.splice(popoverIndex, 1);
       return newPreviews;
     });
-
+  
+    setImageUrls((prevImageUrls) => {
+      const newImageUrls = [...prevImageUrls];
+      newImageUrls.splice(popoverIndex, 1);
+      return newImageUrls;
+    });
+  
     setPopoverAnchor(null);
     setPopoverIndex(null);
   };
