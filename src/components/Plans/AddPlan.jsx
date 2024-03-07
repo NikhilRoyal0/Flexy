@@ -32,6 +32,14 @@ const AddPlan = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [imgUrls, setImageUrls] = useState([]);
   const [filePreviews, setFilePreviews] = useState([]);
+  const [popoverIndex, setPopoverIndex] = React.useState(null);
+  const [isImageSelected, setIsImageSelected] = useState(false);
+  const [imageError, setImageError] = useState(null);
+  const [imageSelectError, setImageSelectError] = useState(null);
+
+
+
+
 
   const [formData, setFormData] = React.useState({
     "planTitle": '',
@@ -44,65 +52,76 @@ const AddPlan = () => {
   });
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    let imagearray = []
-    if (imgUrls.length == 0) {
-      console.log("data empty")
-    } else
-
-    for (let index = 0; index < imgUrls.length; index++){
-
-      var plandataimage = {
-        key: index,
-        url: imgUrls[index]
-
+    event.preventDefault(); 
+  
+    let imagearray = [];
+  
+    if (imgUrls.length > 0) {
+      for (let index = 0; index < imgUrls.length; index++) {
+        var plandataimage = {
+          key: index,
+          url: imgUrls[index],
+        };
+        imagearray.push(plandataimage);
       }
-      imagearray.push(plandataimage)
-    }
-    const form = new FormData();
-    form.append('planTitle', formData.planTitle);
-    form.append('planInfo', formData.planInfo);
-    form.append('planPrice', formData.planPrice);
-    form.append('planExtraDetails', formData.planExtraDetails);
-    form.append('planMaxPayOut', formData.planMaxPayOut);
-    form.append('createdBy', formData.createdBy);
-    form.append('planImages', JSON.stringify(imagearray));
-
-    try {
-      console.log("Before Dispatch", formData)
-      const response = await dispatch(AddPlanData(form));
-
-      if (response && response.error) {
-        console.error("Error adding plan:", response.error);
-      } else {
-        setIsSuccess(true);
-        setSnackbarOpen(true);
-        setTimeout(() => {
-          navigate("../plans");
-      }, 1000);
+      console.log("array image", imagearray);
+  
+      const form = new FormData();
+      form.append("planTitle", formData.planTitle);
+      form.append("planInfo", formData.planInfo);
+      form.append("planPrice", formData.planPrice);
+      form.append("planExtraDetails", formData.planExtraDetails);
+      form.append("planMaxPayOut", formData.planMaxPayOut);
+      form.append("createdBy", formData.createdBy);
+      form.append("planImages", JSON.stringify(imagearray));
+  
+      try {
+        console.log("Before Dispatch", formData);
+        const response = await dispatch(AddPlanData(form));
+  
+        if (response && response.error) {
+          console.error("Error adding plan:", response.error);
+        } else {
+          setIsSuccess(true);
+          setSnackbarOpen(true);
+          setTimeout(() => {
+            navigate("../plans");
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
       }
-    } catch (error) {
-      console.error("Unexpected error:", error);
+    } else {
+      window.alert("Please select at least one image");
+
     }
   };
 
+
   const handleUploadImage = async (index) => {
     const file = selectedFiles[index];
+  
     if (file !== null) {
       const formDataForImage = new FormData();
       formDataForImage.append("image", file);
-
+  
       try {
         const imageUrl = await dispatch(AddImagesData(formDataForImage));
-
-        setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
-
+  
+        // Use the functional form of setState to ensure the latest state
+        setImageUrls((prevImageUrls) => {
+          const newImageUrls = [...prevImageUrls];
+          newImageUrls[index] = imageUrl;
+          return newImageUrls;
+        });
+  
         console.log("Updated Image URLs:", [...imgUrls, imageUrl]);
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     }
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -124,33 +143,40 @@ const AddPlan = () => {
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
+  
     setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
-
+  
     const reader = new FileReader();
     reader.onloadend = () => {
       setFilePreviews((prevPreviews) => [...prevPreviews, reader.result]);
     };
     reader.readAsDataURL(file);
+  
+    setIsImageSelected(true);
   };
+  
 
-  const handleRemoveClick = (index) => {
+  const handleRemoveClick = () => {
     setSelectedFiles((prevSelectedFiles) => {
       const newSelectedFiles = [...prevSelectedFiles];
-      newSelectedFiles[index] = null;
-      return newSelectedFiles;
+      newSelectedFiles[popoverIndex] = null;
+      return newSelectedFiles.filter(Boolean); // Remove null values
     });
 
     setFilePreviews((prevPreviews) => {
       const newPreviews = [...prevPreviews];
-      newPreviews.splice(index, 1);
+      newPreviews.splice(popoverIndex, 1);
       return newPreviews;
     });
 
     setPopoverAnchor(null);
+    setPopoverIndex(null);
   };
 
-  const handleImageClick = (event) => {
+
+  const handleImageClick = (event, index) => {
     setPopoverAnchor(event.currentTarget);
+    setPopoverIndex(index);
   };
 
   const handlePopoverClose = () => {
@@ -212,7 +238,7 @@ const AddPlan = () => {
                       src={preview}
                       alt="Preview"
                       style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
-                      onClick={handleImageClick}
+                      onClick={(event) => handleImageClick(event, index)}
                     />
                     <Popover
                       open={Boolean(popoverAnchor)}
@@ -231,16 +257,17 @@ const AddPlan = () => {
                         <Button
                           color="secondary"
                           variant="outlined"
-                          onClick={() => handleRemoveClick(index)}
-                          startIcon={<DeleteIcon />}
+                          onClick={handleRemoveClick}
                         >
+                          <DeleteIcon />
                         </Button>
+
                         <Button
                           color="secondary"
                           variant="outlined"
                           onClick={() => handleUploadImage(index)}
-                          startIcon={<CloudUploadIcon />}
                         >
+                          <CloudUploadIcon />
                         </Button>
                       </Box>
                     </Popover>
@@ -249,17 +276,25 @@ const AddPlan = () => {
                     </Typography>
                   </Card>
                 ))}
-                
+
                 {selectedFiles.length < 4 && (
                   <label htmlFor="file-input">
-                    <input
-                      id="file-input"
-                      type="file"
-                      name="planImages"
-                      onChange={handleFileSelect}
-                      style={{ display: 'none' }}
-                      required={selectedFiles.length === 1}
-                    />
+                    {imageSelectError && (
+                      <Typography variant="caption" color="error">
+                        {imageSelectError}
+                      </Typography>
+                    )}
+
+                    <label htmlFor="file-input">
+                      <input
+                        id="file-input"
+                        type="file"
+                        name="planImages"
+                        onChange={handleFileSelect}
+                        style={{ display: 'none' }}
+                        required
+                      />
+                    </label>
                     <Card sx={{
                       width: 190,
                       height: 150,
@@ -409,7 +444,7 @@ const AddPlan = () => {
           }}
         />
       </Snackbar>
-    </div>
+    </div >
   );
 };
 
