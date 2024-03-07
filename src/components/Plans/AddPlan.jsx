@@ -160,7 +160,7 @@ const AddPlan = () => {
     setSelectedFiles((prevSelectedFiles) => {
       const newSelectedFiles = [...prevSelectedFiles];
       newSelectedFiles[popoverIndex] = null;
-      return newSelectedFiles.filter(Boolean); // Remove null values
+      return newSelectedFiles.filter(Boolean); 
     });
   
     setFilePreviews((prevPreviews) => {
