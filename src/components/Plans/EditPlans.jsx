@@ -17,6 +17,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectPlansData,
@@ -33,6 +34,7 @@ const EditPlan = () => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [newImageFile, setNewImageFile] = useState(null);
 
   const [data, setData] = useState({
     planTitle: "",
@@ -44,19 +46,31 @@ const EditPlan = () => {
     createdBy: "",
   });
 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    console.log("Data before dispatch:", data)
-  
-    dispatch(updatePlansData(data.planId, data))
+
+    console.log("Data before dispatch:", data);
+
+    const planId = parseInt(planIdParam);
+    const selectedPlans = planData.find((plans) => plans.planId === planId);
+
+    const body = {
+      planTitle: data.planTitle,
+      planInfo: data.planInfo,
+      planPrice: data.planPrice,
+      planExtraDetails: data.planExtraDetails,
+      planImages: JSON.stringify(data.planImages),
+      planMaxPayOut: data.planMaxPayOut,
+      createdBy: data.createdBy,
+    };
+
+    dispatch(updatePlansData({ planId: planIdParam, body }))
       .then(() => {
         toggleEditMode();
         setIsSuccess(true);
         showSnackbar("Plan updated successfully!");
         // setTimeout(() => {
-        //   // navigate("../plans");
+        //   navigate("../plans");
         // }, 1000);
       })
       .catch((error) => {
@@ -65,7 +79,6 @@ const EditPlan = () => {
         console.error("Error in updating plan:", error);
       });
   };
-
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +93,7 @@ const EditPlan = () => {
 
   const fetchPlansDataById = () => {
     const planId = parseInt(planIdParam);
-    const selectedPlans = planData.find((Plans) => Plans.planId === planId);
+    const selectedPlans = planData.find((plans) => plans.planId === planId);
 
     const parsedPlanImages = JSON.parse(selectedPlans.planImages);
 
@@ -90,6 +103,11 @@ const EditPlan = () => {
     };
 
     setData(updatedSelectedPlans);
+    console.log("updated Selected Plan", updatedSelectedPlans);
+    console.log("plan Id", planId);
+    console.log("selectedplans", selectedPlans);
+    console.log("plandata", planData);
+
     setLoading(false);
   };
 
@@ -129,15 +147,15 @@ const EditPlan = () => {
     setSnackbarOpen(true);
   };
 
+  const handlePopoverOpen = (event) => {
+    setPopoverAnchor(event.currentTarget);
+  };
+
   const handlePopoverClose = () => {
     setPopoverAnchor(null);
   };
 
-  const toggleEditMode = () => {
-    setEditMode((prevEditMode) => !prevEditMode);
-  };
-
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, index) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -145,17 +163,28 @@ const EditPlan = () => {
 
       reader.onloadend = () => {
         const newImage = {
+          key: data.planImages.length,
           url: reader.result,
         };
 
-        setData((prevData) => ({
-          ...prevData,
-          planImages: [...prevData.planImages, newImage],
-        }));
+        setData((prevData) => {
+          const updatedImages = [...prevData.planImages];
+          updatedImages[index] = newImage;
+          return {
+            ...prevData,
+            planImages: updatedImages,
+          };
+        });
+
+        setNewImageFile(null);
       };
 
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleAddNewImage = () => {
+    document.getElementById(`file-input-upload`)
   };
 
   const handleDeleteImage = (index) => {
@@ -166,6 +195,10 @@ const EditPlan = () => {
       planImages: updatedImages,
     }));
     handlePopoverClose();
+  };
+
+  const toggleEditMode = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
   };
 
   return (
@@ -188,7 +221,9 @@ const EditPlan = () => {
                         maxWidth: "100%",
                         maxHeight: "130px",
                         marginBottom: "10px",
+                        cursor: editMode ? "pointer" : "default",
                       }}
+                      onClick={editMode ? handlePopoverOpen : undefined}
                     />
                     {editMode && (
                       <Popover
@@ -206,12 +241,20 @@ const EditPlan = () => {
                       >
                         <Button
                           color="primary"
-                          variant="contained"
-                          onClick={(event) => handleDeleteImage(index, event)}
+                          variant="outlined"
+                          onClick={() => handleDeleteImage(index)}
                         >
                           <DeleteIcon />
-                          Delete
                         </Button>
+                        {image.key >= data.planImages.length && (
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            onClick={handleAddNewImage}
+                          >
+                            <CloudUploadIcon />
+                          </Button>
+                        )}
                       </Popover>
                     )}
                   </CardContent>
@@ -221,34 +264,53 @@ const EditPlan = () => {
             {editMode && data.planImages.length < 4 && (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={1}>
                 <Card style={{ height: "180px", width: "220px" }}>
-                  <label htmlFor={`file-input-upload`}>
-                    <input
-                      id={`file-input-upload`}
-                      type="file"
-                      name={`planImages-upload`}
-                      style={{ display: "none" }}
-                      onChange={handleFileChange}
-                    />
-
-                    <CardContent
-                      onClick={() =>
-                        document.getElementById(`file-input-upload`)
-                      }
-                      style={{ textAlign: "center", marginTop: 23 }}
-                    >
-                      <AddIcon sx={{ fontSize: 40, color: "#808080" }} />
-                      <br />
-                      <Typography variant="caption" sx={{ color: "#000" }}>
-                        Upload Image
-                      </Typography>
+                  {newImageFile ? (
+                    <CardContent>
+                      <img
+                        src={URL.createObjectURL(newImageFile)}
+                        alt={`Preview ${data.planImages.length + 1}`}
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "130px",
+                          marginBottom: "10px",
+                          cursor: "default",
+                        }}
+                      />
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={handleAddNewImage}
+                      >
+                        <CloudUploadIcon />
+                      </Button>
                     </CardContent>
-                  </label>
+                  ) : (
+                    <label htmlFor={`file-input-upload`}>
+                      <input
+                        id={`file-input-upload`}
+                        type="file"
+                        name={`planImages-upload`}
+                        style={{ display: "none" }}
+                        onChange={(e) => handleFileChange(e, data.planImages.length)}
+                      />
+
+                      <CardContent
+                        onClick={handleAddNewImage}
+                        style={{ textAlign: "center", marginTop: 23, cursor: "pointer" }}
+                      >
+                        <AddIcon sx={{ fontSize: 40, color: "#808080" }} />
+                        <br />
+                        <Typography variant="caption" sx={{ color: "#000" }}>
+                          Upload Image
+                        </Typography>
+                      </CardContent>
+                    </label>
+                  )}
                 </Card>
               </Grid>
             )}
           </Grid>
           <br />
-          <Divider />
           <br />
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={6}>
@@ -288,7 +350,7 @@ const EditPlan = () => {
               <TextField
                 label="Created By"
                 variant="outlined"
-                name="createdBy" // Corrected the field name
+                name="createdBy"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.createdBy}
@@ -301,12 +363,7 @@ const EditPlan = () => {
           <br />
           {editMode ? (
             <>
-              <Button
-                variant="contained"
-                color="success"
-                type="submit"
-              // onSubmit should be removed from here
-              >
+              <Button variant="contained" color="success" type="submit">
                 Save
               </Button>
               <Button
