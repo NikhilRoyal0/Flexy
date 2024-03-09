@@ -41,6 +41,8 @@ const Lists = ({ filterOption }) => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [updatedStatus, setUpdatedStatus] = useState(null);
     const [rejectedReason, setRejectedReason] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+
 
     const unixTimeToRealTime = (time) => {
         const date = new Date(time * 1000);
@@ -53,6 +55,14 @@ const Lists = ({ filterOption }) => {
         return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
     };
 
+
+    useEffect(() => {
+        setFilteredData([]);
+
+        dispatch(fetchRechargeData());
+
+        setFilteredData(filterDataByStatus(RechargeData, filterOption));
+    }, [filterOption, dispatch]);
 
 
     const handleSnackbarClose = (reason) => {
@@ -153,9 +163,6 @@ const Lists = ({ filterOption }) => {
             );
         });
     };
-
-    const filteredData = filterDataByStatus(RechargeData, filterOption);
-
 
     return (
         <Box>
@@ -278,7 +285,7 @@ const Lists = ({ filterOption }) => {
                                                     color: "#fff",
                                                     paddingLeft: "4px",
                                                     paddingRight: "4px",
-                                                    marginRight: '4px', // Adjust the margin as needed
+                                                    marginRight: '4px',
                                                 }}
                                                 size="small"
                                                 label={user.status === 0 ? "Accepted" : (user.status === 1 ? "Rejected" : "In Progress")}
