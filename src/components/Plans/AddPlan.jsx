@@ -13,14 +13,15 @@ import {
   Snackbar,
   SnackbarContent,
   IconButton,
+  LinearProgress,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDispatch } from "react-redux";
 import { AddPlanData, AddImagesData } from "../../app/PlansSlice";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { baseTheme } from "../../assets/global/Theme-variable";
 
 const AddPlan = () => {
@@ -34,28 +35,24 @@ const AddPlan = () => {
   const [filePreviews, setFilePreviews] = useState([]);
   const [popoverIndex, setPopoverIndex] = React.useState(null);
   const [isImageSelected, setIsImageSelected] = useState(false);
-  const [imageError, setImageError] = useState(null);
   const [imageSelectError, setImageSelectError] = useState(null);
-
-
-
-
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const [formData, setFormData] = React.useState({
-    "planTitle": '',
-    "planInfo": '',
-    "planPrice": '',
-    "planExtraDetails": '',
-    "planImages": [],
-    "planMaxPayOut": '',
-    "createdBy": '',
+    planTitle: "",
+    planInfo: "",
+    planPrice: "",
+    planExtraDetails: "",
+    planImages: [],
+    planMaxPayOut: "",
+    createdBy: "",
   });
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); 
-  
+    event.preventDefault();
+
     let imagearray = [];
-  
+
     if (imgUrls.length > 0) {
       for (let index = 0; index < imgUrls.length; index++) {
         var plandataimage = {
@@ -65,7 +62,7 @@ const AddPlan = () => {
         imagearray.push(plandataimage);
       }
       console.log("array image", imagearray);
-  
+
       const form = new FormData();
       form.append("planTitle", formData.planTitle);
       form.append("planInfo", formData.planInfo);
@@ -74,11 +71,11 @@ const AddPlan = () => {
       form.append("planMaxPayOut", formData.planMaxPayOut);
       form.append("createdBy", formData.createdBy);
       form.append("planImages", JSON.stringify(imagearray));
-  
+
       try {
         console.log("Before Dispatch", formData);
         const response = await dispatch(AddPlanData(form));
-  
+
         if (response && response.error) {
           console.error("Error adding plan:", response.error);
         } else {
@@ -93,43 +90,56 @@ const AddPlan = () => {
       }
     } else {
       window.alert("Please select at least one image");
-
     }
   };
 
-
   const handleUploadImage = async (index) => {
     const file = selectedFiles[index];
-  
+
     if (file !== null) {
       const formDataForImage = new FormData();
       formDataForImage.append("image", file);
-  
+
       try {
-        const imageUrl = await dispatch(AddImagesData(formDataForImage));
-  
-        // Use the functional form of setState to ensure the latest state
+        const config = {
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(progress);
+          },
+        };
+
+        const imageUrl = await dispatch(
+          AddImagesData(formDataForImage, config)
+        );
+
         setImageUrls((prevImageUrls) => {
           const newImageUrls = [...prevImageUrls];
           newImageUrls[index] = imageUrl;
           return newImageUrls;
         });
-  
-        console.log("Updated Image URLs:", [...imgUrls, imageUrl]);
+
+        setTimeout(() => {
+          setUploadProgress(100);
+        }, 500);
       } catch (error) {
         console.error("Error uploading image:", error);
+      } finally {
+        setTimeout(() => {
+          setUploadProgress(0);
+        }, 1000);
       }
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
-  }
+  };
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -143,42 +153,40 @@ const AddPlan = () => {
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
-  
+
     setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
-  
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setFilePreviews((prevPreviews) => [...prevPreviews, reader.result]);
     };
     reader.readAsDataURL(file);
-  
+
     setIsImageSelected(true);
   };
-  
 
   const handleRemoveClick = () => {
     setSelectedFiles((prevSelectedFiles) => {
       const newSelectedFiles = [...prevSelectedFiles];
       newSelectedFiles[popoverIndex] = null;
-      return newSelectedFiles.filter(Boolean); 
+      return newSelectedFiles.filter(Boolean);
     });
-  
+
     setFilePreviews((prevPreviews) => {
       const newPreviews = [...prevPreviews];
       newPreviews.splice(popoverIndex, 1);
       return newPreviews;
     });
-  
+
     setImageUrls((prevImageUrls) => {
       const newImageUrls = [...prevImageUrls];
       newImageUrls.splice(popoverIndex, 1);
       return newImageUrls;
     });
-  
+
     setPopoverAnchor(null);
     setPopoverIndex(null);
   };
-
 
   const handleImageClick = (event, index) => {
     setPopoverAnchor(event.currentTarget);
@@ -191,12 +199,26 @@ const AddPlan = () => {
 
   return (
     <div>
+      <LinearProgress
+        variant="determinate"
+        value={uploadProgress}
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 9999, // Use a higher z-index value
+          backgroundColor: "#fff", // Set background color for better visibility
+        }}
+      />
+
       <Card
         variant="outlined"
         sx={{
           p: 0,
           borderRadius: baseTheme.shape.borderRadius,
           padding: baseTheme.mixins.toolbar.padding,
+          marginTop: "10px",
         }}
       >
         <Box
@@ -225,9 +247,16 @@ const AddPlan = () => {
         >
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={12} sx={{ display: "flex", flexWrap: "wrap" }}>
+              <Grid
+                item
+                xs={12}
+                md={12}
+                sx={{ display: "flex", flexWrap: "wrap" }}
+              >
                 {filePreviews.map((preview, index) => (
-                  <Card key={index} variant="outlined"
+                  <Card
+                    key={index}
+                    variant="outlined"
                     sx={{
                       height: "150px",
                       width: "190px",
@@ -238,12 +267,18 @@ const AddPlan = () => {
                         width: 0,
                       },
                       scrollbarWidth: "none",
+                      position: "relative",
                     }}
                   >
                     <img
                       src={preview}
                       alt="Preview"
-                      style={{ maxWidth: "100%", maxHeight: "130px", marginRight: "10px", marginTop: "auto" }}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "130px",
+                        marginRight: "10px",
+                        marginTop: "auto",
+                      }}
                       onClick={(event) => handleImageClick(event, index)}
                     />
                     <Popover
@@ -251,12 +286,12 @@ const AddPlan = () => {
                       anchorEl={popoverAnchor}
                       onClose={handlePopoverClose}
                       anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
+                        vertical: "bottom",
+                        horizontal: "center",
                       }}
                       transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
+                        vertical: "top",
+                        horizontal: "center",
                       }}
                     >
                       <Box p={1}>
@@ -278,7 +313,7 @@ const AddPlan = () => {
                       </Box>
                     </Popover>
                     <Typography sx={{ mt: 1, fontSize: 9 }}>
-                      Selected File: {selectedFiles[index].name}
+                      Selected File: {selectedFiles[index]?.name}
                     </Typography>
                   </Card>
                 ))}
@@ -297,25 +332,38 @@ const AddPlan = () => {
                         type="file"
                         name="planImages"
                         onChange={handleFileSelect}
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         required
                       />
                     </label>
-                    <Card sx={{
-                      width: 190,
-                      height: 150,
-                      textAlign: "center",
-                      display: "flex",
-                      marginLeft: "10px"
-                    }}>
-                      <CardActionArea onClick={() => document.getElementById("file-input").click()}>
+                    <Card
+                      sx={{
+                        width: 190,
+                        height: 150,
+                        textAlign: "center",
+                        display: "flex",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      <CardActionArea
+                        onClick={() =>
+                          document.getElementById("file-input").click()
+                        }
+                      >
                         <Grid direction="row">
                           <CardContent>
                             <AddIcon
-                              sx={{ fontSize: 40, color: '#808080', cursor: 'pointer' }}
+                              sx={{
+                                fontSize: 40,
+                                color: "#808080",
+                                cursor: "pointer",
+                              }}
                             />
                             <br />
-                            <Typography variant="caption" sx={{ color: '#000' }}>
+                            <Typography
+                              variant="caption"
+                              sx={{ color: "#000" }}
+                            >
                               Upload Image
                             </Typography>
                           </CardContent>
@@ -325,6 +373,7 @@ const AddPlan = () => {
                   </label>
                 )}
               </Grid>
+
 
               <Grid item xs={12} md={6}>
                 <TextField
@@ -446,11 +495,11 @@ const AddPlan = () => {
             backgroundColor: isSuccess
               ? baseTheme.palette.success.main
               : baseTheme.palette.error.main,
-            color: isSuccess ? '#fff' : undefined,
+            color: isSuccess ? "#fff" : undefined,
           }}
         />
       </Snackbar>
-    </div >
+    </div>
   );
 };
 
