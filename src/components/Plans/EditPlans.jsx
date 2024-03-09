@@ -12,6 +12,7 @@ import {
   Snackbar,
   SnackbarContent,
   IconButton,
+  MenuItem,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
@@ -44,6 +45,7 @@ const EditPlan = () => {
     planImages: [],
     planMaxPayOut: "",
     createdBy: "",
+    planStatus: "",
   });
 
   const handleSubmit = async (event) => {
@@ -356,6 +358,21 @@ const EditPlan = () => {
                 value={data && data.createdBy}
                 disabled={!editMode}
               />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Plan Status"
+                variant="outlined"
+                name="planStatus"
+                select
+                onChange={handleTextChange}
+                fullWidth
+                value={data && data.planStatus}
+                disabled={!editMode}
+              >
+                <MenuItem value={0}>Active</MenuItem>
+                <MenuItem value={1}>Inactive</MenuItem>
+              </TextField>
             </Grid>
           </Grid>
           <br />

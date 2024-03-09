@@ -10,7 +10,11 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
 } from "@mui/material";
 import errorimage from '../../assets/images/errorimage.jpg';
 import AddIcon from '@mui/icons-material/Add';
@@ -31,6 +35,11 @@ const PlansPage = () => {
   const [planToDelete, setplanToDelete] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [fullArticleDialogOpen, setFullArticleDialogOpen] = useState(false);
+  const [filterOption, setFilterOption] = useState(0);
+
+  const handleFilterChange = (event) => {
+    setFilterOption(event.target.value);
+  };
 
   const deleteClick = (plan) => {
     setplanToDelete(plan);
@@ -40,8 +49,10 @@ const PlansPage = () => {
   const handleDeleteConfirm = () => {
     if (planToDelete) {
       dispatch(deletePlanData(planToDelete.planId)).then(() => {
+        console.log("Plan deleted successfully");
         setDeleteConfirmationOpen(false);
         setplanToDelete(null);
+        // Update state after deletion
         dispatch(fetchPlansData());
       });
     }
@@ -123,23 +134,19 @@ const PlansPage = () => {
     return '';
   };
 
+  
+  const filteredPlans = plansData.filter((Plan) => {
+    if (filterOption === 0) {
+      return Plan.planStatus == 0; 
+    } else if (filterOption === 1) {
+      return Plan.planStatus == 1; 
+    }
+    return false;
+  });
+
 
   return (
     <div style={{ position: "relative" }}>
-      <Button
-        sx={{
-          position: "absolute",
-          top: "5px",
-          right: "30px",
-          mt: "5px",
-          zIndex: 1,
-        }}
-        color="primary"
-        onClick={handleClick}
-      >
-        <AddIcon />
-        <Typography sx={{ ml: 1 }}>Add Plan</Typography>
-      </Button>
 
       <Card>
         <CardContent
@@ -148,8 +155,38 @@ const PlansPage = () => {
             paddingRight: 0,
           }}
         >
+           <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+        <Grid item>
+          <FormControl variant="outlined" sx={{ minWidth: '150px' }}>
+            <InputLabel htmlFor="status">Filter By Status</InputLabel>
+            <Select
+              label="Filter By Status"
+              variant="outlined"
+              size="small"
+              value={filterOption}
+              onChange={handleFilterChange}
+            >
+              <MenuItem value={0}>Active</MenuItem>
+              <MenuItem value={1}>InActive</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item>
+          <Button
+            sx={{
+              color: "primary",
+              display: "flex",
+              alignItems: "center",
+            }}
+            onClick={handleClick}
+          >
+            <AddIcon />
+            <Typography sx={{ ml: 1 }}>Add Plan</Typography>
+          </Button>
+        </Grid>
+      </Grid>
           <Grid container>
-            {plansData.map((Plan, index) => {
+            {filteredPlans.map((Plan, index) => {
               const specificImageUrl = getSpecificImageUrl(Plan, 0);
               return (
                 <Grid

@@ -14,6 +14,7 @@ import {
   SnackbarContent,
   IconButton,
   LinearProgress,
+  MenuItem
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -45,7 +46,8 @@ const AddPlan = () => {
     planExtraDetails: "",
     planImages: [],
     planMaxPayOut: "",
-    createdBy: "",
+    planStatus: "",
+    createdBy: 1,
   });
 
   const handleSubmit = async (event) => {
@@ -71,6 +73,7 @@ const AddPlan = () => {
       form.append("planMaxPayOut", formData.planMaxPayOut);
       form.append("createdBy", formData.createdBy);
       form.append("planImages", JSON.stringify(imagearray));
+      form.append('planStatus', formData.planStatus);
 
       try {
         console.log("Before Dispatch", formData);
@@ -447,9 +450,10 @@ const AddPlan = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  id="createdBy"
-                  label="Created By"
-                  name="createdBy"
+                  id="planStatus"
+                  label="Plan Status"
+                  name="planStatus"
+                  select
                   variant="outlined"
                   onChange={handleInputChange}
                   fullWidth
@@ -457,7 +461,10 @@ const AddPlan = () => {
                   sx={{
                     mb: 2,
                   }}
-                />
+                >
+                  <MenuItem value={0}>Active</MenuItem>
+                  <MenuItem value={1}>Inactive</MenuItem>
+                </TextField>
               </Grid>
 
             </Grid>

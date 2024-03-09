@@ -129,7 +129,8 @@ export const updatePlansData = (planId, data) => async (dispatch) => {
 export const deletePlanData = (planId) => async (dispatch) => {
   try {
     const response = await axios.delete(
-      import.meta.env.VITE_BASE_URL + `feature/deletePlan/${planId}`
+      import.meta.env.VITE_BASE_URL + `feature/deletePlan/${planId}`,
+      { data: { planStatus: 0 } } 
     );
 
     const deletePlanData = response.data;
