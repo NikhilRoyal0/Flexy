@@ -11,6 +11,7 @@ import BannerReducer from './BannerSlice';
 import appSettingReducer from './AppSlice';
 import WithdrawalReducer from './WithdrawalSlice';
 import UPISliceReducer from './UpiSlice';
+import RechargeReducer from './RechargeSlice';
 
 const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ const store = configureStore({
     Banner: BannerReducer,
     appSetting: appSettingReducer,
     Withdrawal: WithdrawalReducer,
-    UPI: UPISliceReducer
+    UPI: UPISliceReducer,
+    Recharge: RechargeReducer,
   },
 });
 

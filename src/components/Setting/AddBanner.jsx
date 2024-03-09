@@ -12,7 +12,11 @@ import {
     Popover,
     Snackbar,
     SnackbarContent,
-    IconButton
+    IconButton,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -103,8 +107,8 @@ const AddBanner = () => {
                 variant="outlined"
                 sx={{
                     p: 0,
-                    borderRadius: baseTheme.shape.borderRadius, 
-                    padding: baseTheme.mixins.toolbar.padding, 
+                    borderRadius: baseTheme.shape.borderRadius,
+                    padding: baseTheme.mixins.toolbar.padding,
                 }}
             >
                 <Box
@@ -219,8 +223,8 @@ const AddBanner = () => {
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
+                                    type="datetime-local"
                                     id="endDate"
-                                    label="endDateTime"
                                     name="endDate"
                                     variant="outlined"
                                     onChange={handleInputChange}
@@ -232,18 +236,20 @@ const AddBanner = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="bannerType"
-                                    label="Banner-type"
-                                    name="bannerType"
-                                    variant="outlined"
-                                    onChange={handleInputChange}
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
+                                <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+                                    <InputLabel id="bannerType-label">Banner-type</InputLabel>
+                                    <Select
+                                        labelId="bannerType-label"
+                                        id="bannerType"
+                                        label="Banner-type"
+                                        name="bannerType"
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <MenuItem value="social">Social</MenuItem>
+                                        <MenuItem value="link">Link</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField

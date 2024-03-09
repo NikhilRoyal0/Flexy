@@ -236,21 +236,28 @@ const EditBanner = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Banner Type"
-                variant="outlined"
-                name='bannerType'
-                onChange={handleTextChange}
-                fullWidth
-                value={data && oldData.bannerType}
-                disabled={!editMode}
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="bannerType-label">Banner Type</InputLabel>
+                <Select
+                   label="Banner Type"
+                   variant="outlined"
+                   name='bannerType'
+                   onChange={handleTextChange}
+                   fullWidth
+                   value={data && oldData.bannerType}
+                   disabled={!editMode}
+                >
+                  <MenuItem value="social">Social</MenuItem>
+                  <MenuItem value="link">Link</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="endDate"
+                type="datetime-local"
                 variant="outlined"
                 name='endDate'
+                label='End Date'
                 onChange={handleTextChange}
                 fullWidth
                 value={oldData.endDateTime ?? data.endDate}

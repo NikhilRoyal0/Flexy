@@ -135,7 +135,7 @@ const Lists = ({ filterOption }) => {
         (filterOption === "accepted" && user.wStatus === 0) ||
         (filterOption === "rejected" && user.wStatus === 1) ||
         (filterOption === "inProgress" && user.wStatus === 2) ||
-        !filterOption || filterOption === "all"
+        !filterOption
       );
     });
   };
@@ -276,7 +276,7 @@ const Lists = ({ filterOption }) => {
                     />
                   </TableCell>
                   <TableCell align="center">
-                    <Typography variant="h6">{user.amount}k</Typography>
+                    <Typography variant="h6">Rs. {user.amount}</Typography>
                   </TableCell>
                   <TableCell>
 

@@ -264,7 +264,8 @@ const EditDialog = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Start Date"
+                type="datetime-local"
+                label="Start At"
                 variant="outlined"
                 name='startAt'
                 onChange={handleTextChange}
@@ -276,7 +277,8 @@ const EditDialog = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="End Date"
+                type="datetime-local"
+                label="End At"
                 variant="outlined"
                 name='endAt'
                 onChange={handleTextChange}

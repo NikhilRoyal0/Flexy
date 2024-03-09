@@ -26,6 +26,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import WalletIcon from '@mui/icons-material/Wallet';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import PaidIcon from '@mui/icons-material/Paid';
 
 const initialState = {
   menuItems: [],
@@ -174,6 +175,12 @@ export const fetchMenuItems = () => (dispatch) => {
           title: "UPI Lists",
           icon: ListAltIcon,
           href: "/upi-lists",
+        },
+        {
+          id: 43,
+          title: "Recharge Request",
+          icon: PaidIcon,
+          href: "/recharge-request",
         },
       ],
     },

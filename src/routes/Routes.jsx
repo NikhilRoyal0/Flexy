@@ -38,6 +38,7 @@ import AddBanner from '../components/Setting/AddBanner';
 import AddDialog from '../components/Setting/AddDialog';
 import Withdrawal from '../components/Wallet/Withdrawal';
 import UpiList from '../components/Wallet/UPI/UpiList';
+import Recharge from '../components/Wallet/Recharge_Request/Recharge';
 
 
 const routes = createBrowserRouter(
@@ -67,6 +68,7 @@ const routes = createBrowserRouter(
         <Route path="/user/user-list" element={<UserList />} />
         <Route path='/wallet/withdrawal-request' element={<Withdrawal/>}/>
         <Route path='/upi-lists' element={<UpiList/>}/>
+        <Route path='/recharge-request' element={<Recharge/>}/>
         <Route path="/setting/app-setting" element={<AppSetting />} />
         <Route path="/setting/dialogs-list" element={<DialogsList />} />
         <Route path="/setting/banners-list" element={<BannersList />} />

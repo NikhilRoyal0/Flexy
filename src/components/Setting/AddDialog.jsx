@@ -41,7 +41,7 @@ const AddDialog = () => {
         'title': '',
         'forUser': '',
         'startAt': '',
-        'endAt': 0,
+        'endAt': '',
         'createdBy': '',
         'status': '',
         'image': selectedFile
@@ -71,12 +71,30 @@ const AddDialog = () => {
 
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
+
         setFormData({
             ...formData,
             [name]: value
-        })
-    }
+        });
+
+        if (name === 'startAt' || name === 'endAt') {
+            const startAt = new Date(formData.startAt);
+            const endAt = new Date(formData.endAt);
+
+            if (name === 'startAt' && endAt < startAt) {
+                setFormData(prevState => ({
+                    ...prevState,
+                    endAt: value,
+                }));
+            } else if (name === 'endAt' && startAt > endAt) {
+                setFormData(prevState => ({
+                    ...prevState,
+                    startAt: value,
+                }));
+            }
+        }
+    };
 
 
     const handleSnackbarClose = (event, reason) => {
@@ -232,12 +250,28 @@ const AddDialog = () => {
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     id="Start At"
-                                    label="Start Date"
+                                    type="datetime-local"
                                     variant="outlined"
                                     name="startAt"
+                                    label="Start At"
                                     fullWidth
                                     required
                                     onChange={handleInputChange}
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    id="End At"
+                                    type="datetime-local"
+                                    variant="outlined"
+                                    name="endAt"
+                                    fullWidth
+                                    required
+                                    onChange={handleInputChange}
+                                    label="End At"
                                     sx={{
                                         mb: 2,
                                     }}
