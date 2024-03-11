@@ -41,8 +41,6 @@ const Lists = ({ filterOption }) => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [updatedStatus, setUpdatedStatus] = useState(null);
     const [rejectedReason, setRejectedReason] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-
 
     const unixTimeToRealTime = (time) => {
         const date = new Date(time * 1000);
@@ -55,14 +53,6 @@ const Lists = ({ filterOption }) => {
         return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
     };
 
-
-    useEffect(() => {
-        setFilteredData([]);
-
-        dispatch(fetchRechargeData());
-
-        setFilteredData(filterDataByStatus(RechargeData, filterOption));
-    }, [filterOption, dispatch]);
 
 
     const handleSnackbarClose = (reason) => {
@@ -164,6 +154,11 @@ const Lists = ({ filterOption }) => {
         });
     };
 
+    const filteredData = filterDataByStatus(RechargeData, filterOption);
+    console.log("filteredData:", filteredData);
+
+
+
     return (
         <Box>
             {filteredData.length === 0 ? (
@@ -224,7 +219,7 @@ const Lists = ({ filterOption }) => {
                         </TableHead>
                         <TableBody>
                             {filteredData.map((user) => (
-                                <TableRow key={user.user_id} onClick={() => handleRowClick(user)}
+                                <TableRow key={user.r_id} onClick={() => handleRowClick(user)}
                                     sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#ADD8E6' } }}
                                 >
                                     <TableCell align="center">
