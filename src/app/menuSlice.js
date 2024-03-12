@@ -27,6 +27,8 @@ import WalletIcon from '@mui/icons-material/Wallet';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PaidIcon from '@mui/icons-material/Paid';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 
 const initialState = {
   menuItems: [],
@@ -171,6 +173,12 @@ export const fetchMenuItems = () => (dispatch) => {
           href: "/wallet/withdrawal-request",
         },
         {
+          id: 44,
+          title: "Next Withdraw",
+          icon: LocalAtmIcon,
+          href: "/wallet/next-withdraw",
+        },
+        {
           id: 42,
           title: "UPI Lists",
           icon: ListAltIcon,
@@ -205,6 +213,12 @@ export const fetchMenuItems = () => (dispatch) => {
       href: '#',
       visible: isVisible,
       subItems: [
+        {
+          id: 38,
+          title: "Notification",
+          icon: NotificationsActiveIcon,
+          href: "/setting/notifications",
+        },
         {
           id: 33,
           title: "App Setting",

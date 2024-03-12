@@ -39,7 +39,8 @@ import AddDialog from '../components/Setting/AddDialog';
 import Withdrawal from '../components/Wallet/Withdrawal';
 import UpiList from '../components/Wallet/UPI/UpiList';
 import Recharge from '../components/Wallet/Recharge_Request/Recharge';
-
+import Notification from '../components/Setting/Notifications/Notification';
+import NextWithdraw from '../components/Wallet/NextWithdraw';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -69,6 +70,8 @@ const routes = createBrowserRouter(
         <Route path='/wallet/withdrawal-request' element={<Withdrawal/>}/>
         <Route path='/upi-lists' element={<UpiList/>}/>
         <Route path='/recharge-request' element={<Recharge/>}/>
+        <Route path='/setting/notifications' element={<Notification/>}/>
+        <Route path='/wallet/next-withdraw' element={<NextWithdraw/>}/>
         <Route path="/setting/app-setting" element={<AppSetting />} />
         <Route path="/setting/dialogs-list" element={<DialogsList />} />
         <Route path="/setting/banners-list" element={<BannersList />} />
