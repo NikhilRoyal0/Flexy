@@ -13,6 +13,7 @@ import WithdrawalReducer from './WithdrawalSlice';
 import UPISliceReducer from './UpiSlice';
 import RechargeReducer from './RechargeSlice';
 import AddOnReducer from './AddOnSlice';
+import UpComingReducer from './UpComingSlice';
 
 const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
     UPI: UPISliceReducer,
     Recharge: RechargeReducer,
     AddOn: AddOnReducer,
+    UpComing: UpComingReducer,
   },
 });
 

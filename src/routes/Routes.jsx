@@ -40,7 +40,7 @@ import Withdrawal from '../components/Wallet/Withdrawal';
 import UpiList from '../components/Wallet/UPI/UpiList';
 import Recharge from '../components/Wallet/Recharge_Request/Recharge';
 import Notification from '../components/Setting/Notifications/Notification';
-import NextWithdraw from '../components/Wallet/NextWithdraw';
+import NextWithdraw from '../components/Wallet/UpComing_Withdraw/NextWithdraw';
 import Addon from '../components/Plans/AddOn/Addon';
 
 const routes = createBrowserRouter(
