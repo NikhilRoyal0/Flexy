@@ -41,6 +41,7 @@ import UpiList from '../components/Wallet/UPI/UpiList';
 import Recharge from '../components/Wallet/Recharge_Request/Recharge';
 import Notification from '../components/Setting/Notifications/Notification';
 import NextWithdraw from '../components/Wallet/NextWithdraw';
+import Addon from '../components/Plans/AddOn/Addon';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -63,7 +64,8 @@ const routes = createBrowserRouter(
         <Route path="/basic-table" element={<Tablemain />} />
         <Route path="/register" element={<Registermain />} />
         <Route path='/profile-setting' element={<BasicSetting/>}/>
-        <Route path="/plans" element={<PlansPage />} />
+        <Route path='/addon/add-on' element={<Addon/>}/>
+        <Route path="addon/plans" element={<PlansPage />} />
         <Route path="/news" element={<NewsPage />} />
         <Route path="/user/add-user" element={<AddUser />} />
         <Route path="/user/user-list" element={<UserList />} />
@@ -79,13 +81,13 @@ const routes = createBrowserRouter(
         <Route path="/tasks/task-list" element={<TasksList />} />
         <Route path="/user/user-list/edit-user/:userId" element={<EditUser />} />
         <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />
-        <Route path="/plans/edit-plan/:planId" element={<EditPlan />} />
+        <Route path="/addon/plans/edit-plan/:planId" element={<EditPlan />} />
         <Route path="/news/edit-news/:newsId" element={<EditNews />} />
         <Route path="/setting/dialogs-list/edit-dialog/:dId" element={<EditDialog />} />
         <Route path="/setting/dialogs-list/add-dialog" element={<AddDialog />} />
         <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
         <Route path='/tasks/task-list/add-task' element={<AddTask />} />
-        <Route path='/plans/add-plan' element={<AddPlan />} />
+        <Route path='/addon/plans/add-plan' element={<AddPlan />} />
         <Route path='/news/add-news' element={<AddNews />} />
         <Route path='/setting/banners-list/add-banner' element={<AddBanner />} />
       </Route>

@@ -85,7 +85,7 @@ const AddPlan = () => {
           setIsSuccess(true);
           setSnackbarOpen(true);
           setTimeout(() => {
-            navigate("../plans");
+            navigate("../addon/plans");
           }, 1000);
         }
       } catch (error) {
@@ -210,8 +210,8 @@ const AddPlan = () => {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 9999, // Use a higher z-index value
-          backgroundColor: "#fff", // Set background color for better visibility
+          zIndex: 9999, 
+          backgroundColor: "#fff", 
         }}
       />
 
@@ -341,7 +341,7 @@ const AddPlan = () => {
                     </label>
                     <Card
                       sx={{
-                        width: 190,
+                        width: 210,
                         height: 150,
                         textAlign: "center",
                         display: "flex",
@@ -365,9 +365,16 @@ const AddPlan = () => {
                             <br />
                             <Typography
                               variant="caption"
-                              sx={{ color: "#000" }}
+                              sx={{ color: "black" }} 
                             >
                               Upload Image
+                            </Typography>
+                            <br />
+                            <Typography
+                              variant="caption"
+                              sx={{ color: "#bababa" }} 
+                            >
+                              Support PNG, JPEG and WEBP upto (765*565 px)
                             </Typography>
                           </CardContent>
                         </Grid>

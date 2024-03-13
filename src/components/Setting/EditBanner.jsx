@@ -173,7 +173,7 @@ const EditBanner = () => {
                 variant="outlined"
                 sx={{
                   height: "150px",
-                  width: "190px",
+                  width: "210px",
                   textAlign: "center",
                 }}
               >

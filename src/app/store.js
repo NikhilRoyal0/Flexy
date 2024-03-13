@@ -12,6 +12,7 @@ import appSettingReducer from './AppSlice';
 import WithdrawalReducer from './WithdrawalSlice';
 import UPISliceReducer from './UpiSlice';
 import RechargeReducer from './RechargeSlice';
+import AddOnReducer from './AddOnSlice';
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     Withdrawal: WithdrawalReducer,
     UPI: UPISliceReducer,
     Recharge: RechargeReducer,
+    AddOn: AddOnReducer,
   },
 });
 

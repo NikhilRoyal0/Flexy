@@ -196,7 +196,7 @@ const AddNews = () => {
                                             style={{ display: 'none' }}
                                             required
                                         />
-                                        <Card sx={{ maxWidth: 190, height: 150, textAlign: "center", display: "flex" }}>
+                                        <Card sx={{ maxWidth: 210, height: 150, textAlign: "center", display: "flex" }}>
                                             <CardActionArea onClick={() => document.getElementById("file-input").click()}>
                                                 <CardContent>
                                                     <AddIcon
@@ -205,6 +205,13 @@ const AddNews = () => {
                                                     <br />
                                                     <Typography variant="caption" sx={{ color: '#000' }}>
                                                         Upload Image
+                                                    </Typography>
+                                                    <br />
+                                                    <Typography
+                                                        variant="caption"
+                                                        sx={{ color: "#bababa" }}
+                                                    >
+                                                        Support PNG, JPEG and WEBP upto (765*565 px)
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>

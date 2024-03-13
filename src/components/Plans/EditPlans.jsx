@@ -71,9 +71,9 @@ const EditPlan = () => {
         toggleEditMode();
         setIsSuccess(true);
         showSnackbar("Plan updated successfully!");
-        // setTimeout(() => {
-        //   navigate("../plans");
-        // }, 1000);
+        setTimeout(() => {
+          navigate("../addon/plans");
+        }, 1000);
       })
       .catch((error) => {
         setIsSuccess(false);
@@ -304,6 +304,13 @@ const EditPlan = () => {
                         <br />
                         <Typography variant="caption" sx={{ color: "#000" }}>
                           Upload Image
+                        </Typography>
+                        <br />
+                        <Typography
+                          variant="caption"
+                          sx={{ color: "#bababa" }}
+                        >
+                          Support PNG, JPEG and WEBP upto (765*565px)
                         </Typography>
                       </CardContent>
                     </label>

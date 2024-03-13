@@ -190,7 +190,7 @@ const AddBanner = () => {
                                             style={{ display: 'none' }}
                                             required
                                         />
-                                        <Card sx={{ maxWidth: 190, height: 150, textAlign: "center", display: "flex" }}>
+                                        <Card sx={{ maxWidth: 210, height: 150, textAlign: "center", display: "flex" }}>
                                             <CardActionArea onClick={() => document.getElementById("file-input").click()}>
                                                 <CardContent>
                                                     <AddIcon
@@ -199,6 +199,13 @@ const AddBanner = () => {
                                                     <br />
                                                     <Typography variant="caption" sx={{ color: '#000' }}>
                                                         Upload Image
+                                                    </Typography>
+                                                    <br />
+                                                    <Typography
+                                                        variant="caption"
+                                                        sx={{ color: "#bababa" }}
+                                                    >
+                                                        Support PNG, JPEG and WEBP upto (765*565 px)
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>
@@ -222,10 +229,10 @@ const AddBanner = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                            <FormControl fullWidth variant="outlined">
+                                <FormControl fullWidth variant="outlined">
                                     <InputLabel htmlFor="paymentDate"></InputLabel>
                                     <TextField
-                                    label="End Date"
+                                        label="End Date"
                                         type="datetime-local"
                                         id="endDate"
                                         name="endDate"
@@ -240,7 +247,7 @@ const AddBanner = () => {
                                             shrink: true,
                                         }}
                                     />
-                                    </FormControl>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>

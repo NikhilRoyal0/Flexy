@@ -52,7 +52,6 @@ const PlansPage = () => {
         console.log("Plan deleted successfully");
         setDeleteConfirmationOpen(false);
         setplanToDelete(null);
-        // Update state after deletion
         dispatch(fetchPlansData());
       });
     }
@@ -105,7 +104,7 @@ const PlansPage = () => {
   };
 
   const handleClick = () => {
-    navigate('/plans/add-plan')
+    navigate('/addon/plans/add-plan')
   }
 
   const openFullArticleDialog = (Plan) => {
@@ -134,12 +133,12 @@ const PlansPage = () => {
     return '';
   };
 
-  
+
   const filteredPlans = plansData.filter((Plan) => {
     if (filterOption === 0) {
-      return Plan.planStatus == 0; 
+      return Plan.planStatus == 0;
     } else if (filterOption === 1) {
-      return Plan.planStatus == 1; 
+      return Plan.planStatus == 1;
     }
     return false;
   });
@@ -155,36 +154,36 @@ const PlansPage = () => {
             paddingRight: 0,
           }}
         >
-           <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-        <Grid item>
-          <FormControl variant="outlined" sx={{ minWidth: '150px' }}>
-            <InputLabel htmlFor="status">Filter By Status</InputLabel>
-            <Select
-              label="Filter By Status"
-              variant="outlined"
-              size="small"
-              value={filterOption}
-              onChange={handleFilterChange}
-            >
-              <MenuItem value={0}>Active</MenuItem>
-              <MenuItem value={1}>InActive</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <Button
-            sx={{
-              color: "primary",
-              display: "flex",
-              alignItems: "center",
-            }}
-            onClick={handleClick}
-          >
-            <AddIcon />
-            <Typography sx={{ ml: 1 }}>Add Plan</Typography>
-          </Button>
-        </Grid>
-      </Grid>
+          <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+            <Grid item>
+              <FormControl variant="outlined" sx={{ minWidth: '150px' }}>
+                <InputLabel htmlFor="status">Filter By Status</InputLabel>
+                <Select
+                  label="Filter By Status"
+                  variant="outlined"
+                  size="small"
+                  value={filterOption}
+                  onChange={handleFilterChange}
+                >
+                  <MenuItem value={0}>Active</MenuItem>
+                  <MenuItem value={1}>InActive</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <Button
+                sx={{
+                  color: "primary",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={handleClick}
+              >
+                <AddIcon />
+                <Typography sx={{ ml: 1 }}>Add Plan</Typography>
+              </Button>
+            </Grid>
+          </Grid>
           <Grid container>
             {filteredPlans.map((Plan, index) => {
               const specificImageUrl = getSpecificImageUrl(Plan, 0);
@@ -308,9 +307,16 @@ const PlansPage = () => {
                       </Typography>
                       <br />
                       <Typography>
-                        <Button variant="outlined" color="primary" onClick={() => editClick(Plan)} sx={{ ml: 1 }}>
-                          Edit
-                        </Button>
+                        {Plan.planStatus === 9 && (
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => editClick(Plan)}
+                            sx={{ ml: 1 }}
+                          >
+                            Edit
+                          </Button>
+                        )}
                         <Button
                           variant="outlined"
                           color="error"

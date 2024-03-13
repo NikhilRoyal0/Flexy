@@ -29,6 +29,8 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import PaidIcon from '@mui/icons-material/Paid';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const initialState = {
   menuItems: [],
@@ -194,10 +196,24 @@ export const fetchMenuItems = () => (dispatch) => {
     },
     {
       id: 14,
-      title: "Plans",
-      icon: LightbulbIcon,
-      href: "/plans",
+      title: "Add On",
+      icon: LibraryAddIcon,
+      href: "#",
       visible: isVisible,
+      subItems: [
+        {
+          id: 41,
+          title: "Plans",
+          icon: LightbulbIcon,
+          href: "/addon/plans",
+        },
+        {
+          id: 41,
+          title: "Add On",
+          icon: ControlPointIcon,
+          href: "/addon/add-on",
+        },
+      ]
     },
     {
       id: 15,
