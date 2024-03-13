@@ -222,18 +222,25 @@ const AddBanner = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    type="datetime-local"
-                                    id="endDate"
-                                    name="endDate"
-                                    variant="outlined"
-                                    onChange={handleInputChange}
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
+                            <FormControl fullWidth variant="outlined">
+                                    <InputLabel htmlFor="paymentDate"></InputLabel>
+                                    <TextField
+                                    label="End Date"
+                                        type="datetime-local"
+                                        id="endDate"
+                                        name="endDate"
+                                        variant="outlined"
+                                        onChange={handleInputChange}
+                                        fullWidth
+                                        required
+                                        sx={{
+                                            mb: 2,
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    </FormControl>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>

@@ -174,7 +174,7 @@ export const fetchMenuItems = () => (dispatch) => {
         },
         {
           id: 44,
-          title: "Next Withdraw",
+          title: "Next Withdrawal",
           icon: LocalAtmIcon,
           href: "/wallet/next-withdraw",
         },

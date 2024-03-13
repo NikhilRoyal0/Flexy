@@ -8,6 +8,8 @@ import {
     TextField,
     Button,
     Grid,
+    InputLabel,
+    FormControl
 } from "@mui/material";
 import { baseTheme } from "../../assets/global/Theme-variable";
 
@@ -56,7 +58,7 @@ const NextWithdraw = () => {
                                 fontWeight: "500",
                             }}
                         >
-                            NextWithdraw
+                            Next Withdrawal
                         </Typography>
                     </Box>
                 </Box>
@@ -83,19 +85,24 @@ const NextWithdraw = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    type="date"
-                                    id="paymentDate"
-                                    label="Payment Date"
-                                    name="paymentDate"
-                                    variant="outlined"
-                                    onChange={handleInputChange}
-                                    fullWidth
-                                    required
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
+                                <FormControl fullWidth variant="outlined">
+                                    <InputLabel htmlFor="paymentDate"></InputLabel>
+                                    <TextField
+                                        label="Payment Date"
+                                        type="datetime-local"
+                                        id="paymentDate"
+                                        name="paymentDate"
+                                        variant="outlined"
+                                        onChange={handleInputChange}
+                                        required
+                                        sx={{
+                                            mb: 2,
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField

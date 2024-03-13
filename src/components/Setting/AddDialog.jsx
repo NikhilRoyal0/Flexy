@@ -248,34 +248,46 @@ const AddDialog = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="Start At"
-                                    type="datetime-local"
-                                    variant="outlined"
-                                    name="startAt"
-                                    label="Start At"
-                                    fullWidth
-                                    required
-                                    onChange={handleInputChange}
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
+                                <FormControl fullWidth variant="outlined">
+                                    <InputLabel htmlFor="Start At"></InputLabel>
+                                    <TextField
+                                        id="Start At"
+                                        type="datetime-local"
+                                        variant="outlined"
+                                        name="startAt"
+                                        label="Start At"
+                                        fullWidth
+                                        required
+                                        onChange={handleInputChange}
+                                        sx={{
+                                            mb: 2,
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    id="End At"
-                                    type="datetime-local"
-                                    variant="outlined"
-                                    name="endAt"
-                                    fullWidth
-                                    required
-                                    onChange={handleInputChange}
-                                    label="End At"
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                />
+                                <FormControl fullWidth variant="outlined">
+                                    <InputLabel htmlFor="End At"></InputLabel>
+                                    <TextField
+                                        label="End At"
+                                        id="End At"
+                                        type="datetime-local"
+                                        variant="outlined"
+                                        name="endAt"
+                                        fullWidth
+                                        required
+                                        onChange={handleInputChange}
+                                        sx={{
+                                            mb: 2,
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
