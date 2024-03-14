@@ -2,7 +2,6 @@ import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FullLayout from '../layouts/Sidebar/FullLayout';
 import Dashboard from '../components/Dashboard/Dashboard';
-import ExAutoComplete from '../components/AutoComplete/ExAutoComplete';
 import Registermain from '../components/Register/Registermain';
 import AddUser from '../components/User/AddUser';
 import UserList from '../components/User/UserList';
@@ -47,7 +46,6 @@ const routes = createBrowserRouter(
       <Route path="/" element={<FullLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/autocomplete" element={<ExAutoComplete />} />
         <Route path="/register" element={<Registermain />} />
         <Route path='/profile-setting' element={<BasicSetting />} />
         <Route path='/addon/add-on' element={<Addon />} />
