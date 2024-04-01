@@ -33,8 +33,7 @@ const EditNews = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
-
-
+  const [fileError, setFileError] = useState(""); // State for file error message
 
   const [data, setData] = useState({
     newsTitle: "",
@@ -44,8 +43,6 @@ const EditNews = () => {
     isPublished: "",
   });
 
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -53,7 +50,6 @@ const EditNews = () => {
       .then(() => {
         toggleEditMode();
         setIsSuccess(true)
-
         showSnackbar('News updated successfully!');
         console.log(data)
 
@@ -69,7 +65,6 @@ const EditNews = () => {
       });
   };
 
-
   const handleTextChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
@@ -83,19 +78,28 @@ const EditNews = () => {
 
     if (files.length > 0) {
       const selectedFile = files[0];
+      const allowedExtensions = ['jpg', 'png', 'webp', 'jpeg'];
+      const fileNameParts = selectedFile.name.split('.');
+      const fileExtension = fileNameParts[fileNameParts.length - 1].toLowerCase();
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setFile(event.target.result);
-        setData((prevData) => ({
-          ...prevData,
-          [name]: event.target.result,
-        }));
-      };
-      reader.readAsDataURL(selectedFile);
+      // Check if the file extension is allowed
+      if (allowedExtensions.includes(fileExtension)) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setFile(event.target.result);
+          setData((prevData) => ({
+            ...prevData,
+            [name]: event.target.result,
+          }));
+          setFileError(""); // Reset file error
+        };
+        reader.readAsDataURL(selectedFile);
+      } else {
+        // Set file error message for invalid file extension
+        setFileError("Please select a JPG, PNG, WEBP, or JPEG image.");
+      }
     }
   };
-
 
   const [loading, setLoading] = useState(true);
   const newsData = useSelector(selectNewsData);
@@ -114,22 +118,6 @@ const EditNews = () => {
       fetchNewsDataById();
     }
   }, [newsIdParam, dispatch, newsData]);
-
-
-  if (loading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress color="primary" size={120} thickness={4} />
-      </div>
-    );
-  }
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -227,6 +215,11 @@ const EditNews = () => {
                   </Popover>
                 )}
               </Card>
+              {fileError && (
+                <Typography variant="body2" color="error">
+                  {fileError}
+                </Typography>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>

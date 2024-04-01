@@ -17,11 +17,15 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
-import { selectBannerData, fetchBannerData, updateBannerData } from "../../app/BannerSlice";
+import {
+  selectBannerData,
+  fetchBannerData,
+  updateBannerData,
+} from "../../app/BannerSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditBanner = () => {
@@ -32,7 +36,7 @@ const EditBanner = () => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-
+  const [fileError, setFileError] = useState(null);
 
   const [oldData, setoldData] = useState(null);
 
@@ -45,15 +49,14 @@ const EditBanner = () => {
     mediaPath: "",
   });
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     dispatch(updateBannerData(data.bannerId, data))
       .then(() => {
         toggleEditMode();
-        setIsSuccess(true)
-        showSnackbar('Banner updated successfully!');
+        setIsSuccess(true);
+        showSnackbar("Banner updated successfully!");
 
         setTimeout(() => {
           navigate("../setting/banners-list");
@@ -62,8 +65,8 @@ const EditBanner = () => {
 
       .catch((error) => {
         setIsSuccess(false);
-        showSnackbar('Error in updating banner. Please try again.');
-        console.error('Error in updating banner:', error);
+        showSnackbar("Error in updating banner. Please try again.");
+        console.error("Error in updating banner:", error);
       });
   };
 
@@ -80,6 +83,15 @@ const EditBanner = () => {
 
     if (files.length > 0) {
       const selectedFile = files[0];
+      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+      const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+
+      if (!allowedExtensions.includes(fileExtension)) {
+        setFileError(
+          "Invalid file type. Please select a PNG, JPG, JPEG, or WEBP file."
+        );
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -90,6 +102,7 @@ const EditBanner = () => {
         }));
       };
       reader.readAsDataURL(selectedFile);
+      setFileError(null); // Clear any previous error messages
     }
   };
 
@@ -98,7 +111,9 @@ const EditBanner = () => {
 
   const fetchBannerDataById = () => {
     const bannerId = parseInt(bannerIdParam);
-    const selectedBanner = bannerData.find((banner) => banner.bannerId === bannerId);
+    const selectedBanner = bannerData.find(
+      (banner) => banner.bannerId === bannerId
+    );
     setoldData({ ...selectedBanner });
     setLoading(false);
   };
@@ -110,7 +125,6 @@ const EditBanner = () => {
       fetchBannerDataById();
     }
   }, [bannerIdParam, dispatch, bannerData]);
-
 
   if (loading) {
     return (
@@ -128,7 +142,7 @@ const EditBanner = () => {
   }
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (!isSuccess) {
@@ -149,7 +163,7 @@ const EditBanner = () => {
   };
 
   const handleImageChange = () => {
-    const fileInput = document.getElementById("mediaPath");
+    const fileInput = document.getElementById("fileInput");
     if (fileInput) {
       fileInput.click();
     }
@@ -162,7 +176,9 @@ const EditBanner = () => {
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit Banner - {data && oldData.bannerId}</Typography>
+        <Typography variant="h4">
+          Edit Banner - {data && oldData.bannerId}
+        </Typography>
         <br />
         <Divider />
         <br />
@@ -206,11 +222,12 @@ const EditBanner = () => {
                   >
                     <input
                       type="file"
-                      id="image"
+                      id="fileInput"
                       name="mediaPath"
                       onChange={handleFileChange}
                       style={{ display: "none" }}
                     />
+
                     <Button
                       color="primary"
                       variant="contained"
@@ -222,13 +239,18 @@ const EditBanner = () => {
                   </Popover>
                 )}
               </Card>
+              {fileError && (
+                <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                  {fileError}
+                </Typography>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Title"
                 variant="outlined"
-                name='title'
+                name="title"
                 onChange={handleTextChange}
                 fullWidth
                 value={oldData.bannerTitle ?? data.title}
@@ -239,13 +261,13 @@ const EditBanner = () => {
               <FormControl fullWidth variant="outlined">
                 <InputLabel id="bannerType-label">Banner Type</InputLabel>
                 <Select
-                   label="Banner Type"
-                   variant="outlined"
-                   name='bannerType'
-                   onChange={handleTextChange}
-                   fullWidth
-                   value={data && oldData.bannerType}
-                   disabled={!editMode}
+                  label="Banner Type"
+                  variant="outlined"
+                  name="bannerType"
+                  onChange={handleTextChange}
+                  fullWidth
+                  value={data && oldData.bannerType}
+                  disabled={!editMode}
                 >
                   <MenuItem value="social">Social</MenuItem>
                   <MenuItem value="link">Link</MenuItem>
@@ -256,8 +278,8 @@ const EditBanner = () => {
               <TextField
                 type="datetime-local"
                 variant="outlined"
-                name='endDate'
-                label='End Date'
+                name="endDate"
+                label="End Date"
                 onChange={handleTextChange}
                 fullWidth
                 value={oldData.endDateTime ?? data.endDate}
@@ -280,20 +302,18 @@ const EditBanner = () => {
                   <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
-
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="On Click"
                 variant="outlined"
-                name='onClick'
+                name="onClick"
                 onChange={handleTextChange}
                 fullWidth
                 value={oldData.bannerOnClick ?? data.onClick}
                 disabled={!editMode}
               />
             </Grid>
-
           </Grid>
           <br />
           <Divider />
@@ -303,12 +323,21 @@ const EditBanner = () => {
               <Button variant="contained" color="success" type="submit">
                 Save
               </Button>
-              <Button variant="contained" color="error" sx={{ ml: 1 }} onClick={toggleEditMode}>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ ml: 1 }}
+                onClick={toggleEditMode}
+              >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={toggleEditMode}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleEditMode}
+            >
               Edit
             </Button>
           )}
@@ -339,11 +368,10 @@ const EditBanner = () => {
               backgroundColor: isSuccess
                 ? baseTheme.palette.success.main
                 : baseTheme.palette.error.main,
-              color: isSuccess ? '#fff' : undefined,
+              color: isSuccess ? "#fff" : undefined,
             }}
           />
         </Snackbar>
-
       </CardContent>
     </Card>
   );

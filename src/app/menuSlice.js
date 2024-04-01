@@ -263,12 +263,6 @@ export const fetchMenuItems = () => (dispatch) => {
       visible: isVisible,
       subItems: [
         {
-          id: 37,
-          title: "Task Category",
-          icon: SplitscreenIcon,
-          href: "/tasks/task-category",
-        },
-        {
           id: 38,
           title: "Task List",
           icon: FormatListBulletedIcon,

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
     Card,
@@ -10,17 +9,18 @@ import {
     Grid,
     FormControl,
     InputLabel,
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     TextField,
+    Button,
 } from "@mui/material";
 import Lists from "./UpiData";
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 import { AddData, fetchUPIData } from "../../../app/UpiSlice";
+import LoadingButton from '@mui/lab/LoadingButton'; // Import LoadingButton from @mui/lab
 
 const UpiList = () => {
     const dispatch = useDispatch();
@@ -32,9 +32,11 @@ const UpiList = () => {
         'upiId': '',
         'upiHash': '',
     });
+    const [addUpiLoading, setAddUpiLoading] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setAddUpiLoading(true);
 
         const form = new FormData()
         form.append('name', upiData.name)
@@ -48,9 +50,11 @@ const UpiList = () => {
             })
             .catch((error) => {
                 console.error("Error adding UPI:", error);
+            })
+            .finally(() => {
+                setAddUpiLoading(false);
+                handleCloseAddUpi();
             });
-
-        handleCloseAddUpi();
     };
 
     const handleFilterChange = (event) => {
@@ -105,15 +109,16 @@ const UpiList = () => {
                                     <MenuItem value="Inactive">Inactive</MenuItem>
                                 </Select>
                             </FormControl>
-                            <Button
+                            <LoadingButton
+                                loading={addUpiLoading}
                                 variant="contained"
                                 color="primary"
                                 onClick={handleAddUpiData}
+                                startIcon={<AddIcon />}
                                 sx={{ marginLeft: 1, marginTop: 1 }}
                             >
-                                <AddIcon />
-                                <Typography sx={{ ml: 1 }}>Add UPI</Typography>
-                            </Button>
+                                Add UPI
+                            </LoadingButton>
                         </Grid>
                     </Grid>
                     <Lists filterOption={filterOption} />
@@ -130,6 +135,7 @@ const UpiList = () => {
                                     label="Name"
                                     variant="outlined"
                                     margin="normal"
+                                    required
                                     fullWidth
                                     value={upiData.name}
                                     onChange={(e) => setUpiData({ ...upiData, name: e.target.value })}
@@ -140,6 +146,7 @@ const UpiList = () => {
                                     label="UPI ID"
                                     variant="outlined"
                                     margin="normal"
+                                    required
                                     fullWidth
                                     value={upiData.upiId}
                                     onChange={(e) => setUpiData({ ...upiData, upiId: e.target.value })}
@@ -150,6 +157,7 @@ const UpiList = () => {
                                     label="UPI Hash"
                                     variant="outlined"
                                     margin="normal"
+                                    required
                                     fullWidth
                                     value={upiData.upiHash}
                                     onChange={(e) => setUpiData({ ...upiData, upiHash: e.target.value })}
@@ -161,9 +169,13 @@ const UpiList = () => {
                         <Button type="button" onClick={handleCloseAddUpi} color="primary">
                             Cancel
                         </Button>
-                        <Button type="submit" color="primary">
+                        <LoadingButton
+                            type="submit"
+                            color="primary"
+                            loading={addUpiLoading}
+                        >
                             Add UPI
-                        </Button>
+                        </LoadingButton>
                     </DialogActions>
                 </form>
             </Dialog>

@@ -32,6 +32,7 @@ import {
     selectUpComingLoading,
     updateUpComingData,
 } from "../../../app/UpComingSlice";
+import { LoadingButton } from '@mui/lab';
 
 const Lists = ({ filterOption = "Active" }) => {
     const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const Lists = ({ filterOption = "Active" }) => {
         status: "",
         receiptNo: "",
     });
+    const [saveLoading, setSaveLoading] = useState(false); // State for the save button loading
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === "clickaway") {
@@ -101,7 +103,8 @@ const Lists = ({ filterOption = "Active" }) => {
 
     const handleSave = async (event) => {
         event.preventDefault();
-console.log("before",data)
+        setSaveLoading(true); // Start loading for the save button
+
         dispatch(updateUpComingData(selectedUpComing.wi, data))
             .then(() => {
                 toggleEditMode();
@@ -116,6 +119,9 @@ console.log("before",data)
                 setIsSuccess(false);
                 showSnackbar("Error in updating UpComing. Please try again.");
                 console.error("Error in updating UpComing:", error);
+            })
+            .finally(() => {
+                setSaveLoading(false); // Stop loading for the save button
             });
     };
 
@@ -316,9 +322,14 @@ console.log("before",data)
                             <Button variant="contained" color="primary" onClick={toggleEditMode}>
                                 Cancel
                             </Button>
-                            <Button variant="contained" color="success" onClick={handleSave}>
+                            <LoadingButton
+                                variant="contained"
+                                color="success"
+                                onClick={handleSave}
+                                loading={saveLoading} // Bind loading state to the loading button
+                            >
                                 Save
-                            </Button>
+                            </LoadingButton>
                         </>
                     )}
                 </DialogActions>

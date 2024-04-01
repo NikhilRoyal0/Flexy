@@ -204,16 +204,6 @@ const TaskList = () => {
                         </>
                       )}
                     </Typography>
-                    <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        mt: 1,
-                      }}
-                    >
-                      {Task.createdBy}
-                    </Typography>
                     <br />
                     <Button variant="outlined" color="primary" onClick={() => editClick(Task)} sx={{ ml: 1 }}>
                       Edit

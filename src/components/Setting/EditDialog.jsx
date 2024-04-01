@@ -17,11 +17,15 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
-import { selectdialogsData, fetchdialogsData, updatedialogsData } from "../../app/DialogSlice";
+import {
+  selectdialogsData,
+  fetchdialogsData,
+  updatedialogsData,
+} from "../../app/DialogSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
 
 const EditDialog = () => {
@@ -33,8 +37,7 @@ const EditDialog = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
-
-
+  const [fileError, setFileError] = useState(null);
 
   const [data, setData] = useState({
     title: "",
@@ -44,9 +47,7 @@ const EditDialog = () => {
     status: "",
     createdBy: "",
     imageLink: file,
-
   });
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,10 +55,10 @@ const EditDialog = () => {
     dispatch(updatedialogsData(data.dId, data))
       .then(() => {
         toggleEditMode();
-        setIsSuccess(true)
+        setIsSuccess(true);
 
-        showSnackbar('Dialog updated successfully!');
-        console.log(data)
+        showSnackbar("Dialog updated successfully!");
+        console.log(data);
 
         setTimeout(() => {
           navigate("../setting/dialogs-list");
@@ -66,11 +67,10 @@ const EditDialog = () => {
 
       .catch((error) => {
         setIsSuccess(false);
-        showSnackbar('Error in updating Dialog. Please try again.');
-        console.error('Error in updating dialog:', error);
+        showSnackbar("Error in updating Dialog. Please try again.");
+        console.error("Error in updating dialog:", error);
       });
   };
-
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;
@@ -85,6 +85,15 @@ const EditDialog = () => {
 
     if (files.length > 0) {
       const selectedFile = files[0];
+      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+      const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+
+      if (!allowedExtensions.includes(fileExtension)) {
+        setFileError(
+          "Invalid file type. Please select a PNG, JPG, JPEG, or WEBP file."
+        );
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -95,9 +104,9 @@ const EditDialog = () => {
         }));
       };
       reader.readAsDataURL(selectedFile);
+      setFileError(null); // Clear any previous error messages
     }
   };
-
 
   const [loading, setLoading] = useState(true);
   const dialogsData = useSelector(selectdialogsData);
@@ -117,7 +126,6 @@ const EditDialog = () => {
     }
   }, [dIdParam, dispatch, dialogsData]);
 
-
   if (loading) {
     return (
       <div
@@ -134,7 +142,7 @@ const EditDialog = () => {
   }
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (!isSuccess) {
@@ -229,13 +237,18 @@ const EditDialog = () => {
                   </Popover>
                 )}
               </Card>
+              {fileError && (
+                <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                  {fileError}
+                </Typography>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Dialog Title"
                 variant="outlined"
-                name='title'
+                name="title"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.title}
@@ -248,7 +261,7 @@ const EditDialog = () => {
                 <Select
                   label="for User"
                   variant="outlined"
-                  name='forUser'
+                  name="forUser"
                   onChange={handleTextChange}
                   fullWidth
                   value={data && data.forUser}
@@ -260,19 +273,17 @@ const EditDialog = () => {
                   <MenuItem value="allUser">allUser</MenuItem>
                 </Select>
               </FormControl>
-
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 type="datetime-local"
                 label="Start At"
                 variant="outlined"
-                name='startAt'
+                name="startAt"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.startAt}
                 disabled={!editMode}
-
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -280,24 +291,22 @@ const EditDialog = () => {
                 type="datetime-local"
                 label="End At"
                 variant="outlined"
-                name='endAt'
+                name="endAt"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.endAt}
                 disabled={!editMode}
-
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Created By"
                 variant="outlined"
-                name='createdBy'
+                name="createdBy"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.createdBy}
                 disabled={!editMode}
-
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -306,7 +315,7 @@ const EditDialog = () => {
                 <Select
                   label="Status"
                   variant="outlined"
-                  name='status'
+                  name="status"
                   onChange={handleTextChange}
                   fullWidth
                   value={data && data.status}
@@ -317,24 +326,36 @@ const EditDialog = () => {
                   <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
-
             </Grid>
-
           </Grid>
           <br />
           <Divider />
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success" type="submit" onSubmit={handleSubmit}>
+              <Button
+                variant="contained"
+                color="success"
+                type="submit"
+                onSubmit={handleSubmit}
+              >
                 Save
               </Button>
-              <Button variant="contained" color="error" sx={{ ml: 1 }} onClick={toggleEditMode}>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ ml: 1 }}
+                onClick={toggleEditMode}
+              >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={toggleEditMode}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleEditMode}
+            >
               Edit
             </Button>
           )}
@@ -365,11 +386,10 @@ const EditDialog = () => {
               backgroundColor: isSuccess
                 ? baseTheme.palette.success.main
                 : baseTheme.palette.error.main,
-              color: isSuccess ? '#fff' : undefined,
+              color: isSuccess ? "#fff" : undefined,
             }}
           />
         </Snackbar>
-
       </CardContent>
     </Card>
   );

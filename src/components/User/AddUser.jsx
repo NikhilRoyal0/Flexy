@@ -18,6 +18,8 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import CancelIcon from '@mui/icons-material/Cancel';
+import LoadingButton from '@mui/lab/LoadingButton';
+
 
 
 const numbers = [
@@ -58,6 +60,8 @@ const VisuallyHiddenInput = styled('input')({
 const AddUser = () => {
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+    const [isLoading, setIsLoading] = useState(false); // New state for loading button
+
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];

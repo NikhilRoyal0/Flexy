@@ -43,6 +43,7 @@ const EditTask = () => {
     createdBy: "",
     taskMedia: "",
     status: "",
+    taskType: "",
   });
 
   const handleSnackbarClose = (reason) => {
@@ -269,17 +270,29 @@ const EditTask = () => {
 
             </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="createdBy"
-                variant="outlined"
-                name='createdBy'
-                onChange={handleTextChange}
-                fullWidth
-                value={data && data.createdBy}
-                disabled={!editMode}
-              />
-            </Grid>
+            <Grid item xs={12} md={6}>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  required
+                  sx={{ mb: 2 }}
+                >
+                  <InputLabel htmlFor="Task Type">Task Type</InputLabel>
+                  <Select
+                    label="Task Type"
+                    id="Task type"
+                    name="taskType"
+                    value={data && data.taskType}
+                    onChange={handleTextChange}
+                    disabled={!editMode}
+                  >
+                    <MenuItem value="0">Daily Checkin</MenuItem>
+                    <MenuItem value="1">Refer with limit 5</MenuItem>
+                    <MenuItem value="2">Register or Subscribe</MenuItem>
+                    <MenuItem value="3">Visit Task</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
 
           </Grid>
           <br />

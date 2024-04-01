@@ -11,7 +11,7 @@ import AppSetting from '../components/Setting/AppSetting';
 import BasicSetting from '../components/Setting/BasicSetting';
 import DialogsList from '../components/Setting/DialogsList';
 import BannersList from '../components/Setting/BannersList';
-import TaskCategory from '../components/Tasks/TaskCategory';
+// import TaskCategory from '../components/Tasks/TaskCategory';
 import TasksList from '../components/Tasks/TaskList';
 import Logout from '../components/LoginLogout/Logout';
 import Login from '../components/LoginLogout/Login';
@@ -61,7 +61,7 @@ const routes = createBrowserRouter(
         <Route path="/setting/app-setting" element={<AppSetting />} />
         <Route path="/setting/dialogs-list" element={<DialogsList />} />
         <Route path="/setting/banners-list" element={<BannersList />} />
-        <Route path="/tasks/task-category" element={<TaskCategory />} />
+        {/* <Route path="/tasks/task-category" element={<TaskCategory />} /> */}
         <Route path="/tasks/task-list" element={<TasksList />} />
         <Route path="/user/user-list/edit-user/:userId" element={<EditUser />} />
         <Route path="/tasks/task-list/edit-task/:taskId" element={<EditTask />} />

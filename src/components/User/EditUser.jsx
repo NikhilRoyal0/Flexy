@@ -20,6 +20,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUsersData, fetchUsersData } from "../../app/UsersSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
+import LoadingButton from '@mui/lab/LoadingButton';
+
 
 const EditUsers = () => {
   const dispatch = useDispatch();
@@ -27,6 +29,8 @@ const EditUsers = () => {
   const [editMode, setEditMode] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New state for loading button
+
 
 
   const [user, setUserData] = useState({

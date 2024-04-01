@@ -28,6 +28,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from "@mui/icons-material/Close";
 import { baseTheme } from "../../assets/global/Theme-variable";
 import { fetchWithdrawalData, selectWithdrawalData, selectWithdrawalLoading, selectWithdrawalError, updateWithdrawalData } from "../../app/WithdrawalSlice";
+import { LoadingButton } from '@mui/lab';
 
 const Lists = ({ filterOption }) => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const Lists = ({ filterOption }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [updatedStatus, setUpdatedStatus] = useState(null);
-
+  const [submitLoading, setSubmitLoading] = useState(false); // State for the submit button loading
 
   const handleSnackbarClose = (reason) => {
     if (reason === 'clickaway') {
@@ -67,6 +68,7 @@ const Lists = ({ filterOption }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmitLoading(true); // Start loading for the submit button
 
     try {
       const updatedStatus = selectedUserDetails.wStatus;
@@ -81,6 +83,8 @@ const Lists = ({ filterOption }) => {
 
     } catch (error) {
       console.error('Error updating status:', error);
+    } finally {
+      setSubmitLoading(false); // Stop loading for the submit button
     }
   };
 
@@ -294,13 +298,13 @@ const Lists = ({ filterOption }) => {
           <form onSubmit={handleSubmit} style={{ margin: '16px' }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField label="Withdrawal Request ID" value={selectedUserDetails && selectedUserDetails.wr_id} disabled fullWidth />
+                <TextField label="Withdrawal Request ID" required value={selectedUserDetails && selectedUserDetails.wr_id} disabled fullWidth />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField label="User ID" value={selectedUserDetails && selectedUserDetails.userId} disabled fullWidth />
+                <TextField label="User ID" required value={selectedUserDetails && selectedUserDetails.userId} disabled fullWidth />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField label="Amount" value={selectedUserDetails && selectedUserDetails.amount} disabled fullWidth />
+                <TextField label="Amount" required value={selectedUserDetails && selectedUserDetails.amount} disabled fullWidth />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
@@ -308,6 +312,7 @@ const Lists = ({ filterOption }) => {
                   <Select
                     label="Status"
                     name="status"
+                    required
                     value={selectedUserDetails && selectedUserDetails.wStatus}
                     onChange={(e) => handleStatusChange(e.target.value)}
                   >
@@ -322,7 +327,14 @@ const Lists = ({ filterOption }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Close</Button>
-          <Button color="primary" type="submit" onClick={handleSubmit}>Submit</Button>
+          <LoadingButton
+            color="primary"
+            type="submit"
+            onClick={handleSubmit}
+            loading={submitLoading} // Bind loading state to the loading button
+          >
+            Submit
+          </LoadingButton>
         </DialogActions>
       </Dialog>
       <Snackbar

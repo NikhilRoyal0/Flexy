@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Card,
   CardContent,
-  CardActionArea,
   Divider,
   Box,
   Typography,
@@ -14,7 +13,8 @@ import {
   SnackbarContent,
   IconButton,
   LinearProgress,
-  MenuItem
+  MenuItem,
+  CardActionArea,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,22 +24,24 @@ import { useDispatch } from "react-redux";
 import { AddPlanData, AddImagesData } from "../../app/PlansSlice";
 import { useNavigate } from "react-router-dom";
 import { baseTheme } from "../../assets/global/Theme-variable";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const AddPlan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [selectedFiles, setSelectedFiles] = React.useState([]);
-  const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [imgUrls, setImageUrls] = useState([]);
   const [filePreviews, setFilePreviews] = useState([]);
-  const [popoverIndex, setPopoverIndex] = React.useState(null);
+  const [popoverIndex, setPopoverIndex] = useState(null);
   const [isImageSelected, setIsImageSelected] = useState(false);
   const [imageSelectError, setImageSelectError] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(false); // New state for loading button
 
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     planTitle: "",
     planInfo: "",
     planPrice: "",
@@ -52,6 +54,7 @@ const AddPlan = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true); // Start loading
 
     let imagearray = [];
 
@@ -73,7 +76,7 @@ const AddPlan = () => {
       form.append("planMaxPayOut", formData.planMaxPayOut);
       form.append("createdBy", formData.createdBy);
       form.append("planImages", JSON.stringify(imagearray));
-      form.append('planStatus', formData.planStatus);
+      form.append("planStatus", formData.planStatus);
 
       try {
         console.log("Before Dispatch", formData);
@@ -156,6 +159,19 @@ const AddPlan = () => {
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
+    const allowedExtensions = ["jpg", "png", "webp", "jpeg"];
+
+    // Get the file extension
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+
+    // Check if the file extension is allowed
+    if (!allowedExtensions.includes(fileExtension)) {
+      setImageSelectError("Please select a JPG, PNG, WEBP, or JPEG image.");
+      return;
+    }
+
+    // Reset error message if file extension is valid
+    setImageSelectError("");
 
     setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
 
@@ -210,8 +226,8 @@ const AddPlan = () => {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 9999, 
-          backgroundColor: "#fff", 
+          zIndex: 9999,
+          backgroundColor: "#fff",
         }}
       />
 
@@ -323,12 +339,6 @@ const AddPlan = () => {
 
                 {selectedFiles.length < 4 && (
                   <label htmlFor="file-input">
-                    {imageSelectError && (
-                      <Typography variant="caption" color="error">
-                        {imageSelectError}
-                      </Typography>
-                    )}
-
                     <label htmlFor="file-input">
                       <input
                         id="file-input"
@@ -365,14 +375,14 @@ const AddPlan = () => {
                             <br />
                             <Typography
                               variant="caption"
-                              sx={{ color: "black" }} 
+                              sx={{ color: "black" }}
                             >
                               Upload Image
                             </Typography>
                             <br />
                             <Typography
                               variant="caption"
-                              sx={{ color: "#bababa" }} 
+                              sx={{ color: "#bababa" }}
                             >
                               Support PNG, JPEG and WEBP upto (765*565 px)
                             </Typography>
@@ -380,11 +390,16 @@ const AddPlan = () => {
                         </Grid>
                       </CardActionArea>
                     </Card>
+                    {imageSelectError && (
+                      <Typography variant="body2" color="error">
+                        {imageSelectError}
+                      </Typography>
+                    )}
                   </label>
                 )}
               </Grid>
 
-
+              {/* Other form fields */}
               <Grid item xs={12} md={6}>
                 <TextField
                   id="plan-title"
@@ -394,20 +409,6 @@ const AddPlan = () => {
                   onChange={handleInputChange}
                   fullWidth
                   required
-                  sx={{
-                    mb: 2,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="Plan-info"
-                  label="Plan Info"
-                  name="planInfo"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  required
-                  fullWidth
                   sx={{
                     mb: 2,
                   }}
@@ -473,13 +474,33 @@ const AddPlan = () => {
                   <MenuItem value={1}>Inactive</MenuItem>
                 </TextField>
               </Grid>
-
+              <Grid item xs={12} md={12}>
+                <TextField
+                  id="Plan-info"
+                  label="Plan Info"
+                  name="planInfo"
+                  variant="outlined"
+                  multiline
+                  rows={4}
+                  onChange={handleInputChange}
+                  required
+                  fullWidth
+                  sx={{
+                    mb: 2,
+                  }}
+                />
+              </Grid>
             </Grid>
             <div>
               <br />
-              <Button color="secondary" variant="contained" type="submit">
+              <LoadingButton
+                color="secondary"
+                variant="contained"
+                type="submit"
+                loading={isLoading}
+              >
                 Submit
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </CardContent>

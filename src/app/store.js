@@ -14,6 +14,7 @@ import UPISliceReducer from './UpiSlice';
 import RechargeReducer from './RechargeSlice';
 import AddOnReducer from './AddOnSlice';
 import UpComingReducer from './UpComingSlice';
+import NotificationReducer from './NotificationSlice';
 
 const store = configureStore({
   reducer: {
@@ -32,6 +33,8 @@ const store = configureStore({
     Recharge: RechargeReducer,
     AddOn: AddOnReducer,
     UpComing: UpComingReducer,
+    Notification: NotificationReducer,
+
   },
 });
 
