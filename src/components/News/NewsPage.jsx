@@ -9,7 +9,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Box,
 } from "@mui/material";
 import errorimage from '../../assets/images/errorimage.jpg'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';

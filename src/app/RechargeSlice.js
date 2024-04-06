@@ -25,7 +25,7 @@ const RechargeSlice = createSlice({
     updateRecharge: (state, action) => {
       const updatedRecharge = action.payload;
       state.data = state.data.map((Recharge) =>
-        Recharge.Recharge_id === updatedRecharge.Recharge_id ? updatedRecharge : Recharge
+        Recharge.r_id === updatedRecharge.r_id ? updatedRecharge : Recharge
       );
     },
   },
@@ -61,20 +61,20 @@ export const AddData = (form) => async () => {
   }
 }
 
-export const updateRechargeData = (Recharge_id, updatedStatus) => async (dispatch) => {
+
+export const updateRechargeData = (updatedData, r_id) => async (dispatch) => {
   try {
-    const response = await axios.put(
-      import.meta.env.VITE_BASE_URL + `admin/updateRecharge/${Recharge_id} `, { status: updatedStatus }
+
+    const response = await axios.put(import.meta.env.VITE_BASE_URL + `client/updateRechargeRequest/${r_id}`, updatedData
     );
 
     const updatedRechargeData = response.data;
 
     dispatch(updateRecharge(updatedRechargeData));
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
-
 
 
 export const selectRechargeData = (state) => state.Recharge.data;

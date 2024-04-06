@@ -30,7 +30,6 @@ const Notification = () => {
     info: "",
     userId: 0,
   });
-  const [searchQuery, setSearchQuery] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false); 
 
   const handleSubmit = async (event) => {
@@ -59,9 +58,6 @@ const Notification = () => {
   };
   
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const handleAddNotificationData = () => {
     setShowAddNotification(true);
@@ -92,13 +88,6 @@ const Notification = () => {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <TextField
-                label="Search by User ID"
-                variant="outlined"
-                size="small"
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
               <LoadingButton // 4. Replace with LoadingButton
                 variant="contained"
                 color="primary"
@@ -113,7 +102,7 @@ const Notification = () => {
               </LoadingButton>
             </Grid>
           </Grid>
-          <Lists searchQuery={searchQuery} />
+          <Lists/>
         </CardContent>
       </Card>
 

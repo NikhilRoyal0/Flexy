@@ -22,7 +22,7 @@ import {
   selectNotificationError,
 } from "../../../app/NotificationSlice";
 
-const Lists = ({ searchQuery }) => {
+const Lists = () => {
   const dispatch = useDispatch();
   const notificationData = useSelector(selectNotificationData);
   const isLoading = useSelector(selectNotificationLoading);
@@ -70,16 +70,11 @@ const Lists = ({ searchQuery }) => {
     );
   }
 
-  const filteredData = notificationData
-  ? notificationData.filter((notification) =>
-      notification.userId == searchQuery
-    )
-  : [];
 
 
   return (
     <Box>
-      {filteredData.length === 0 ? (
+      {notificationData.length === 0 ? (
         <Box
           display="flex"
           justifyContent="center"
@@ -123,7 +118,7 @@ const Lists = ({ searchQuery }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((notification) => (
+              {notificationData.map((notification) => (
                 <TableRow key={notification.notificationId}>
                   <TableCell>
                     <Typography
