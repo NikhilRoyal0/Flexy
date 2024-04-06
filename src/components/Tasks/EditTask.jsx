@@ -15,15 +15,18 @@ import {
   FormControl,
   Select,
   InputLabel,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector, useDispatch } from "react-redux";
-import { selectTasksData, fetchTasksData, updateTaskData } from "../../app/TaskSlice";
+import {
+  selectTasksData,
+  fetchTasksData,
+  updateTaskData,
+} from "../../app/TaskSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
-
 
 const EditTask = () => {
   const dispatch = useDispatch();
@@ -34,8 +37,6 @@ const EditTask = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-
-
   const [data, setData] = useState({
     taskId: "",
     taskTitle: "",
@@ -44,10 +45,11 @@ const EditTask = () => {
     taskMedia: "",
     status: "",
     taskType: "",
+    onClick: "",
   });
 
   const handleSnackbarClose = (reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (!isSuccess) {
@@ -59,16 +61,15 @@ const EditTask = () => {
     setSnackbarOpen(true);
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     dispatch(updateTaskData(data.taskId, data))
       .then(() => {
         toggleEditMode();
-        setIsSuccess(true)
+        setIsSuccess(true);
 
-        showSnackbar('Task updated successfully!');
+        showSnackbar("Task updated successfully!");
 
         setTimeout(() => {
           navigate("../tasks/task-list");
@@ -78,8 +79,8 @@ const EditTask = () => {
       .catch((error) => {
         setIsSuccess(false);
 
-        showSnackbar('Error in updating task. Please try again.');
-        console.error('Error in updating task:', error);
+        showSnackbar("Error in updating task. Please try again.");
+        console.error("Error in updating task:", error);
       });
   };
 
@@ -127,7 +128,6 @@ const EditTask = () => {
     }
   }, [taskIdParam, dispatch, taskData]);
 
-
   if (loading) {
     return (
       <div
@@ -142,8 +142,6 @@ const EditTask = () => {
       </div>
     );
   }
-
-
 
   const handleImageClick = (event) => {
     setPopoverAnchor(event.currentTarget);
@@ -233,7 +231,7 @@ const EditTask = () => {
               <TextField
                 label="Title"
                 variant="outlined"
-                name='taskTitle'
+                name="taskTitle"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.taskTitle}
@@ -244,7 +242,7 @@ const EditTask = () => {
               <TextField
                 label="Info"
                 variant="outlined"
-                name='taskInfo'
+                name="taskInfo"
                 onChange={handleTextChange}
                 fullWidth
                 value={data && data.taskInfo}
@@ -267,48 +265,61 @@ const EditTask = () => {
                   <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
-
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="on Click"
+                variant="outlined"
+                name="onClick"
+                onChange={handleTextChange}
+                fullWidth
+                value={data && data.onClick}
+                disabled={!editMode}
+              />
             </Grid>
 
             <Grid item xs={12} md={6}>
-                <FormControl
-                  fullWidth
-                  variant="outlined"
-                  required
-                  sx={{ mb: 2 }}
+              <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+                <InputLabel htmlFor="Task Type">Task Type</InputLabel>
+                <Select
+                  label="Task Type"
+                  id="Task type"
+                  name="taskType"
+                  value={data && data.taskType}
+                  onChange={handleTextChange}
+                  disabled={!editMode}
                 >
-                  <InputLabel htmlFor="Task Type">Task Type</InputLabel>
-                  <Select
-                    label="Task Type"
-                    id="Task type"
-                    name="taskType"
-                    value={data && data.taskType}
-                    onChange={handleTextChange}
-                    disabled={!editMode}
-                  >
-                    <MenuItem value="0">Daily Checkin</MenuItem>
-                    <MenuItem value="1">Refer with limit 5</MenuItem>
-                    <MenuItem value="2">Register or Subscribe</MenuItem>
-                    <MenuItem value="3">Visit Task</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
+                  <MenuItem value="0">Daily Checkin</MenuItem>
+                  <MenuItem value="1">Refer with limit 5</MenuItem>
+                  <MenuItem value="2">Register or Subscribe</MenuItem>
+                  <MenuItem value="3">Visit Task</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <br />
           <Divider />
           <br />
           {editMode ? (
             <>
-              <Button variant="contained" color="success" type="submit" >
+              <Button variant="contained" color="success" type="submit">
                 Save
               </Button>
-              <Button variant="contained" color="error" onClick={toggleEditMode} sx={{ ml: 1 }}>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={toggleEditMode}
+                sx={{ ml: 1 }}
+              >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={toggleEditMode}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleEditMode}
+            >
               Edit
             </Button>
           )}
@@ -339,7 +350,7 @@ const EditTask = () => {
               backgroundColor: isSuccess
                 ? baseTheme.palette.success.main
                 : baseTheme.palette.error.main,
-              color: isSuccess ? '#fff' : undefined,
+              color: isSuccess ? "#fff" : undefined,
             }}
           />
         </Snackbar>

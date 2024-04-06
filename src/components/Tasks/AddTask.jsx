@@ -41,6 +41,7 @@ const AddTask = () => {
     createdBy: "0",
     taskType: "",
     taskPayout: "",
+    onClick: "",
     image: selectedFile,
   });
 
@@ -53,6 +54,7 @@ const AddTask = () => {
     form.append("createdBy", formData.createdBy);
     form.append("taskType", formData.taskType);
     form.append("taskPayout", formData.taskPayout);
+    form.append("onClick", formData.onClick);
     form.append("image", selectedFile);
 
     dispatch(AddTaskData(form)).then(() => {
@@ -276,6 +278,20 @@ const AddTask = () => {
                   id="taskPayout"
                   label="Payout"
                   name="taskPayout"
+                  onChange={handleInputChange}
+                  variant="outlined"
+                  fullWidth
+                  required
+                  sx={{
+                    mb: 2,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="onClick"
+                  label="on Click"
+                  name="onClick"
                   onChange={handleInputChange}
                   variant="outlined"
                   fullWidth
