@@ -164,8 +164,8 @@ const Lists = ({ filterOption = "Active" }) => {
     const filterDataByStatus = (data, filterOption) => {
         return data.filter((addOn) => {
             return (
-                (filterOption === "Active" && addOn.status == 0) ||
-                (filterOption === "Inactive" && addOn.status == 1) ||
+                (filterOption === "Active" && addOn.status == 1) ||
+                (filterOption === "Inactive" && addOn.status == 0) ||
                 !filterOption
             );
         });
@@ -279,13 +279,13 @@ const Lists = ({ filterOption = "Active" }) => {
                                     <TableCell>
                                         <Chip
                                             style={{
-                                                backgroundColor: addOn.status == 0 ? "#4CAF50" : "#F44336",
+                                                backgroundColor: addOn.status == 1 ? "#4CAF50" : "#F44336",
                                                 color: "#fff",
                                                 paddingLeft: "4px",
                                                 paddingRight: "4px",
                                             }}
                                             size="small"
-                                            label={addOn.status == 0 ? "Active" : "Inactive"}
+                                            label={addOn.status == 1 ? "Active" : "Inactive"}
                                         />
                                     </TableCell>
                                     <TableCell>
@@ -322,8 +322,8 @@ const Lists = ({ filterOption = "Active" }) => {
                             name="status"
                             disabled={!editable}
                         >
-                            <MenuItem value={0}>Active</MenuItem>
-                            <MenuItem value={1}>Inactive</MenuItem>
+                            <MenuItem value={1}>Active</MenuItem>
+                            <MenuItem value={0}>Inactive</MenuItem>
                         </Select>
                     </FormControl>
                 </DialogContent>

@@ -470,8 +470,8 @@ const AddPlan = () => {
                     mb: 2,
                   }}
                 >
-                  <MenuItem value={0}>Active</MenuItem>
-                  <MenuItem value={1}>Inactive</MenuItem>
+                  <MenuItem value={1}>Active</MenuItem>
+                  <MenuItem value={0}>Inactive</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12} md={12}>

@@ -165,8 +165,8 @@ const PlansPage = () => {
                   value={filterOption}
                   onChange={handleFilterChange}
                 >
-                  <MenuItem value={0}>Active</MenuItem>
-                  <MenuItem value={1}>InActive</MenuItem>
+                  <MenuItem value={1}>Active</MenuItem>
+                  <MenuItem value={0}>InActive</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

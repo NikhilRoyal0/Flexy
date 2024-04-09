@@ -297,8 +297,8 @@ const EditBanner = () => {
                   onChange={handleTextChange}
                   disabled={!editMode}
                 >
-                  <MenuItem value="0">Active</MenuItem>
-                  <MenuItem value="1">Inactive</MenuItem>
+                  <MenuItem value="1">Active</MenuItem>
+                  <MenuItem value="0">Inactive</MenuItem>
                   <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
