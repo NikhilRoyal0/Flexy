@@ -15,13 +15,14 @@ import {
   Snackbar,
   SnackbarContent,
   IconButton,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUsersData, fetchUsersData } from "../../app/UsersSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
-import LoadingButton from '@mui/lab/LoadingButton';
-
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const EditUsers = () => {
   const dispatch = useDispatch();
@@ -30,8 +31,7 @@ const EditUsers = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // New state for loading button
-
-
+  const [walletFreeze, setWalletFreeze] = useState(false);
 
   const [user, setUserData] = useState({
     uId: "",
@@ -40,6 +40,7 @@ const EditUsers = () => {
     phone: "",
     walletAmount: "",
     status: "",
+    walletFreeze: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -66,7 +67,7 @@ const EditUsers = () => {
   }, [usersIdParam, dispatch, userData]);
 
   const handleSnackbarClose = (reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (!isSuccess) {
@@ -78,19 +79,21 @@ const EditUsers = () => {
     setSnackbarOpen(true);
   };
 
-
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
 
   const handleSave = () => {
+    const updatedUser = { ...user, walletFreeze };
+    setUserData(updatedUser);
+    console.log(updatedUser);
     setEditMode(false);
+    // Now you can send updatedUser in your request body
   };
 
   if (loading) {
     return <p>Loading...</p>;
   }
-
 
   return (
     <Card>
@@ -144,8 +147,23 @@ const EditUsers = () => {
                 fullWidth
                 value={user && `${user.walletAmount}k`}
                 disabled={!editMode}
+                InputProps={{
+                  endAdornment: (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={walletFreeze}
+                          onChange={(e) => setWalletFreeze(e.target.checked)}
+                          disabled={!editMode}
+                        />
+                      }
+                      label="Wallet Freeze"
+                    />
+                  ),
+                }}
               />
             </Grid>
+
             <Grid item xs={12} md={6}>
               <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
                 <InputLabel htmlFor="isPublished">isPublished</InputLabel>
@@ -163,9 +181,7 @@ const EditUsers = () => {
                   <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
-
             </Grid>
-
           </Grid>
           <br />
           <Divider />
@@ -175,12 +191,21 @@ const EditUsers = () => {
               <Button variant="contained" color="success" onClick={handleSave}>
                 Save
               </Button>
-              <Button variant="contained" sx={{ ml: 1 }} color="error" onClick={toggleEditMode}>
+              <Button
+                variant="contained"
+                sx={{ ml: 1 }}
+                color="error"
+                onClick={toggleEditMode}
+              >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={toggleEditMode}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleEditMode}
+            >
               Edit
             </Button>
           )}
@@ -210,11 +235,10 @@ const EditUsers = () => {
               backgroundColor: isSuccess
                 ? baseTheme.palette.success.main
                 : baseTheme.palette.error.main,
-              color: isSuccess ? '#fff' : undefined,
+              color: isSuccess ? "#fff" : undefined,
             }}
           />
         </Snackbar>
-
       </CardContent>
     </Card>
   );
