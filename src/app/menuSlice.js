@@ -31,6 +31,7 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import PsychologyIcon from '@mui/icons-material/Psychology';
 
 const initialState = {
   menuItems: [],
@@ -252,6 +253,12 @@ export const fetchMenuItems = () => (dispatch) => {
           title: "Banners List",
           icon: ViewCarouselIcon,
           href: "/setting/banners-list",
+        },
+        {
+          id: 37,
+          title: "Refer Setting",
+          icon: PsychologyIcon,
+          href: "/setting/refer-setting",
         },
       ],
     },

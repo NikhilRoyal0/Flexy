@@ -15,6 +15,7 @@ import RechargeReducer from './RechargeSlice';
 import AddOnReducer from './AddOnSlice';
 import UpComingReducer from './UpComingSlice';
 import NotificationReducer from './NotificationSlice';
+import ReferSettingReducer from './ReferSettingSlice';
 
 const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ const store = configureStore({
     AddOn: AddOnReducer,
     UpComing: UpComingReducer,
     Notification: NotificationReducer,
+    ReferSetting: ReferSettingReducer,
 
   },
 });

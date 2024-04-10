@@ -28,6 +28,7 @@ import AddPlan from '../components/Plans/AddPlan';
 import AddNews from '../components/News/AddNews';
 import AddBanner from '../components/Setting/AddBanner';
 import AddDialog from '../components/Setting/AddDialog';
+import ReferSetting from "../components/Setting/Refer_Setting/ReferSetting";
 import Withdrawal from '../components/Wallet/Withdrawal';
 import UpiList from '../components/Wallet/UPI/UpiList';
 import Recharge from '../components/Wallet/Recharge_Request/Recharge';
@@ -70,6 +71,7 @@ const routes = createBrowserRouter(
         <Route path="/setting/dialogs-list/edit-dialog/:dId" element={<EditDialog />} />
         <Route path="/setting/dialogs-list/add-dialog" element={<AddDialog />} />
         <Route path="/setting/banners-list/edit-banner/:bannerId" element={<EditBanners />} />
+        <Route path="/setting/refer-setting" element ={<ReferSetting/>}/>
         <Route path='/tasks/task-list/add-task' element={<AddTask />} />
         <Route path='/addon/plans/add-plan' element={<AddPlan />} />
         <Route path='/news/add-news' element={<AddNews />} />
