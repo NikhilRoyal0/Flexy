@@ -21,6 +21,8 @@ import {
   selectNotificationLoading,
   selectNotificationError,
 } from "../../../app/NotificationSlice";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const Lists = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const Lists = () => {
   const error = useSelector(selectNotificationError);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleSnackbarClose = (reason) => {
     if (reason === "clickaway") {
@@ -59,7 +61,12 @@ const Lists = () => {
 
   if (error) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh"
+      >
         <Typography variant="h4" color="error" gutterBottom>
           Oops! Something went wrong.
         </Typography>
@@ -70,7 +77,17 @@ const Lists = () => {
     );
   }
 
+  const handleSortToggle = () => {
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
 
+  const sortedData = notificationData.slice().sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.notificationId - b.notificationId;
+    } else {
+      return b.notificationId - a.notificationId;
+    }
+  });
 
   return (
     <Box>
@@ -95,14 +112,16 @@ const Lists = () => {
           >
             <TableHead>
               <TableRow>
+                <IconButton size="lg" onClick={handleSortToggle}>
+                  {sortOrder === "asc" ? (
+                    <ArrowUpwardIcon />
+                  ) : (
+                    <ArrowDownwardIcon />
+                  )}
+                </IconButton>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     Notification Id
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                    User Id
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -118,26 +137,18 @@ const Lists = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {notificationData.map((notification) => (
+              {sortedData.map((notification) => (
                 <TableRow key={notification.notificationId}>
+                  <TableCell></TableCell>{" "}
                   <TableCell>
                     <Typography
+                      align="center"
                       sx={{
                         fontSize: "15px",
                         fontWeight: "500",
                       }}
                     >
                       {notification.notificationId}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {notification.userId}
                     </Typography>
                   </TableCell>
                   <TableCell>

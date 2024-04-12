@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 
 import userimg from "../../assets/images/users/user.jpg";
+import {logout} from "../../utils/auth"
 
 const notificationsData = [
   { id: 1, message: "Notification 1 - This is a short notification message." },
@@ -65,6 +66,7 @@ const Header = (props) => {
 
   const handleLogout = () => {
     navigate("/logout");
+    logout(); 
   };
 
   return (

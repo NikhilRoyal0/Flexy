@@ -1,170 +1,170 @@
-import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { IconButton } from '@mui/material';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  Button,
+  Typography,
+  TextField,
+  Box,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  ThemeProvider,
+  Hidden,
+} from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import loginimg from "../../assets/images/backgrounds/login-bg.png";
+import { baseTheme } from "../../assets/global/Theme-variable";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../utils/auth";
 
-import backgroundImage from '../../assets/images/backgrounds/login.jpg';
-import uiBackgroundImage from '../../assets/images/backgrounds/ui-bg.avif';
+const theme = createTheme({
+  typography: {
+    fontFamily: "Poppins, sans-serif",
+  },
+});
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
 
-
-  const handleLogin = () => {
-    if (username === 'admin' && password === 'admin') {
-      navigate('/');
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent default form submission
+    const isAuthenticated = login(email, password);
+    if (isAuthenticated) {
+      navigate("/");
     } else {
-      console.log('Invalid credentials');
-      alert("Username and password not matched");
+      // Handle authentication failure
+      alert("Authentication failed. Please check your credentials.");
     }
   };
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      style={{
-        backgroundImage: `url(${uiBackgroundImage})`,
-        backgroundSize: 'cover',
-        height: '100vh',
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#f0f0f0",
+          minHeight: "100vh",
+        }}
+      >
+        <Card
+          sx={{
+            width: 800,
+            backgroundColor: baseTheme.palette.background.paper,
+            color: baseTheme.palette.text.primary,
+            borderRadius: baseTheme.shape.borderRadius,
+            overflowX: "auto",
+            overflowY: "auto",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "20px",
+            "@media (max-width: 960px)": {
+              gridTemplateColumns: "1fr",
+              width: "90%",
+            },
+          }}
+        >
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <Box sx={{ p: 2 }}>
+                <Typography variant="h4" gutterBottom>
+                  Welcome Back!
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  Welcome Back! Please enter your details
+                </Typography>
 
-      }}
-    >
-      <Grid item xs={12} md={8} lg={6}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-          <Card
-            style={{
-              width: '100%',
-              maxWidth: '500px',
-              padding: '25px',
-              boxSizing: 'border-box',
-              textAlign: 'center',
-              backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: 'cover',
-              '@media (max-width: 600px)': {
-                width: '90%',
-              },
-            }}
-          >
-            <CardContent>
-              <Typography variant="h4" gutterBottom style={{ fontSize: '24px', color: '#ffffff' }}>
-                Login
-              </Typography>
-
-              <form>
-                <TextField
-                  label="Username"
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  id="username"
-                  name="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-
-                <TextField
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton onClick={handleTogglePasswordVisibility} edge="end" style={{ color: '#ffffff' }}>
-                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                      </IconButton>
-                    ),
-                  }}
-                />
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
-                  <FormControlLabel
-                    control={<Checkbox color="primary" />}
-                    label="Remember me"
+                <br />
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="body1" gutterBottom>
+                    Email
+                  </Typography>
+                  <TextField
+                    placeholder="Enter your email"
+                    fullWidth
+                    size="small"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} // Update email state
                   />
+                </Box>
 
-                  <Link to="#" style={{ color: '#ffffff' }}>
-                    Forgot password?
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body1" gutterBottom>
+                    Password
+                  </Typography>
+                  <TextField
+                    placeholder="Enter your password"
+                    type="password"
+                    fullWidth
+                    size="small"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} // Update password state
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 2,
+                  }}
+                >
+                  <FormControlLabel
+                    control={<Checkbox defaultChecked={false} />}
+                    label={
+                      <Typography variant="body2" sx={{ fontSize: "15px" }}>
+                        Remember me
+                      </Typography>
+                    }
+                  />
+                  <Link href="#" variant="body2">
+                    Forgot Password?
                   </Link>
-                </div>
+                </Box>
 
                 <Button
                   variant="contained"
                   color="primary"
                   fullWidth
-                  type="button"
-                  onClick={handleLogin}
-                  style={{ marginBottom: '10px', marginTop: '10px' }}
+                  type="submit"
                 >
-                  Login
+                  Sign in
                 </Button>
-
-                <Typography variant="body2" style={{ textAlign: 'center', marginBottom: '15px', position: 'relative', color: '#000000' }}>
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      backgroundColor: '#000000',
-                      color: '#ffffff',
-                      padding: '8px',
-                      borderRadius: '50%',
-                      zIndex: '1',
-                      position: 'relative',
-                    }}
-                  >
-                    or
-                  </span>
-
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      border: '1px solid #ffffff',
-                      width: '100%',
-                      position: 'absolute',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      left: '0',
-                      zIndex: '0',
-                    }}
-                  ></span>
-                </Typography>
-
-                <Button variant="contained" color="inherit" fullWidth type="button">
-                  Continue with Google
-                </Button>
-
-                <div style={{ marginTop: '10px' }}>
-                  <Typography>
-                    Don't have an account? <Link to="/register-now" style={{ color: '#ffffff' }}>Register now</Link>
-                  </Typography>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </Grid>
-    </Grid>
+              </Box>
+            </form>
+          </CardContent>
+          <Hidden xsDown smDown mdDown>
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={loginimg}
+                alt="Portrait"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  height: 450,
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
+          </Hidden>
+        </Card>
+      </Box>
+    </ThemeProvider>
   );
 }

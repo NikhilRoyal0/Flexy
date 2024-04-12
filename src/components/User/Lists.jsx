@@ -210,7 +210,7 @@ const Lists = ({ searchText, setSearchText }) => {
                     ></Chip>
                   </TableCell>
                   <TableCell align="right">
-                    <Typography variant="h6">${user.walletAmount}k</Typography>
+                    <Typography variant="h6">₹ {user.walletAmount}</Typography>
                   </TableCell>
                   <TableCell>
                     <Button variant="outlined" color="primary" onClick={() => editClick(user)}>

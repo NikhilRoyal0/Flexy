@@ -142,10 +142,19 @@ const EditUsers = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                label="Password"
+                variant="outlined"
+                fullWidth
+                value={user && user.password}
+                disabled={!editMode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
                 label="Wallet Amount"
                 variant="outlined"
                 fullWidth
-                value={user && `${user.walletAmount}k`}
+                value={user && `₹ ${user.walletAmount}`}
                 disabled={!editMode}
                 InputProps={{
                   endAdornment: (
@@ -166,7 +175,7 @@ const EditUsers = () => {
 
             <Grid item xs={12} md={6}>
               <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
-                <InputLabel htmlFor="isPublished">isPublished</InputLabel>
+                <InputLabel htmlFor="status">Status</InputLabel>
                 <Select
                   label="Status"
                   id="Status"
