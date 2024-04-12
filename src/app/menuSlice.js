@@ -1,44 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { isAuthenticated, logout } from "../utils/auth";
 
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import AddToPhotosOutlinedIcon from '@mui/icons-material/AddToPhotosOutlined';
-import AspectRatioOutlinedIcon from '@mui/icons-material/AspectRatioOutlined';
-import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
-import AlbumOutlinedIcon from '@mui/icons-material/AlbumOutlined';
-import SwitchCameraOutlinedIcon from '@mui/icons-material/SwitchCameraOutlined';
-import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import Person4Icon from '@mui/icons-material/Person4';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import NewspaperIcon from '@mui/icons-material/Newspaper';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import BallotIcon from '@mui/icons-material/Ballot';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
-import TaskIcon from '@mui/icons-material/Task';
-import SplitscreenIcon from '@mui/icons-material/Splitscreen';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import LogoutIcon from '@mui/icons-material/Logout';
-import WalletIcon from '@mui/icons-material/Wallet';
-import RequestPageIcon from '@mui/icons-material/RequestPage';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import PaidIcon from '@mui/icons-material/Paid';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import PsychologyIcon from '@mui/icons-material/Psychology';
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import AddToPhotosOutlinedIcon from "@mui/icons-material/AddToPhotosOutlined";
+import AspectRatioOutlinedIcon from "@mui/icons-material/AspectRatioOutlined";
+import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+import AlbumOutlinedIcon from "@mui/icons-material/AlbumOutlined";
+import SwitchCameraOutlinedIcon from "@mui/icons-material/SwitchCameraOutlined";
+import SwitchLeftOutlinedIcon from "@mui/icons-material/SwitchLeftOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import AutoAwesomeMosaicOutlinedIcon from "@mui/icons-material/AutoAwesomeMosaicOutlined";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import Person4Icon from "@mui/icons-material/Person4";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
+import BallotIcon from "@mui/icons-material/Ballot";
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
+import TaskIcon from "@mui/icons-material/Task";
+import SplitscreenIcon from "@mui/icons-material/Splitscreen";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import LogoutIcon from "@mui/icons-material/Logout";
+import WalletIcon from "@mui/icons-material/Wallet";
+import RequestPageIcon from "@mui/icons-material/RequestPage";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import PaidIcon from "@mui/icons-material/Paid";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import LocalAtmIcon from "@mui/icons-material/LocalAtm";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import PsychologyIcon from "@mui/icons-material/Psychology";
 
 const initialState = {
   menuItems: [],
 };
 
 export const menuSlice = createSlice({
-  name: 'menu',
+  name: "menu",
   initialState,
   reducers: {
     setMenuItems: (state, action) => {
@@ -50,7 +51,6 @@ export const menuSlice = createSlice({
 export const { setMenuItems } = menuSlice.actions;
 
 export const fetchMenuItems = () => (dispatch) => {
-
   const isVisible = true;
 
   const menuItems = [
@@ -145,7 +145,7 @@ export const fetchMenuItems = () => (dispatch) => {
       id: 12,
       title: "User",
       icon: Person4Icon,
-      href: '#',
+      href: "#",
       visible: isVisible,
       subItems: [
         {
@@ -166,7 +166,7 @@ export const fetchMenuItems = () => (dispatch) => {
       id: 13,
       title: "Wallet",
       icon: WalletIcon,
-      href: '#',
+      href: "#",
       visible: isVisible,
       subItems: [
         {
@@ -214,7 +214,7 @@ export const fetchMenuItems = () => (dispatch) => {
           icon: ControlPointIcon,
           href: "/addon/add-on",
         },
-      ]
+      ],
     },
     {
       id: 15,
@@ -227,7 +227,7 @@ export const fetchMenuItems = () => (dispatch) => {
       id: 16,
       title: "Setting",
       icon: ManageAccountsIcon,
-      href: '#',
+      href: "#",
       visible: isVisible,
       subItems: [
         {
@@ -266,7 +266,7 @@ export const fetchMenuItems = () => (dispatch) => {
       id: 17,
       title: "Tasks",
       icon: TaskIcon,
-      href: '#',
+      href: "#",
       visible: isVisible,
       subItems: [
         {
@@ -284,7 +284,6 @@ export const fetchMenuItems = () => (dispatch) => {
       href: "/logout",
       visible: isVisible,
     },
-
   ];
 
   const filteredMenuItems = menuItems.filter((item) => item.visible);

@@ -8,7 +8,7 @@ const products = [
     pname: "Elite Admin",
     priority: "Low",
     pbg: "primary.main",
-    budget: "3.9",
+    budget: "30009",
   },
   {
     id: "2",
@@ -17,7 +17,7 @@ const products = [
     pname: "Real Homes WP Theme",
     priority: "Medium",
     pbg: "secondary.main",
-    budget: "24.5",
+    budget: "24500",
   },
   {
     id: "3",
@@ -26,7 +26,7 @@ const products = [
     pname: "MedicalPro WP Theme",
     priority: "High",
     pbg: "error.main",
-    budget: "12.8",
+    budget: "12800",
   },
   {
     id: "4",
@@ -35,7 +35,7 @@ const products = [
     pname: "Hosting Press HTML",
     priority: "Critical",
     pbg: "success.main",
-    budget: "2.4",
+    budget: "24000",
   },
   {
     id: "5",
@@ -44,7 +44,7 @@ const products = [
     pname: "Creative Portfolio",
     priority: "High",
     pbg: "warning.main",
-    budget: "8.7",
+    budget: "87000",
   },
   {
     id: "6",
@@ -53,7 +53,7 @@ const products = [
     pname: "Server Admin Pro",
     priority: "Medium",
     pbg: "info.main",
-    budget: "15.2",
+    budget: "15200",
   },
   {
     id: "7",
@@ -62,7 +62,7 @@ const products = [
     pname: "Data Cruncher App",
     priority: "Critical",
     pbg: "error.main",
-    budget: "5.9",
+    budget: "59000",
   },
   {
     id: "8",
@@ -71,7 +71,7 @@ const products = [
     pname: "Mobile App Pro",
     priority: "Low",
     pbg: "success.main",
-    budget: "12.4",
+    budget: "12400",
   },
   {
     id: "9",
@@ -80,7 +80,7 @@ const products = [
     pname: "Cloud Manager",
     priority: "High",
     pbg: "warning.main",
-    budget: "9.3",
+    budget: "93000",
   },
 ];
 
