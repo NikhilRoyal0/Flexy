@@ -16,6 +16,7 @@ import AddOnReducer from './AddOnSlice';
 import UpComingReducer from './UpComingSlice';
 import NotificationReducer from './NotificationSlice';
 import ReferSettingReducer from './ReferSettingSlice';
+import AuthReducer from "../app/AuthSlice";
 
 const store = configureStore({
   reducer: {
@@ -36,6 +37,7 @@ const store = configureStore({
     UpComing: UpComingReducer,
     Notification: NotificationReducer,
     ReferSetting: ReferSettingReducer,
+    Auth: AuthReducer
 
   },
 });
