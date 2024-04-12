@@ -27,9 +27,10 @@ const theme = createTheme({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -39,13 +40,18 @@ export default function Login() {
     }
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const isAuthenticated = login(email, password);
-    if (isAuthenticated) {
-      navigate("/");
-    } else {
-      alert("Authentication failed. Please check your credentials.");
+    try {
+      const token = await login(phone, password);
+      if (token) {
+        navigate("/");
+      } else {
+        setError("Authentication failed. Please check your credentials.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+      console.error("Login Error:", error);
     }
   };
 
@@ -90,14 +96,14 @@ export default function Login() {
                 <br />
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="body1" gutterBottom>
-                    Email
+                    Phone Number
                   </Typography>
                   <TextField
-                    placeholder="Enter your email"
+                    placeholder="Enter your phone number"
                     fullWidth
                     size="small"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </Box>
 
@@ -123,6 +129,12 @@ export default function Login() {
                     }}
                   />
                 </Box>
+
+                {error && (
+                  <Typography variant="body2" color="error" gutterBottom>
+                    {error}
+                  </Typography>
+                )}
 
                 <Box
                   sx={{

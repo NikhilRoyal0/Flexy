@@ -39,8 +39,7 @@ import Recharge from "../components/Wallet/Recharge_Request/Recharge";
 import Notification from "../components/Setting/Notifications/Notification";
 import NextWithdraw from "../components/Wallet/UpComing_Withdraw/NextWithdraw";
 import Addon from "../components/Plans/AddOn/Addon";
-import { isAuthenticated } from "../utils/auth";
-
+// import { getFCMToken } from "../utils/auth";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -51,7 +50,11 @@ const routes = createBrowserRouter(
       <Route
         path="/"
         element={
-          isAuthenticated() ? <FullLayout /> : <Navigate to="/login"  />
+          sessionStorage.getItem("token") ? (
+            <FullLayout />
+          ) : (
+            <Navigate to="/login" />
+          )
         }
       >
         <Route index element={<Dashboard />} />

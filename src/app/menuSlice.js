@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { isAuthenticated, logout } from "../utils/auth";
 
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import AddToPhotosOutlinedIcon from "@mui/icons-material/AddToPhotosOutlined";
