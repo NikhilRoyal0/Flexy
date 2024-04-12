@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -16,7 +16,7 @@ import { createTheme } from "@mui/material/styles";
 import loginimg from "../../assets/images/backgrounds/login-bg.png";
 import { baseTheme } from "../../assets/global/Theme-variable";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../utils/auth";
+import { login, isAuthenticated } from "../../utils/auth"; // Import isAuthenticated function
 
 const theme = createTheme({
   typography: {
@@ -28,6 +28,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is already authenticated on component mount
+    if (isAuthenticated()) {
+      navigate("/"); // Redirect to home page if user is already authenticated
+    }
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission
