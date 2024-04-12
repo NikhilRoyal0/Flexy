@@ -11,12 +11,14 @@ import {
   Link,
   ThemeProvider,
   Hidden,
+  IconButton,
 } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import loginimg from "../../assets/images/backgrounds/login-bg.png";
 import { baseTheme } from "../../assets/global/Theme-variable";
 import { useNavigate } from "react-router-dom";
-import { login, isAuthenticated } from "../../utils/auth"; // Import isAuthenticated function
+import { login, isAuthenticated } from "../../utils/auth";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const theme = createTheme({
   typography: {
@@ -27,22 +29,22 @@ const theme = createTheme({
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already authenticated on component mount
     if (isAuthenticated()) {
-      navigate("/"); // Redirect to home page if user is already authenticated
+      navigate("/");
     }
-  }, []); // Empty dependency array ensures this effect runs only once on component mount
+  }, []);
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
     const isAuthenticated = login(email, password);
     if (isAuthenticated) {
       navigate("/");
     } else {
-      // Handle authentication failure
       alert("Authentication failed. Please check your credentials.");
     }
   };
@@ -81,11 +83,7 @@ export default function Login() {
                 <Typography variant="h4" gutterBottom>
                   Welcome Back!
                 </Typography>
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  gutterBottom
-                >
+                <Typography variant="body1" color="textSecondary" gutterBottom>
                   Welcome Back! Please enter your details
                 </Typography>
 
@@ -99,7 +97,7 @@ export default function Login() {
                     fullWidth
                     size="small"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)} // Update email state
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Box>
 
@@ -109,11 +107,20 @@ export default function Login() {
                   </Typography>
                   <TextField
                     placeholder="Enter your password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     fullWidth
                     size="small"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} // Update password state
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      ),
+                    }}
                   />
                 </Box>
 
