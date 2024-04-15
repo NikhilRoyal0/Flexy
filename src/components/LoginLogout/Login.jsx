@@ -38,7 +38,7 @@ export default function Login() {
     if (isAuthenticated()) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
