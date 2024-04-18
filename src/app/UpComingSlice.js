@@ -42,7 +42,7 @@ export const fetchUpComingData = () => async (dispatch) => {
   try {
     dispatch(setUpComingLoading());
     const response = await axios.get(import.meta.env.VITE_BASE_URL + "feature/getSettings");
-    dispatch(setUpComingData(response.data.data.upCommingWithdraw));
+    dispatch(setUpComingData(response.data.data.allWithdraw));
   } catch (error) {
     dispatch(setUpComingError(error.message));
   }

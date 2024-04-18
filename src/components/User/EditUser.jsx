@@ -8,15 +8,15 @@ import {
   Divider,
   TextField,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Snackbar,
   SnackbarContent,
   IconButton,
   FormControlLabel,
   Checkbox,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
@@ -34,9 +34,9 @@ const EditUsers = () => {
   const [editMode, setEditMode] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [walletFreeze, setWalletFreeze] = useState(false);
   const [loading, setLoading] = useState(true);
   const userData = useSelector(selectUsersData);
+  const rupeeSymbol = "₹";
 
   const [data, setData] = useState({
     userName: "",
@@ -45,25 +45,21 @@ const EditUsers = () => {
     password: "",
     walletAmount: "",
     status: "",
-    walletFreeze: false,
+    walletFreeze: false, // Initialize walletFreeze to false
   });
-
-  const fetchUserDataById = () => {
-    const userId = parseInt(userIdParam);
-    const selectedUser = userData.find((user) => user.uId === userId);
-    if (selectedUser) {
-      setData({ ...selectedUser });
-    }
-    setLoading(false);
-  };
 
   useEffect(() => {
     if (userData.length === 0) {
       dispatch(fetchUsersData());
     } else {
-      fetchUserDataById();
+      const userId = parseInt(userIdParam);
+      const selectedUser = userData.find((user) => user.uId === userId);
+      if (selectedUser) {
+        setData({ ...selectedUser, walletFreeze: !!selectedUser.walletFreeze });
+      }
+      setLoading(false);
     }
-  }, [dispatch, userData]);
+  }, [dispatch, userData, userIdParam]);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -76,12 +72,13 @@ const EditUsers = () => {
   const handleSave = async (event) => {
     event.preventDefault();
     try {
+      console.log("savedata", data);
       dispatch(updateUserData(data.uId, data));
       setIsSuccess(true);
       showSnackbar("User updated successfully!");
       toggleEditMode();
       setTimeout(() => {
-        navigate("../user-list");
+        navigate("../user/user-list");
       }, 1000);
     } catch (error) {
       setIsSuccess(false);
@@ -162,18 +159,21 @@ const EditUsers = () => {
                 label="Wallet Amount"
                 variant="outlined"
                 fullWidth
-                value={`₹ ${data && data.walletAmount}`}
+                value={data && data.walletAmount}
                 disabled={!editMode}
                 onChange={(e) =>
                   setData({ ...data, walletAmount: e.target.value })
                 }
                 InputProps={{
+                  startAdornment: <Typography>₹</Typography>, // Display rupee symbol as start adornment
                   endAdornment: (
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={walletFreeze}
-                          onChange={(e) => setWalletFreeze(e.target.checked)}
+                          checked={data.walletFreeze}
+                          onChange={(e) =>
+                            setData({ ...data, walletFreeze: e.target.checked })
+                          }
                           disabled={!editMode}
                         />
                       }
@@ -196,7 +196,6 @@ const EditUsers = () => {
                 >
                   <MenuItem value="1">Active</MenuItem>
                   <MenuItem value="0">Inactive</MenuItem>
-                  <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

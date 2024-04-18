@@ -132,7 +132,7 @@ const Lists = ({ searchText, setSearchText }) => {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Priority
+                    Status
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
@@ -236,7 +236,7 @@ const Lists = ({ searchText, setSearchText }) => {
             <DialogTitle>Delete Confirmation</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Are you sure you want to delete this Banner?
+                Are you sure you want to delete this User?
               </DialogContentText>
             </DialogContent>
             <DialogActions>
