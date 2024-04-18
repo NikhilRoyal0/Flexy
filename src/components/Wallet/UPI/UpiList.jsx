@@ -25,7 +25,7 @@ import LoadingButton from '@mui/lab/LoadingButton'; // Import LoadingButton from
 const UpiList = () => {
     const dispatch = useDispatch();
 
-    const [filterOption, setFilterOption] = useState("Active");
+    const [filterOption, setFilterOption] = useState("1");
     const [showAddUpi, setShowAddUpi] = useState(false);
     const [upiData, setUpiData] = useState({
         'name': '',
@@ -103,10 +103,10 @@ const UpiList = () => {
                                     value={filterOption}
                                     onChange={handleFilterChange}
                                     sx={{ marginLeft: 1, marginTop: 1 }}
-
+                                    
                                 >
-                                    <MenuItem value="Active">Active</MenuItem>
-                                    <MenuItem value="Inactive">Inactive</MenuItem>
+                                    <MenuItem value="1">Active</MenuItem>
+                                    <MenuItem value="0">Inactive</MenuItem>
                                 </Select>
                             </FormControl>
                             <LoadingButton

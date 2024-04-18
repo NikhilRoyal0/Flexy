@@ -25,7 +25,7 @@ import {
   updateUPIData,
 } from "../../../app/UpiSlice";
 
-const Lists = ({ filterOption = "Active" }) => {
+const Lists = ({ filterOption = "1" }) => {
   const dispatch = useDispatch();
   const UPIData = useSelector(selectUPIData);
   const isLoading = useSelector(selectUPILoading);
@@ -117,8 +117,8 @@ const Lists = ({ filterOption = "Active" }) => {
   const filterDataByStatus = (data, filterOption) => {
     return data.filter((user) => {
       return (
-        (filterOption == "Active" && user.status == 0) ||
-        (filterOption == "Inactive" && user.status == 1) ||
+        (filterOption == "0" && user.status == 0) ||
+        (filterOption == "1" && user.status == 1) ||
         !filterOption
       );
     });

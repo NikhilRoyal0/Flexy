@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Typography,
   Card,
@@ -20,75 +20,78 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUsersData, fetchUsersData } from "../../app/UsersSlice";
+import {
+  selectUsersData,
+  fetchUsersData,
+  updateUserData,
+} from "../../app/UsersSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
-import LoadingButton from "@mui/lab/LoadingButton";
 
 const EditUsers = () => {
   const dispatch = useDispatch();
-  const { userId: usersIdParam } = useParams();
+  const navigate = useNavigate();
+  const { userId: userIdParam } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // New state for loading button
   const [walletFreeze, setWalletFreeze] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const userData = useSelector(selectUsersData);
 
-  const [user, setUserData] = useState({
-    uId: "",
+  const [data, setData] = useState({
     userName: "",
     email: "",
     phone: "",
+    password: "",
     walletAmount: "",
     status: "",
-    walletFreeze: "",
+    walletFreeze: false,
   });
 
-  const [loading, setLoading] = useState(true);
-
-  const userData = useSelector(selectUsersData);
-
-  const fetusersdata = async () => {
-    try {
-      const uId = parseInt(usersIdParam);
-      const selecteduser = userData.find((ur) => ur.uId === uId);
-      setUserData(selecteduser);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error processing data:", error);
+  const fetchUserDataById = () => {
+    const userId = parseInt(userIdParam);
+    const selectedUser = userData.find((user) => user.uId === userId);
+    if (selectedUser) {
+      setData({ ...selectedUser });
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     if (userData.length === 0) {
       dispatch(fetchUsersData());
     } else {
-      fetusersdata();
+      fetchUserDataById();
     }
-  }, [usersIdParam, dispatch, userData]);
+  }, [dispatch, userData]);
 
-  const handleSnackbarClose = (reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    if (!isSuccess) {
-      setSnackbarOpen(false);
-    }
-  };
-
-  const showSnackbar = (message) => {
-    setSnackbarOpen(true);
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
 
-  const handleSave = () => {
-    const updatedUser = { ...user, walletFreeze };
-    setUserData(updatedUser);
-    console.log(updatedUser);
-    setEditMode(false);
-    // Now you can send updatedUser in your request body
+  const handleSave = async (event) => {
+    event.preventDefault();
+    try {
+      dispatch(updateUserData(data.uId, data));
+      setIsSuccess(true);
+      showSnackbar("User updated successfully!");
+      toggleEditMode();
+      setTimeout(() => {
+        navigate("../user-list");
+      }, 1000);
+    } catch (error) {
+      setIsSuccess(false);
+      showSnackbar("Error in updating user. Please try again.");
+      console.error("Error in updating user:", error);
+    }
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarOpen(true);
   };
 
   if (loading) {
@@ -98,7 +101,7 @@ const EditUsers = () => {
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">Edit users - {user && user.uId}</Typography>
+        <Typography variant="h4">Edit users - {data && data.uId}</Typography>
         <br />
         <Divider />
         <br />
@@ -109,8 +112,9 @@ const EditUsers = () => {
                 label="User Id"
                 variant="outlined"
                 fullWidth
-                value={user && user.uId}
+                value={data && data.uId}
                 disabled={!editMode}
+                onChange={(e) => setData({ ...data, uId: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -118,17 +122,19 @@ const EditUsers = () => {
                 label="Name"
                 variant="outlined"
                 fullWidth
-                value={user && user.userName}
+                value={data && data.userName}
                 disabled={!editMode}
+                onChange={(e) => setData({ ...data, userName: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Info"
+                label="Email"
                 variant="outlined"
                 fullWidth
-                value={user && user.email}
+                value={data && data.email}
                 disabled={!editMode}
+                onChange={(e) => setData({ ...data, email: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -136,8 +142,9 @@ const EditUsers = () => {
                 label="Phone Number"
                 variant="outlined"
                 fullWidth
-                value={user && user.phone}
+                value={data && data.phone}
                 disabled={!editMode}
+                onChange={(e) => setData({ ...data, phone: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -145,8 +152,9 @@ const EditUsers = () => {
                 label="Password"
                 variant="outlined"
                 fullWidth
-                value={user && user.password}
+                value={data && data.password}
                 disabled={!editMode}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -154,8 +162,11 @@ const EditUsers = () => {
                 label="Wallet Amount"
                 variant="outlined"
                 fullWidth
-                value={user && `₹ ${user.walletAmount}`}
+                value={`₹ ${data && data.walletAmount}`}
                 disabled={!editMode}
+                onChange={(e) =>
+                  setData({ ...data, walletAmount: e.target.value })
+                }
                 InputProps={{
                   endAdornment: (
                     <FormControlLabel
@@ -172,18 +183,16 @@ const EditUsers = () => {
                 }}
               />
             </Grid>
-
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth variant="outlined" required sx={{ mb: 2 }}>
+              <FormControl fullWidth variant="outlined" required>
                 <InputLabel htmlFor="status">Status</InputLabel>
                 <Select
                   label="Status"
-                  id="Status"
+                  id="status"
                   name="status"
-                  value={user && user.status}
+                  value={data && data.status}
                   disabled={!editMode}
-                  variant="outlined"
-                  fullWidth
+                  onChange={(e) => setData({ ...data, status: e.target.value })}
                 >
                   <MenuItem value="1">Active</MenuItem>
                   <MenuItem value="0">Inactive</MenuItem>
@@ -229,7 +238,11 @@ const EditUsers = () => {
           onClose={handleSnackbarClose}
         >
           <SnackbarContent
-            message="task updated successfully!"
+            message={
+              isSuccess
+                ? "User updated successfully!"
+                : "Failed to update user. Please try again."
+            }
             action={
               <IconButton
                 size="small"

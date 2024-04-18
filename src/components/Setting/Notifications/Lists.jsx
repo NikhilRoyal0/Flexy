@@ -105,20 +105,13 @@ const Lists = () => {
           <Table
             aria-label="simple table"
             sx={{
-              mt: 3,
-              whiteSpace: "nowrap",
+              mt: 2,
+              whiteSpace: "",
               overflow: "auto",
             }}
           >
             <TableHead>
               <TableRow>
-                <IconButton size="lg" onClick={handleSortToggle}>
-                  {sortOrder === "asc" ? (
-                    <ArrowUpwardIcon />
-                  ) : (
-                    <ArrowDownwardIcon />
-                  )}
-                </IconButton>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     Notification Id
@@ -134,15 +127,21 @@ const Lists = () => {
                     Info
                   </Typography>
                 </TableCell>
+                <IconButton size="lg" onClick={handleSortToggle}>
+                  {sortOrder === "asc" ? (
+                    <ArrowUpwardIcon />
+                  ) : (
+                    <ArrowDownwardIcon />
+                  )}
+                </IconButton>
               </TableRow>
             </TableHead>
             <TableBody>
               {sortedData.map((notification) => (
                 <TableRow key={notification.notificationId}>
-                  <TableCell></TableCell>{" "}
                   <TableCell>
                     <Typography
-                      align="center"
+                    ml={5}
                       sx={{
                         fontSize: "15px",
                         fontWeight: "500",

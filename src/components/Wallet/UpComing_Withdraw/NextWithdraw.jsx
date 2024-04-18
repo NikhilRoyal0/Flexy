@@ -25,7 +25,7 @@ import { AddData, fetchUpComingData } from "../../../app/UpComingSlice";
 const NextWithdraw = () => {
   const dispatch = useDispatch();
 
-  const [filterOption, setFilterOption] = useState("Active");
+  const [filterOption, setFilterOption] = useState("1");
   const [showAddUpComingData, setShowAddUpComingData] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -115,8 +115,8 @@ const NextWithdraw = () => {
                   onChange={handleFilterChange}
                   sx={{ marginLeft: 1, marginTop: 1 }}
                 >
-                  <MenuItem value="Active">Active</MenuItem>
-                  <MenuItem value="Inactive">Inactive</MenuItem>
+                  <MenuItem value="1">Active</MenuItem>
+                  <MenuItem value="0">Inactive</MenuItem>
                 </Select>
               </FormControl>
               <Button

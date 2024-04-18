@@ -152,9 +152,6 @@ export default function Login() {
                       </Typography>
                     }
                   />
-                  <Link href="#" variant="body2">
-                    Forgot Password?
-                  </Link>
                 </Box>
 
                 <Button

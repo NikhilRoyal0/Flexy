@@ -34,7 +34,7 @@ import {
 } from "../../../app/UpComingSlice";
 import { LoadingButton } from '@mui/lab';
 
-const Lists = ({ filterOption = "Active" }) => {
+const Lists = ({ filterOption = "1" }) => {
     const dispatch = useDispatch();
     const UpComingData = useSelector(selectUpComingData);
     const isLoading = useSelector(selectUpComingLoading);
@@ -161,8 +161,8 @@ const Lists = ({ filterOption = "Active" }) => {
     const filterDataByStatus = (data, filterOption) => {
         return data.filter((UpComing) => {
             return (
-                (filterOption === "Active" && UpComing.status == 1) ||
-                (filterOption === "Inactive" && UpComing.status == 0) ||
+                (filterOption === "1" && UpComing.status == 1) ||
+                (filterOption === "0" && UpComing.status == 0) ||
                 !filterOption
             );
         });
