@@ -36,7 +36,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate("/");
+      navigate("/dashboard");
     }
   }, []);
 
@@ -45,7 +45,8 @@ export default function Login() {
     try {
        await login(phone, password);
       if (isAuthenticated()) {
-        navigate("/");
+        window.location.replace("/dashboard");
+
       } else {
         setError("Authentication failed. Please check your credentials.");
       }

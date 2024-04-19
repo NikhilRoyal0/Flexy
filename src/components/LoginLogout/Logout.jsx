@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../utils/auth';
 
 export default function Logout() {
   const navigate = useNavigate();
@@ -11,6 +12,12 @@ export default function Logout() {
   const handleGoToLogin = () => {
     navigate('/login');
   };
+
+  useEffect(() => {
+    if (location.pathname === "/logout") {
+      logout(); 
+    }
+  }, [location.pathname]);
 
   return (
     <div style={{ overflow: 'hidden', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
