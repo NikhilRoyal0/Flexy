@@ -16,7 +16,10 @@ export const login = async (phone, password) => {
       }
     );
 
+    const { adminId } = response.data.data;
+
     sessionStorage.setItem("isAuthenticated", "true");
+    sessionStorage.setItem("adminId", adminId);
   } catch (error) {
     console.error("Login Error:", error);
     return null;
@@ -25,4 +28,25 @@ export const login = async (phone, password) => {
 
 export const logout = () => {
   sessionStorage.removeItem("isAuthenticated");
+};
+
+export const changePassword = async (newPassword) => {
+  try {
+    const adminId = sessionStorage.getItem("adminId");
+
+    const response = await axios.put(
+      import.meta.env.VITE_BASE_URL + `admin/updateAdmin/${adminId}`,
+      { password: newPassword },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Change Password Error:", error);
+    throw error;
+  }
 };

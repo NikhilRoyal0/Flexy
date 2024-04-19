@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import HistoryIcon from '@mui/icons-material/History';
+import HistoryIcon from "@mui/icons-material/History";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 
 import userimg from "../../assets/images/users/user.jpg";
-import {logout} from "../../utils/auth"
+import { logout } from "../../utils/auth";
 
 const notificationsData = [
   { id: 1, message: "Notification 1 - This is a short notification message." },
@@ -35,7 +35,6 @@ const notificationsData = [
       "Notification 2 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   },
 ];
-
 
 const Header = (props) => {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
@@ -52,9 +51,9 @@ const Header = (props) => {
   };
 
   const handleprofile = () => {
-    navigate("/profile-setting")
+    handleClose4();
+    navigate("/profile-setting");
   };
-
 
   const handleNotificationsClick = (event) => {
     setNotificationsAnchorEl(event.currentTarget);
@@ -65,8 +64,9 @@ const Header = (props) => {
   };
 
   const handleLogout = () => {
+    handleClose4();
     navigate("/logout");
-    logout(); 
+    logout();
   };
 
   return (
