@@ -1,13 +1,13 @@
 import axios from "axios";
 
 export const isAuthenticated = () => {
-  return sessionStorage.getItem("token") !== null;
+  return sessionStorage.getItem("isAuthenticated") === "true";
 };
 
 export const login = async (phone, password) => {
   try {
     const response = await axios.post(
-      import.meta.env.VITE_BASE_URL + "client/login",
+      import.meta.env.VITE_BASE_URL + "admin/login",
       { phone, password },
       {
         headers: {
@@ -15,12 +15,8 @@ export const login = async (phone, password) => {
         },
       }
     );
-    const { fcmToken } = response.data.data;
-    console.log("Token:", fcmToken);
 
-    sessionStorage.setItem("token", fcmToken);
-
-    return fcmToken;
+    sessionStorage.setItem("isAuthenticated", "true");
   } catch (error) {
     console.error("Login Error:", error);
     return null;
@@ -28,17 +24,5 @@ export const login = async (phone, password) => {
 };
 
 export const logout = () => {
-  sessionStorage.removeItem("token");
-};
-
-export const getFCMToken = () => {
-  return sessionStorage.getItem("fcmToken");
-};
-
-export const setFCMToken = (token) => {
-  sessionStorage.setItem("fcmToken", token);
-};
-
-export const removeFCMToken = () => {
-  sessionStorage.removeItem("fcmToken");
+  sessionStorage.removeItem("isAuthenticated");
 };

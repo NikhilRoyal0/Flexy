@@ -36,7 +36,6 @@ const EditUsers = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const userData = useSelector(selectUsersData);
-  const rupeeSymbol = "₹";
 
   const [data, setData] = useState({
     userName: "",
@@ -45,7 +44,7 @@ const EditUsers = () => {
     password: "",
     walletAmount: "",
     status: "",
-    walletFreeze: false, // Initialize walletFreeze to false
+    walletFreeze: "",
   });
 
   useEffect(() => {
@@ -165,14 +164,17 @@ const EditUsers = () => {
                   setData({ ...data, walletAmount: e.target.value })
                 }
                 InputProps={{
-                  startAdornment: <Typography>₹</Typography>, // Display rupee symbol as start adornment
+                  startAdornment: <Typography>₹</Typography>,
                   endAdornment: (
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={data.walletFreeze}
-                          onChange={(e) =>
-                            setData({ ...data, walletFreeze: e.target.checked })
+                        checked={(data.walletFreeze) == 1} 
+                        onChange={(e) =>
+                            setData({
+                              ...data,
+                              walletFreeze: e.target.checked ? 1 : 0,
+                            })
                           }
                           disabled={!editMode}
                         />

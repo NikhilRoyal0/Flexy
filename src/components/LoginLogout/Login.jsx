@@ -38,13 +38,13 @@ export default function Login() {
     if (isAuthenticated()) {
       navigate("/");
     }
-  }, [navigate]);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const token = await login(phone, password);
-      if (token) {
+       await login(phone, password);
+      if (isAuthenticated()) {
         navigate("/");
       } else {
         setError("Authentication failed. Please check your credentials.");

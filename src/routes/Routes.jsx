@@ -50,7 +50,7 @@ const routes = createBrowserRouter(
       <Route
         path="/"
         element={
-          sessionStorage.getItem("token") ? (
+          sessionStorage.getItem("isAuthenticated") === "true" ? (
             <FullLayout />
           ) : (
             <Navigate to="/login" />
