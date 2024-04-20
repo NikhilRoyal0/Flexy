@@ -66,7 +66,7 @@ const BasicSetting = () => {
       setTimeout(() => {
         setOpenSnackbar(false);
         navigate("/");
-      }, 3000);
+      }, 800);
     } catch (error) {
       setError("Failed to change password. Please try again later.");
       setOpenSnackbar(true);
@@ -139,7 +139,7 @@ const BasicSetting = () => {
       </Paper>
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={() => setOpenSnackbar(false)}
         message="Password changed successfully"
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
