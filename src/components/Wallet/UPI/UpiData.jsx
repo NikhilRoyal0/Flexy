@@ -53,15 +53,11 @@ const Lists = ({ filterOption = "1" }) => {
       setIsSuccess(true);
       showSnackbar("Status updated successfully!");
 
-      setSwitchStates(prevState => {
+      setSwitchStates((prevState) => {
         const newState = [...prevState];
         newState[index] = e.target.checked;
         return newState;
       });
-
-      //? Print index and id to console
-      console.log("Index:", index);
-      console.log("Id:", user.upi_id);
     } catch (error) {
       console.error("Error updating status:", error);
       setIsSuccess(false);
@@ -177,51 +173,61 @@ const Lists = ({ filterOption = "1" }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((user, index) => ( // Pass index to map function
-                // Set initial switch state based on user status (0 = Active, 1 = Inactive   );
-                <TableRow key={user.upi_id}>
-                  <TableCell>
-                    <Switch
-                      checked={user.status === '1'}
-                      name="toggleStatus"
-                      onChange={(e) => handleToggleChange(user, index, e)}
-                      sx={{
-                        "& .MuiSwitch-thumb": {
-                          color: user.status === '1' ? baseTheme.palette.danger.main : baseTheme.palette.success.main,
-                        },
-                        "& .MuiSwitch-track": {
-                          backgroundColor: user.status === '1' ? baseTheme.palette.danger.main : baseTheme.palette.success.main,
-                        },
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {user.upi_id}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {user.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {user.upiId}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {user.upiHash}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {filteredData.map(
+                (
+                  user,
+                  index // Pass index to map function
+                ) => (
+                  <TableRow key={user.upi_id}>
+                    <TableCell>
+                      <Switch
+                        checked={user.status === "1"}
+                        name="toggleStatus"
+                        onChange={(e) => handleToggleChange(user, index, e)}
+                        sx={{
+                          "& .MuiSwitch-thumb": {
+                            color:
+                              user.status == "1"
+                                ? baseTheme.palette.success.main
+                                : baseTheme.palette.error.main,
+                          },
+                          "& .MuiSwitch-track": {
+                            backgroundColor:
+                              user.status == "1"
+                                ? baseTheme.palette.success.main
+                                : baseTheme.palette.error.main,
+                          },
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        sx={{
+                          fontSize: "15px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {user.upi_id}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {user.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {user.upiId}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {user.upiHash}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
             </TableBody>
           </Table>
         </div>
