@@ -136,9 +136,9 @@ const Lists = ({ filterOption }) => {
   const filterDataByStatus = (data, filterOption) => {
     return data.filter((user) => {
       return (
-        (filterOption === "accepted" && user.wStatus === 0) ||
-        (filterOption === "rejected" && user.wStatus === 1) ||
-        (filterOption === "inProgress" && user.wStatus === 2) ||
+        (filterOption === "accepted" && user.wStatus === 1) ||
+        (filterOption === "rejected" && user.wStatus === 2) ||
+        (filterOption === "Pending" && user.wStatus === 0) ||
         !filterOption
       );
     });
@@ -270,13 +270,13 @@ const Lists = ({ filterOption }) => {
                   <TableCell>
                     <Chip
                       style={{
-                        backgroundColor: user.wStatus === 0 ? "#4CAF50" : (user.wStatus === 1 ? "#F44336" : "#2196F3"),
+                        backgroundColor: user.wStatus === 1 ? "#4CAF50" : (user.wStatus === 0 ? "#2196F3" : "#F44336"),
                         color: "#fff",
                         paddingLeft: "4px",
                         paddingRight: "4px",
                       }}
                       size="small"
-                      label={user.wStatus === 0 ? "Accepted" : (user.wStatus === 1 ? "Rejected" : "In Progress")}
+                      label={user.wStatus === 1 ? "Accepted" : (user.wStatus === 0 ? "Pending" : "Rejected")}
                     />
                   </TableCell>
                   <TableCell align="center">
@@ -316,9 +316,9 @@ const Lists = ({ filterOption }) => {
                     value={selectedUserDetails && selectedUserDetails.wStatus}
                     onChange={(e) => handleStatusChange(e.target.value)}
                   >
-                    <MenuItem value="0">Accepted</MenuItem>
-                    <MenuItem value="1">Rejected</MenuItem>
-                    <MenuItem value="2">In Progress</MenuItem>
+                    <MenuItem value="1">Accepted</MenuItem>
+                    <MenuItem value="2">Rejected</MenuItem>
+                    <MenuItem value="0">Pending</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

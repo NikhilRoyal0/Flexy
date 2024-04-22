@@ -13,7 +13,7 @@ import {
 import Lists from "./Lists";
 
 const Withdrawal = () => {
-  const [filterOption, setFilterOption] = useState("inProgress");
+  const [filterOption, setFilterOption] = useState("Pending");
 
   const handleFilterChange = (event) => {
     setFilterOption(event.target.value);
@@ -39,7 +39,7 @@ const Withdrawal = () => {
                 >
                   <MenuItem value="accepted">Accepted</MenuItem>
                   <MenuItem value="rejected">Rejected</MenuItem>
-                  <MenuItem value="inProgress">In Progress</MenuItem>
+                  <MenuItem value="Pending">Pending</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
