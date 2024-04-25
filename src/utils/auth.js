@@ -28,6 +28,7 @@ export const login = async (phone, password) => {
 
 export const logout = () => {
   sessionStorage.removeItem("isAuthenticated");
+  sessionStorage.removeItem("adminId");
 };
 
 export const changePassword = async (newPassword) => {
