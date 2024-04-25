@@ -99,7 +99,7 @@ const Lists = ({ filterOption }) => {
 
   useEffect(() => {
     dispatch(fetchWithdrawalData());
-  }, [dispatch]);
+  }, [dispatch,filterOption]);
 
   if (isLoading) {
     return (
@@ -370,7 +370,7 @@ const Lists = ({ filterOption }) => {
                   >
                     <MenuItem value="1">Accepted</MenuItem>
                     <MenuItem value="2">Rejected</MenuItem>
-                    <MenuItem value="0">Pending</MenuItem>
+                    <MenuItem disabled value="0">Pending</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
