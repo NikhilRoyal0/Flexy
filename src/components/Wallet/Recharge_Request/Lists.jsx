@@ -82,21 +82,22 @@ const Lists = ({ filterOption }) => {
 
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
-    setUpdatedData(prevData => ({
+    setUpdatedData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
     if (value === "2") {
-      setRejectedReason(""); 
+      setRejectedReason("");
     }
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await dispatch(updateRechargeData(updatedData));
+      const { r_id } = selectedUserDetails;
+
+      await dispatch(updateRechargeData(updatedData, r_id));
 
       dispatch(fetchRechargeData());
 

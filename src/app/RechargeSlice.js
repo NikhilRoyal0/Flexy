@@ -24,8 +24,8 @@ const RechargeSlice = createSlice({
     },
     updateRecharge: (state, action) => {
       const updatedRecharge = action.payload;
-      state.data = state.data.map((Recharge) =>
-        Recharge.r_id === updatedRecharge.r_id ? updatedRecharge : Recharge
+      state.data = state.data.map((recharge) =>
+        recharge.r_id === updatedRecharge.r_id ? updatedRecharge : recharge
       );
     },
   },
@@ -41,7 +41,9 @@ export const {
 export const fetchRechargeData = () => async (dispatch) => {
   try {
     dispatch(setRechargeLoading());
-    const response = await axios.get(import.meta.env.VITE_BASE_URL + "client/get-all-rechargeRequests");
+    const response = await axios.get(
+      import.meta.env.VITE_BASE_URL + "client/get-all-rechargeRequests"
+    );
     dispatch(setRechargeData(response.data));
   } catch (error) {
     dispatch(setRechargeError(error.message));
@@ -50,32 +52,33 @@ export const fetchRechargeData = () => async (dispatch) => {
 
 export const AddData = (form) => async () => {
   try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + 'client/add-withdrawRequest', form, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await axios.post(
+      import.meta.env.VITE_BASE_URL + "client/add-withdrawRequest",
+      form,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
-    console.log('Response:', response.data);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-
-export const updateRechargeData = (updatedData, r_id) => async (dispatch) => {
-  try {
-
-    const response = await axios.put(import.meta.env.VITE_BASE_URL + `client/updateRechargeRequest/${r_id}`, updatedData
     );
-
-    const updatedRechargeData = response.data;
-
-    dispatch(updateRecharge(updatedRechargeData));
+    console.log("Response:", response.data);
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
+export const updateRechargeData = (updatedData, r_id) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      import.meta.env.VITE_BASE_URL + `client/updateRechargeRequest/${r_id}`,
+      updatedData
+    );
+    const updatedRechargeData = response.data;
+    dispatch(updateRecharge(updatedRechargeData));
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 export const selectRechargeData = (state) => state.Recharge.data;
 export const selectRechargeLoading = (state) => state.Recharge.isLoading;
