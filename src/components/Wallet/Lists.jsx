@@ -24,11 +24,17 @@ import {
   SnackbarContent,
   IconButton,
 } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import { baseTheme } from "../../assets/global/Theme-variable";
-import { fetchWithdrawalData, selectWithdrawalData, selectWithdrawalLoading, selectWithdrawalError, updateWithdrawalData } from "../../app/WithdrawalSlice";
-import { LoadingButton } from '@mui/lab';
+import {
+  fetchWithdrawalData,
+  selectWithdrawalData,
+  selectWithdrawalLoading,
+  selectWithdrawalError,
+  updateWithdrawalData,
+} from "../../app/WithdrawalSlice";
+import { LoadingButton } from "@mui/lab";
 
 const Lists = ({ filterOption }) => {
   const dispatch = useDispatch();
@@ -39,11 +45,15 @@ const Lists = ({ filterOption }) => {
   const [selectedUserDetails, setSelectedUserDetails] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [updatedStatus, setUpdatedStatus] = useState(null);
-  const [submitLoading, setSubmitLoading] = useState(false); // State for the submit button loading
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [updatedData, setUpdatedData] = useState({
+    user_id: "",
+    amount: "",
+    status: "",
+  });
 
   const handleSnackbarClose = (reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (!isSuccess) {
@@ -59,35 +69,33 @@ const Lists = ({ filterOption }) => {
     }, 3000);
   };
 
-  const handleStatusChange = (newStatus) => {
-    setSelectedUserDetails((prevDetails) => ({
-      ...prevDetails,
-      wStatus: newStatus,
+  const handleStatusChange = (event) => {
+    const { name, value } = event.target;
+    setUpdatedData((prevData) => ({
+      ...prevData,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitLoading(true); // Start loading for the submit button
+    setSubmitLoading(true);
 
     try {
-      const updatedStatus = selectedUserDetails.wStatus;
-
-      await dispatch(updateWithdrawalData(selectedUserDetails.wr_id, updatedStatus));
+      const { wr_id } = selectedUserDetails;
+      await dispatch(updateWithdrawalData(updatedData, wr_id));
 
       dispatch(fetchWithdrawalData());
 
       setIsSuccess(true);
-      showSnackbar('Status updated successfully!');
+      showSnackbar("Status updated successfully!");
       setOpenDialog(false);
-
     } catch (error) {
-      console.error('Error updating status:', error);
+      console.error("Error updating status:", error);
     } finally {
-      setSubmitLoading(false); // Stop loading for the submit button
+      setSubmitLoading(false);
     }
   };
-
 
   useEffect(() => {
     dispatch(fetchWithdrawalData());
@@ -129,8 +137,11 @@ const Lists = ({ filterOption }) => {
   const handleRowClick = (userDetails) => {
     setSelectedUserDetails(userDetails);
     setOpenDialog(true);
-    setUpdatedStatus(userDetails.wStatus);
-
+    setUpdatedData({
+      user_id: userDetails.user_id,
+      amount: userDetails.amount,
+      status: userDetails.status.toString(),
+    });
   };
 
   const filterDataByStatus = (data, filterOption) => {
@@ -146,7 +157,16 @@ const Lists = ({ filterOption }) => {
 
   const filteredData = filterDataByStatus(withdrawalData, filterOption);
 
-
+  const unixTimeToRealTime = (time) => {
+    const date = new Date(time * 1000);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+  };
   return (
     <Box>
       {filteredData.length === 0 ? (
@@ -157,7 +177,8 @@ const Lists = ({ filterOption }) => {
           height="100px"
         >
           <Typography variant="h3">No request available...</Typography>
-        </Box>) : (
+        </Box>
+      ) : (
         <div style={{ overflowX: "auto" }}>
           <Table
             aria-label="simple table"
@@ -168,7 +189,7 @@ const Lists = ({ filterOption }) => {
             }}
           >
             <TableHead>
-              <TableRow >
+              <TableRow>
                 <TableCell>
                   <Typography color="textDanger" variant="h6">
                     User Id
@@ -182,7 +203,8 @@ const Lists = ({ filterOption }) => {
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     Bank Name/
-                    <br />IFSC Code
+                    <br />
+                    IFSC Code
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -200,20 +222,23 @@ const Lists = ({ filterOption }) => {
                     Status
                   </Typography>
                 </TableCell>
-                <TableCell >
+                <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     Wallet Amount
                   </Typography>
                 </TableCell>
-                <TableCell>
-
-                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredData.map((user) => (
-                <TableRow key={user.user_id} onClick={() => handleRowClick(user)}
-                  sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#ADD8E6' } }}
+                <TableRow
+                  key={user.user_id}
+                  onClick={() => handleRowClick(user)}
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": { backgroundColor: "#ADD8E6" },
+                  }}
                 >
                   <TableCell align="center">
                     <Typography
@@ -264,27 +289,36 @@ const Lists = ({ filterOption }) => {
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {user.createdDateTime}
+                      {unixTimeToRealTime(user.createdDateTime)}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Chip
                       style={{
-                        backgroundColor: user.wStatus === 1 ? "#4CAF50" : (user.wStatus === 0 ? "#2196F3" : "#F44336"),
+                        backgroundColor:
+                          user.wStatus === 1
+                            ? "#4CAF50"
+                            : user.wStatus === 0
+                            ? "#2196F3"
+                            : "#F44336",
                         color: "#fff",
                         paddingLeft: "4px",
                         paddingRight: "4px",
                       }}
                       size="small"
-                      label={user.wStatus === 1 ? "Accepted" : (user.wStatus === 0 ? "Pending" : "Rejected")}
+                      label={
+                        user.wStatus === 1
+                          ? "Accepted"
+                          : user.wStatus === 0
+                          ? "Pending"
+                          : "Rejected"
+                      }
                     />
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="h6">Rs. {user.amount}</Typography>
                   </TableCell>
-                  <TableCell>
-
-                  </TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -293,18 +327,36 @@ const Lists = ({ filterOption }) => {
       )}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle variant="h3">Withdrawal Details</DialogTitle>
-        <span />
         <DialogContent>
-          <form onSubmit={handleSubmit} style={{ margin: '16px' }}>
+          <form onSubmit={handleSubmit} style={{ margin: "16px" }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField label="Withdrawal Request ID" required value={selectedUserDetails && selectedUserDetails.wr_id} disabled fullWidth />
+                <TextField
+                  label="Withdrawal Request ID"
+                  required
+                  value={selectedUserDetails && selectedUserDetails.wr_id}
+                  disabled
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField label="User ID" required value={selectedUserDetails && selectedUserDetails.userId} disabled fullWidth />
+                <TextField
+                  label="User ID"
+                  name="user_id"
+                  required
+                  value={selectedUserDetails && selectedUserDetails.user_id}
+                  disabled
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField label="Amount" required value={selectedUserDetails && selectedUserDetails.amount} disabled fullWidth />
+                <TextField
+                  label="Amount"
+                  required
+                  value={selectedUserDetails && selectedUserDetails.amount}
+                  disabled
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
@@ -313,8 +365,8 @@ const Lists = ({ filterOption }) => {
                     label="Status"
                     name="status"
                     required
-                    value={selectedUserDetails && selectedUserDetails.wStatus}
-                    onChange={(e) => handleStatusChange(e.target.value)}
+                    value={updatedData && updatedData.status}
+                    onChange={handleStatusChange}
                   >
                     <MenuItem value="1">Accepted</MenuItem>
                     <MenuItem value="2">Rejected</MenuItem>
@@ -331,7 +383,7 @@ const Lists = ({ filterOption }) => {
             color="primary"
             type="submit"
             onClick={handleSubmit}
-            loading={submitLoading} // Bind loading state to the loading button
+            loading={submitLoading}
           >
             Submit
           </LoadingButton>
@@ -347,7 +399,11 @@ const Lists = ({ filterOption }) => {
         onClose={handleSnackbarClose}
       >
         <SnackbarContent
-          message={isSuccess ? 'Status updated successfully!' : 'Failed to update status!'}
+          message={
+            isSuccess
+              ? "Status updated successfully!"
+              : "Failed to update status!"
+          }
           action={
             <IconButton
               size="small"
@@ -362,7 +418,7 @@ const Lists = ({ filterOption }) => {
             backgroundColor: isSuccess
               ? baseTheme.palette.success.main
               : baseTheme.palette.error.main,
-            color: isSuccess ? '#fff' : undefined,
+            color: isSuccess ? "#fff" : undefined,
           }}
         />
       </Snackbar>

@@ -49,6 +49,7 @@ const Lists = ({ filterOption }) => {
     userId: "",
     amount: "",
     status: "",
+    info: "",
   });
   const [rejectedReason, setRejectedReason] = useState("");
 
@@ -97,7 +98,12 @@ const Lists = ({ filterOption }) => {
     try {
       const { r_id } = selectedUserDetails;
 
-      await dispatch(updateRechargeData(updatedData, r_id));
+      const dataToSend = {
+        ...updatedData,
+        info: updatedData.status === "2" ? rejectedReason : "",
+      };
+
+      await dispatch(updateRechargeData(dataToSend, r_id));
 
       dispatch(fetchRechargeData());
 
@@ -376,6 +382,7 @@ const Lists = ({ filterOption }) => {
                 <Grid item xs={12}>
                   <TextField
                     label="Rejected Reason"
+                    name="info"
                     multiline
                     rows={4}
                     variant="outlined"

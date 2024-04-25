@@ -67,11 +67,11 @@ export const AddData = (form) => async () => {
   }
 };
 
-export const updateRechargeData = (updatedData, r_id) => async (dispatch) => {
+export const updateRechargeData = (dataToSend, r_id) => async (dispatch) => {
   try {
     const response = await axios.put(
       import.meta.env.VITE_BASE_URL + `client/updateRechargeRequest/${r_id}`,
-      updatedData
+      dataToSend
     );
     const updatedRechargeData = response.data;
     dispatch(updateRecharge(updatedRechargeData));
