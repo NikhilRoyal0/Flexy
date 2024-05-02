@@ -12,6 +12,7 @@ import AddUser from "../components/User/AddUser";
 import UserList from "../components/User/UserList";
 import PlansPage from "../components/Plans/PlansPage";
 import NewsPage from "../components/News/NewsPage";
+import Coupon from "../components/Coupon/Coupon";
 import AppSetting from "../components/Setting/AppSetting";
 import BasicSetting from "../components/Setting/BasicSetting";
 import DialogsList from "../components/Setting/DialogsList";
@@ -69,6 +70,7 @@ const routes = createBrowserRouter(
         <Route path="/wallet/withdrawal-request" element={<Withdrawal />} />
         <Route path="/upi-lists" element={<UpiList />} />
         <Route path="/recharge-request" element={<Recharge />} />
+        <Route path="/coupon" element={<Coupon/>}/>
         <Route path="/setting/notifications" element={<Notification />} />
         <Route path="/wallet/next-withdraw" element={<NextWithdraw />} />
         <Route path="/setting/app-setting" element={<AppSetting />} />

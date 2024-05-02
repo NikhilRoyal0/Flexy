@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     Card,
     CardContent,
@@ -95,6 +95,8 @@ const AddUser = () => {
     const handleChange3 = (event) => {
         setNumber(event.target.value);
     };
+
+    
 
     return (
         <div>
@@ -249,7 +251,7 @@ const AddUser = () => {
                                 <TextField
                                     id="dob"
                                     label="Date of Birth"
-                                    type="date"
+                                    type="datetime-local"
                                     variant="outlined"
                                     fullWidth
                                     InputLabelProps={{

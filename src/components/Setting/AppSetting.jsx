@@ -17,9 +17,13 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAppData, fetchAppData, updateappSettingData } from "../../app/AppSlice";
+import {
+  selectAppData,
+  fetchAppData,
+  updateappSettingData,
+} from "../../app/AppSlice";
 import { baseTheme } from "../../assets/global/Theme-variable";
 
 const AppSetting = () => {
@@ -41,6 +45,10 @@ const AppSetting = () => {
     contactUs: "",
     website: "",
     floatingButtonLink: "",
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    youtube: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -65,7 +73,7 @@ const AppSetting = () => {
   }, [idParam, dispatch, helloData]);
 
   const handleSnackbarClose = (reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     if (isSuccess) {
@@ -80,7 +88,6 @@ const AppSetting = () => {
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
-
 
   if (loading) {
     return (
@@ -110,20 +117,18 @@ const AppSetting = () => {
     dispatch(updateappSettingData(AppSetting))
       .then(() => {
         toggleEditMode();
-        setIsSuccess(true)
-        showSnackbar('appSetting updated successfully!')
+        setIsSuccess(true);
+        showSnackbar("appSetting updated successfully!");
         setTimeout(() => {
           navigate("../setting/app-setting");
         }, 1000);
       })
       .catch((error) => {
         setIsSuccess(false);
-        showSnackbar('Error in updating appSetting. Please try again.');
-        console.error('Error in updating appSetting:', error);
+        showSnackbar("Error in updating appSetting. Please try again.");
+        console.error("Error in updating appSetting:", error);
       });
   };
-
-
 
   return (
     <Card>
@@ -194,8 +199,8 @@ const AppSetting = () => {
                 <InputLabel htmlFor="Status">Status</InputLabel>
                 <Select
                   label="App Status"
-                  id="App Status"
-                  name="appstatus"
+                  id="appstatus"
+                  name="appStatus"
                   value={AppSetting && AppSetting.appStatus}
                   onChange={handleTextChange}
                   disabled={!editMode}
@@ -204,10 +209,8 @@ const AppSetting = () => {
                 >
                   <MenuItem value="1">Active</MenuItem>
                   <MenuItem value="0">Inactive</MenuItem>
-                  <MenuItem value="2">Progress</MenuItem>
                 </Select>
               </FormControl>
-
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -242,7 +245,52 @@ const AppSetting = () => {
                 disabled={!editMode}
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Facebook"
+                variant="outlined"
+                name="facebook"
+                fullWidth
+                value={AppSetting && AppSetting.facebook}
+                onChange={handleTextChange}
+                disabled={!editMode}
+              />
+            </Grid>
 
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Twitter"
+                variant="outlined"
+                name="twitter"
+                fullWidth
+                value={AppSetting && AppSetting.twitter}
+                onChange={handleTextChange}
+                disabled={!editMode}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Instagram"
+                variant="outlined"
+                name="instagram"
+                fullWidth
+                value={AppSetting && AppSetting.instagram}
+                onChange={handleTextChange}
+                disabled={!editMode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Youtube"
+                variant="outlined"
+                name="youtube"
+                fullWidth
+                value={AppSetting && AppSetting.youtube}
+                onChange={handleTextChange}
+                disabled={!editMode}
+              />
+            </Grid>
           </Grid>
           <br />
           <Divider />
@@ -252,12 +300,21 @@ const AppSetting = () => {
               <Button variant="contained" color="success" type="submit">
                 Save
               </Button>
-              <Button variant="contained" sx={{ ml: 1 }} color="error" onClick={toggleEditMode}>
+              <Button
+                variant="contained"
+                sx={{ ml: 1 }}
+                color="error"
+                onClick={toggleEditMode}
+              >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={toggleEditMode}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleEditMode}
+            >
               Edit
             </Button>
           )}
@@ -287,11 +344,10 @@ const AppSetting = () => {
               backgroundColor: isSuccess
                 ? baseTheme.palette.success.main
                 : baseTheme.palette.error.main,
-              color: isSuccess ? '#fff' : undefined,
+              color: isSuccess ? "#fff" : undefined,
             }}
           />
         </Snackbar>
-
       </CardContent>
     </Card>
   );

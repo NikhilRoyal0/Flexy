@@ -32,6 +32,7 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import PsychologyIcon from "@mui/icons-material/Psychology";
+import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 
 const initialState = {
   menuItems: [],
@@ -196,19 +197,26 @@ export const fetchMenuItems = () => (dispatch) => {
     },
     {
       id: 14,
+      title: "Coupon",
+      icon: BrokenImageIcon,
+      href: "/coupon",
+      visible: isVisible,
+    },
+    {
+      id: 15,
       title: "Add On",
       icon: LibraryAddIcon,
       href: "#",
       visible: isVisible,
       subItems: [
         {
-          id: 41,
+          id: 30,
           title: "Plans",
           icon: LightbulbIcon,
           href: "/addon/plans",
         },
         {
-          id: 41,
+          id: 31,
           title: "Add On",
           icon: ControlPointIcon,
           href: "/addon/add-on",
@@ -216,21 +224,21 @@ export const fetchMenuItems = () => (dispatch) => {
       ],
     },
     {
-      id: 15,
+      id: 16,
       title: "News",
       icon: NewspaperIcon,
       href: "/news",
       visible: isVisible,
     },
     {
-      id: 16,
+      id: 17,
       title: "Setting",
       icon: ManageAccountsIcon,
       href: "#",
       visible: isVisible,
       subItems: [
         {
-          id: 38,
+          id: 32,
           title: "Notification",
           icon: NotificationsActiveIcon,
           href: "/setting/notifications",

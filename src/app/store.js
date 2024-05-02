@@ -18,6 +18,7 @@ import NotificationReducer from './NotificationSlice';
 import ReferSettingReducer from './ReferSettingSlice';
 import AuthReducer from "../app/AuthSlice";
 import DashReducer from "../app/DashSlice";
+import CouponReducer from "./CouponSlice";
 
 const store = configureStore({
   reducer: {
@@ -39,7 +40,8 @@ const store = configureStore({
     Notification: NotificationReducer,
     ReferSetting: ReferSettingReducer,
     Auth: AuthReducer,
-    Dash: DashReducer
+    Dash: DashReducer,
+    Coupon: CouponReducer,
 
   },
 });
