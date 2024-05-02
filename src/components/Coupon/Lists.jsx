@@ -388,7 +388,7 @@ const Lists = ({ filterOption = "1" }) => {
         <SnackbarContent
           message={
             isSuccess
-              ? "Status updated successfully!"
+              ? "Coupon updated successfully!"
               : "Failed to update status!"
           }
           action={
