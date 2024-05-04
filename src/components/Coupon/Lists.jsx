@@ -88,7 +88,7 @@ const Lists = ({ filterOption = "1" }) => {
       code: Coupon.code,
       amount: Coupon.amount,
       validUpto: Coupon.validUpto,
-      type: Coupon.validUpto,
+      type: Coupon.type,
       status: Coupon.status,
     });
     setOpenDialog(true);
