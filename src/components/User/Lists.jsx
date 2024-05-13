@@ -21,7 +21,7 @@ import { fetchUsersData, selectUsersData, selectUsersLoading, selectUsersError }
 
 
 
-const Lists = ({ searchText, setSearchText }) => {
+const Lists = ({ searchText, filterOption }) => {
   const dispatch = useDispatch();
   const usersData = useSelector(selectUsersData);
   const isLoading = useSelector(selectUsersLoading);
@@ -37,13 +37,21 @@ const Lists = ({ searchText, setSearchText }) => {
 
   useEffect(() => {
     dispatch(fetchUsersData());
-  }, [dispatch]);
+  }, [dispatch,filterOption]);
 
   const filteredUsersData = usersData.filter((user) =>
     user.userName.toLowerCase().includes(searchText.toLowerCase()) ||
     user.email.toLowerCase().includes(searchText.toLowerCase()) ||
     user.phone.toLowerCase().includes(searchText.toLowerCase())
-  );
+  ).filter(user => {
+    if (filterOption === "active") {
+      return user.status === 1;
+    } else if (filterOption === "inactive") {
+      return user.status !== 1;
+    } else {
+      return true;
+    }
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
