@@ -9,16 +9,25 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Box,
+  MenuItem,
+  FormControl,
+  Select,
+  InputLabel,
+  CircularProgress,
 } from "@mui/material";
-import errorimage from '../../assets/images/errorimage.jpg'
-import AddIcon from '@mui/icons-material/Add';
-import CircularProgress from '@mui/material/CircularProgress';
+import errorimage from "../../assets/images/errorimage.jpg";
+import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchTasksData, selectTasksData, selectTasksLoading, selectTasksError, deleteTaskData } from "../../app/TaskSlice";
-
-
+import {
+  fetchTasksData,
+  selectTasksData,
+  selectTasksLoading,
+  selectTasksError,
+  deleteTaskData,
+} from "../../app/TaskSlice";
 
 const TaskList = () => {
   const navigate = useNavigate();
@@ -26,10 +35,11 @@ const TaskList = () => {
   const taskData = useSelector(selectTasksData);
   const isLoading = useSelector(selectTasksLoading);
   const error = useSelector(selectTasksError);
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
-  const [selectedtask, setSelectedtask] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
   const [fullArticleDialogOpen, setFullArticleDialogOpen] = useState(false);
+  const [filterOption, setFilterOption] = useState("0");
 
   const deleteClick = (task) => {
     setTaskToDelete(task);
@@ -53,7 +63,20 @@ const TaskList = () => {
 
   useEffect(() => {
     dispatch(fetchTasksData());
-  }, [dispatch]);
+  }, [dispatch, filterOption]);
+
+  const handleFilterChange = (event) => {
+    setFilterOption(event.target.value);
+  };
+
+  const filterDataByStatus = (data, filterOption) => {
+    return data.filter((task) => {
+      if (filterOption === "1") return task.status === 1;
+      if (filterOption === "0") return task.status === 0;
+      if (filterOption === "2") return task.status === 2;
+      return true;
+    });
+  };
 
   if (isLoading) {
     return (
@@ -88,16 +111,16 @@ const TaskList = () => {
     );
   }
 
-  const editClick = (Task) => {
-    navigate(`edit-task/${Task.taskId}`);
+  const editClick = (task) => {
+    navigate(`edit-task/${task.taskId}`);
   };
 
   const handleClick = () => {
-    navigate('/tasks/task-list/add-task');
-  }
+    navigate("/tasks/task-list/add-task");
+  };
 
   const openFullArticleDialog = (task) => {
-    setSelectedtask(task);
+    setSelectedTask(task);
     setFullArticleDialogOpen(true);
   };
 
@@ -105,31 +128,56 @@ const TaskList = () => {
     setFullArticleDialogOpen(false);
   };
 
+  const filteredTasks = filterDataByStatus(taskData, filterOption);
 
   return (
     <div style={{ position: "relative" }}>
-      <Button
-        sx={{
-          position: "absolute",
-          top: "10px",
-          right: "30px",
-          mt: "5px",
-          zIndex: 1,
-        }}
-        color="primary"
-        onClick={handleClick}
-      >
-        <AddIcon />
-        <Typography sx={{ ml: 1 }}>Add Task</Typography>
-      </Button>
-      <Card>
-        <CardContent
-          sx={{
-            paddingLeft: 0,
-            paddingRight: 0,
-          }}
-        >          <Grid container sx={{ marginTop: "25px" }}>
-            {taskData.map((Task, index) => (
+      <Card variant="outlined">
+        <CardContent>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 2 }}
+          >
+            <Grid item>
+              <Typography variant="h3" fontWeight="bold">
+                Task List
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                color="primary"
+                onClick={handleClick}
+                startIcon={<AddIcon />}
+                sx={{ mr: 1, mt: 1 }}
+              >
+                Add Task
+              </Button>
+              <FormControl variant="outlined" sx={{ minWidth: "150px" }}>
+                <InputLabel
+                  htmlFor="status"
+                  sx={{ marginLeft: 1, marginTop: 1 }}
+                >
+                  Filter By Status
+                </InputLabel>
+                <Select
+                  label="Filter By Status"
+                  variant="outlined"
+                  size="small"
+                  value={filterOption}
+                  onChange={handleFilterChange}
+                  sx={{ marginLeft: 1, marginTop: 1 }}
+                >
+                  <MenuItem value="1">Active</MenuItem>
+                  <MenuItem value="0">Inactive</MenuItem>
+                  <MenuItem value="2">In Progress</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid container sx={{ marginTop: "25px" }}>
+            {filteredTasks.map((task, index) => (
               <Grid
                 key={index}
                 item
@@ -148,12 +196,12 @@ const TaskList = () => {
                   sx={{
                     p: 0,
                     width: "100%",
-                    mt: "8px"
+                    mt: "8px",
                   }}
                 >
                   <img
-                    src={Task.taskMedia}
-                    alt={Task.taskMedia}
+                    src={task.taskMedia}
+                    alt={task.taskMedia}
                     onError={(e) => {
                       e.target.src = errorimage;
                       e.target.alt = "Error Image";
@@ -161,7 +209,7 @@ const TaskList = () => {
                     width="100%"
                     height="210px"
                     style={{
-                      objectFit: 'contain',
+                      objectFit: "contain",
                     }}
                   />
                   <CardContent
@@ -176,42 +224,49 @@ const TaskList = () => {
                         fontWeight: "500",
                       }}
                     >
-                      {Task.taskTitle}
+                      {task.taskTitle}
                     </Typography>
+
                     <Typography
                       sx={{
                         fontSize: "h4.fontSize",
                         fontWeight: "500",
                       }}
                     >
-                      {Task.taskInfo.length <= 15 ? (
-                        Task.taskInfo
+                      {task.taskInfo.length <= 15 ? (
+                        task.taskInfo
                       ) : (
                         <>
-                          {Task.taskInfo.split(' ').slice(0, 5).join(' ')}
+                          {task.taskInfo.split(" ").slice(0, 5).join(" ")}
                           <span
                             style={{
                               fontSize: "15px",
-                              color: 'blue',
-                              cursor: 'pointer',
-                              display: 'inline-block',
-                              marginLeft: '4px',
+                              color: "blue",
+                              cursor: "pointer",
+                              display: "inline-block",
+                              marginLeft: "4px",
                             }}
-                            onClick={() => openFullArticleDialog(Task)}
+                            onClick={() => openFullArticleDialog(task)}
                           >
-                            ... <span style={{ display: 'inline' }}>read more</span>
+                            ...{" "}
+                            <span style={{ display: "inline" }}>read more</span>
                           </span>
                         </>
                       )}
                     </Typography>
                     <br />
-                    <Button variant="outlined" color="primary" onClick={() => editClick(Task)} sx={{ ml: 1 }}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => editClick(task)}
+                      sx={{ ml: 1 }}
+                    >
                       Edit
                     </Button>
                     <Button
                       variant="outlined"
                       color="error"
-                      onClick={() => deleteClick(Task)}
+                      onClick={() => deleteClick(task)}
                       sx={{ ml: 1 }}
                     >
                       Delete
@@ -221,18 +276,25 @@ const TaskList = () => {
               </Grid>
             ))}
           </Grid>
+          {filteredTasks.length === 0 && (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="10vh"
+            >
+              <Typography variant="h3">No tasks available...</Typography>
+            </Box>
+          )}
         </CardContent>
       </Card>
 
-      <Dialog
-        open={fullArticleDialogOpen}
-        onClose={closeFullArticleDialog}
-      >
-        <DialogTitle>{selectedtask?.taskTitle}</DialogTitle>
+      <Dialog open={fullArticleDialogOpen} onClose={closeFullArticleDialog}>
+        <DialogTitle>{selectedTask?.taskTitle}</DialogTitle>
         <DialogContent>
           <img
-            src={selectedtask?.taskMedia}
-            alt={selectedtask?.taskMedia}
+            src={selectedTask?.taskMedia}
+            alt={selectedTask?.taskMedia}
             onError={(e) => {
               e.target.src = errorimage;
               e.target.alt = "Error Image";
@@ -240,15 +302,11 @@ const TaskList = () => {
             width="100%"
             height="210px"
             style={{
-              objectFit: 'contain',
+              objectFit: "contain",
             }}
           />
-          <Typography>
-            Created By: {selectedtask?.createdBy}
-          </Typography>
-          <Typography>
-            Task Info: {selectedtask?.taskInfo}
-          </Typography>
+          <Typography>Created By: {selectedTask?.createdBy}</Typography>
+          <Typography>Task Info: {selectedTask?.taskInfo}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeFullArticleDialog} color="primary">
@@ -257,11 +315,7 @@ const TaskList = () => {
         </DialogActions>
       </Dialog>
 
-
-      <Dialog
-        open={deleteConfirmationOpen}
-        onClose={handleDeleteCancel}
-      >
+      <Dialog open={deleteConfirmationOpen} onClose={handleDeleteCancel}>
         <DialogTitle>Delete Confirmation</DialogTitle>
         <DialogContent>
           <DialogContentText>

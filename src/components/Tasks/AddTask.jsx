@@ -316,9 +316,8 @@ const AddTask = () => {
                     value={formData.isDailyTask}
                     onChange={handleInputChange}
                   >
-                    <MenuItem value="1">Active</MenuItem>
-                    <MenuItem value="0">Inactive</MenuItem>
-                    <MenuItem value="2">Progress</MenuItem>
+                    <MenuItem value="1">YES</MenuItem>
+                    <MenuItem value="0">NO</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
