@@ -28,7 +28,7 @@ export default function ReferSetting() {
     if (firstSetting) {
       const { rpId, ...modified } = firstSetting;
       setModifiedSetting(modified);
-      setEditedValues(modified); // Initialize edited values with current setting
+      setEditedValues(modified);
     }
   }, [firstSetting]);
 
@@ -60,6 +60,19 @@ export default function ReferSetting() {
         <Grid container spacing={2}>
           {firstSetting && (
             <>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="zeroLevel"
+                  label="Level 0"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  value={editedValues.zeroLevel || ""}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                  required
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   id="firstLevel"
