@@ -99,7 +99,7 @@ const Lists = ({ filterOption }) => {
 
   useEffect(() => {
     dispatch(fetchWithdrawalData());
-  }, [dispatch,filterOption]);
+  }, [dispatch, filterOption]);
 
   if (isLoading) {
     return (
@@ -197,6 +197,11 @@ const Lists = ({ filterOption }) => {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
+                    Account Holder Name
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
                     Account Number
                   </Typography>
                 </TableCell>
@@ -251,6 +256,11 @@ const Lists = ({ filterOption }) => {
                     </Typography>
                   </TableCell>
                   <TableCell>
+                    <Typography color="textSecondary" variant="h6" align="center">
+                      {user.accountHolder}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
                     <Typography color="textSecondary" variant="h6">
                       {user.accountNumber}
                     </Typography>
@@ -299,8 +309,8 @@ const Lists = ({ filterOption }) => {
                           user.wStatus === 1
                             ? "#4CAF50"
                             : user.wStatus === 0
-                            ? "#2196F3"
-                            : "#F44336",
+                              ? "#2196F3"
+                              : "#F44336",
                         color: "#fff",
                         paddingLeft: "4px",
                         paddingRight: "4px",
@@ -310,8 +320,8 @@ const Lists = ({ filterOption }) => {
                         user.wStatus === 1
                           ? "Accepted"
                           : user.wStatus === 0
-                          ? "Pending"
-                          : "Rejected"
+                            ? "Pending"
+                            : "Rejected"
                       }
                     />
                   </TableCell>
